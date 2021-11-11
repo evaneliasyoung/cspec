@@ -1,6 +1,6 @@
 CC         = g++
 BASE_FLAGS = -std=c++17
-SOURCES    = $(wildcard *.cpp)
+SOURCES    = $(wildcard *.cpp) $(wildcard **/*.cpp)
 OBJECTS    = ${SOURCES:%.cpp=%.o}
 EXEC       = cspec.exe
 PCH_SRC    = pch.h
@@ -41,5 +41,7 @@ run: release
 
 clean:
 	-@rm -f $(OBJECTS) >/dev/null 2>&1
-	-@rm -f $(PCH_OUT) >/dev/null 2>&1
 	-@rm -f $(EXEC) >/dev/null 2>&1
+
+deepclean: clean
+	-@rm -f $(PCH_OUT) >/dev/null 2>&1
