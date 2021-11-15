@@ -60,7 +60,7 @@ namespace cspec
     amounts_t amounts();
     cache_t cache(u8 level);
     architecture_t architecture();
-    u64 clock();
+    u64 clock() noexcept;
     endian_t endian() noexcept;
     std::string vendor();
     std::string vendor_id();
