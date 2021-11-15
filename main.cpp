@@ -22,5 +22,7 @@ int main(int argc, char const *argv[])
   std::cout << "Arch: " << arch_map.at(arch) << '\n'
             << "Endian: " << (cspec::cpu::endian() == cspec::cpu::endian_t::big ? "big" : "little") << '\n';
 
+  std::cout << "Vendor: " << cspec::cpu::vendor() << '\n' << "Name: " << cspec::cpu::name() << '\n';
+
   return 0;
 }
