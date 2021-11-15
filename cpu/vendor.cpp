@@ -19,7 +19,7 @@ template<unsigned int BufferSize> static std::string read_registry(const char *k
 
   char identifier[BufferSize];
   DWORD identifier_len = sizeof(identifier);
-  LPBYTE lpdata = static_cast<LPBYTE>(static_cast<void*>(&identifier[0])));
+  LPBYTE lpdata = static_cast<LPBYTE>(static_cast<void*>(&identifier[0]));
   if (RegQueryValueExA(hkey, key, nullptr, nullptr, lpdata, &identifier_len))
     return {};
 
