@@ -17,7 +17,7 @@ u64 cspec::cpu::clock() noexcept
   if (RegOpenKeyExA(HKEY_LOCAL_MACHINE, R"(HARDWARE\DESCRIPTION\System\CentralProcessor\0)", 0, KEY_READ, &hkey))
   {
     LARGE_INTEGER clock;
-    QueryPerformanceclockuency(&clock);
+    QueryPerformanceFrequency(&clock);
     return clock.QuadPart * 1000;
   }
 
