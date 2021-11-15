@@ -8,7 +8,7 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../cspec.h"
+#include "ns.h"
 
 cspec::cpu::endian_t cspec::cpu::endian() noexcept
 {

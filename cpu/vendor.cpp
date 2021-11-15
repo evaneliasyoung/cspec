@@ -8,7 +8,7 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../cspec.h"
+#include "ns.h"
 
 #if defined(WINDOWS)
 template<unsigned int BufferSize> static std::string read_registry(const char *key)

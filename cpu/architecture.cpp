@@ -8,9 +8,9 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../cspec.h"
+#include "ns.h"
 
-#ifdef WIN
+#ifdef WINDOWS
 cspec::cpu::architecture_t cspec::cpu::architecture() noexcept
 {
   SYSTEM_INFO sysinfo;
