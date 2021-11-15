@@ -11,7 +11,7 @@
 #include "ns.h"
 
 #ifdef WINDOWS
-cspec::cpu::architecture_t cspec::cpu::architecture() noexcept
+cspec::cpu::architecture_t cspec::cpu::architecture()
 {
   SYSTEM_INFO sysinfo;
   GetNativeSystemInfo(&sysinfo);
