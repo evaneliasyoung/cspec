@@ -23,6 +23,7 @@ int main(int argc, char const *argv[])
             << "Endian: " << (cspec::cpu::endian() == cspec::cpu::endian_t::big ? "big" : "little") << '\n';
 
   std::cout << "Vendor: " << cspec::cpu::vendor() << '\n' << "Name: " << cspec::cpu::name() << '\n';
+  std::cout << "Clock: " << cspec::cpu::clock() << '\n';
 
   return 0;
 }
