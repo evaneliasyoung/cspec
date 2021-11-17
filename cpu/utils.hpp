@@ -23,7 +23,7 @@ static std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> cpuinfo_buffer()
   return ret;
 }
 
-template<u32 BufferSize> static std::string read_cpu_registry(const u8 *key)
+template<u32 BufferSize> static std::string read_cpu_registry(const char *key)
 {
   HKEY hkey;
   if (RegOpenKeyExA(HKEY_LOCAL_MACHINE, R"(HARDWARE\DESCRIPTION\System\CentralProcessor\0)", 0, KEY_READ, &hkey))
