@@ -31,7 +31,7 @@ cspec::cpu::amounts_t cspec::cpu::amounts()
     switch (info.Relationship)
     {
       case RelationProcessorCore:
-        ++ret.packages;
+        ++ret.cores;
         ret.threads += static_cast<std::uint32_t>(
           std::bitset<sizeof(ULONG_PTR) * 8>(static_cast<std::uintptr_t>(info.ProcessorMask)).count());
         break;
