@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-11
- *  @date      2021-11-11
+ *  @date      2021-11-16
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -24,6 +24,11 @@ int main(int argc, char const *argv[])
 
   std::cout << "Vendor: " << cspec::cpu::vendor() << '\n' << "Name: " << cspec::cpu::name() << '\n';
   std::cout << "Clock: " << cspec::cpu::clock() << '\n';
+
+  const auto amounts = cspec::cpu::amounts();
+  std::cout << "Cores: " << amounts.cores << '\n'
+            << "Threads: " << amounts.threads << '\n'
+            << "Packages: " << amounts.packages << '\n';
 
   return 0;
 }

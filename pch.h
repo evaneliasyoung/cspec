@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-11
- *  @date      2021-11-11
+ *  @date      2021-11-16
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -20,11 +20,14 @@
 #define LINUX
 #endif
 
+#include <algorithm>
 #include <cstring>
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <string>
+#include <unistd.h>
+#include <vector>
 
 #ifdef WINDOWS
 #include <windows.h>
