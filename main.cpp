@@ -20,15 +20,29 @@ int main(int argc, char const *argv[])
                                                                 {cspec::cpu::architecture_t::unknown, "unknown"}};
 
   std::cout << "Arch: " << arch_map.at(arch) << '\n'
-            << "Endian: " << (cspec::cpu::endian() == cspec::cpu::endian_t::big ? "big" : "little") << '\n';
+            << "Endian: " << (cspec::cpu::endian() == cspec::cpu::endian_t::big ? "big" : "little") << '\n'
+            << '\n';
 
-  std::cout << "Vendor: " << cspec::cpu::vendor() << '\n' << "Name: " << cspec::cpu::name() << '\n';
-  std::cout << "Clock: " << cspec::cpu::clock() << '\n';
+  std::cout << "Vendor: " << cspec::cpu::vendor() << '\n'
+            << "Name: " << cspec::cpu::name() << '\n'
+            << "Clock: " << cspec::cpu::clock() << '\n'
+            << '\n';
 
   const auto amounts = cspec::cpu::amounts();
   std::cout << "Cores: " << amounts.cores << '\n'
             << "Threads: " << amounts.threads << '\n'
-            << "Packages: " << amounts.packages << '\n';
+            << "Packages: " << amounts.packages << '\n'
+            << '\n';
+
+  for (u8 i = 0; i < 4; ++i)
+  {
+    const auto cache = cspec::cpu::cache(i);
+    std::cout << "L" << (u16)i << " Cache" << '\n'
+              << "Size: " << cache.size << '\n'
+              << "Line Size: " << cache.line_size << '\n'
+              << "Association: " << (u16)cache.association << '\n'
+              << '\n';
+  }
 
   return 0;
 }
