@@ -11,7 +11,7 @@
 #include "ns.h"
 #include "utils.hpp"
 
-#if defined(WINDOWS)
+#if defined(WIN)
 cspec::cpu::cache_t cspec::cpu::cache(u8 level)
 {
   for (auto &&info: cpuinfo_buffer())

@@ -4,13 +4,13 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-15
- *  @date      2021-11-15
+ *  @date      2021-11-16
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #include "ns.h"
 
-#if defined(WINDOWS)
+#if defined(WIN)
 u64 cspec::cpu::clock() noexcept
 {
   HKEY hkey;

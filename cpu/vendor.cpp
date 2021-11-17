@@ -4,14 +4,14 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-15
- *  @date      2021-11-15
+ *  @date      2021-11-16
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #include "ns.h"
 #include "utils.hpp"
 
-#if defined(WINDOWS)
+#if defined(WIN)
 std::string cspec::cpu::vendor()
 {
   return read_cpu_registry<13>("VendorIdentifier");

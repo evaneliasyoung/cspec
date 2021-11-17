@@ -11,13 +11,13 @@
 #pragma once
 
 #if defined(_WIN32) || defined(_WIN64)
-#define WINDOWS
+#define WIN
 #endif
 #if defined(__APPLE__) && defined(__MACH__)
 #define MAC
 #endif
 #if defined(__GNU__) || defined(__gnu_linux__)
-#define LINUX
+#define TUX
 #endif
 
 #include <algorithm>
@@ -30,14 +30,14 @@
 #include <unistd.h>
 #include <vector>
 
-#ifdef WINDOWS
+#ifdef WIN
 #include <windows.h>
 #endif
 
 #ifdef MAC
 #endif
 
-#ifdef LINUX
+#ifdef TUX
 #include <sys/sysinfo.h>
 #include <sys/utsname.h>
 #endif

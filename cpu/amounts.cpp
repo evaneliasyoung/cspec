@@ -11,7 +11,7 @@
 #include "ns.h"
 #include "utils.hpp"
 
-#if defined(WINDOWS)
+#if defined(WIN)
 cspec::cpu::amounts_t cspec::cpu::amounts()
 {
   cspec::cpu::amounts_t ret{};

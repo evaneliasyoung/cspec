@@ -10,7 +10,7 @@
 
 #include "../pch.h"
 
-#if defined(WINDOWS)
+#if defined(WIN)
 static std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> cpuinfo_buffer()
 {
   std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> ret;

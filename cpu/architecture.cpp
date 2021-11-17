@@ -4,13 +4,13 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-11
- *  @date      2021-11-11
+ *  @date      2021-11-16
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #include "ns.h"
 
-#ifdef WINDOWS
+#ifdef WIN
 cspec::cpu::architecture_t cspec::cpu::architecture()
 {
   SYSTEM_INFO sysinfo;
