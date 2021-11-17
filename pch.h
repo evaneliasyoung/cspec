@@ -21,6 +21,7 @@
 #endif
 
 #include <algorithm>
+#include <bitset>
 #include <cstring>
 #include <fstream>
 #include <iostream>
