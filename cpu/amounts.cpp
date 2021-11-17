@@ -9,20 +9,9 @@
  */
 
 #include "ns.h"
+#include "utils.hpp"
 
 #if defined(WINDOWS)
-static std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> cpuinfo_buffer()
-{
-  std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> ret;
-
-  DWORD bytes = 0;
-  GetLogicalProcessorInformation(nullptr, &bytes);
-  ret.resize(bytes / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION));
-  GetLogicalProcessorInformation(ret.data(), &bytes);
-
-  return ret;
-}
-
 cspec::cpu::amounts_t cspec::cpu::amounts()
 {
   cspec::cpu::amounts_t ret{};
