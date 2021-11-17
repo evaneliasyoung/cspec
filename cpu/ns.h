@@ -63,7 +63,6 @@ namespace cspec
     u64 clock() noexcept;
     endian_t endian() noexcept;
     std::string vendor();
-    std::string vendor_id();
     std::string name();
   } // namespace cpu
 } // namespace cspec
