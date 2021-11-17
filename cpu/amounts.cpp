@@ -21,8 +21,8 @@ cspec::cpu::amounts_t cspec::cpu::amounts()
     {
       case RelationProcessorCore:
         ++ret.cores;
-        ret.threads += static_cast<std::uint32_t>(
-          std::bitset<sizeof(ULONG_PTR) * 8>(static_cast<std::uintptr_t>(info.ProcessorMask)).count());
+        ret.threads += static_cast<u32>(
+          std::bitset<sizeof(ULONG_PTR) * 8>(static_cast<uptr>(info.ProcessorMask)).count());
         break;
       case RelationProcessorPackage:
         ++ret.packages;
