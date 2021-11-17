@@ -46,12 +46,12 @@ cspec::cpu::amounts_t cspec::cpu::amounts()
   if (!cpuinfo.is_open() || !cpuinfo)
     return ret;
 
-  std::vector<unsigned int> package_ids;
+  std::vector<u32> package_ids;
   for (std::string line; std::getline(cpuinfo, line);)
   {
     if (line.find("physical id") == 0)
     {
-      const auto physical_id = std::strtoul(line.c_str() + line.find_first_of("1234567890"), nullptr, 10);
+      const u64 physical_id = std::strtoul(line.c_str() + line.find_first_of("1234567890"), nullptr, 10);
       if (std::find(package_ids.begin(), package_ids.end(), physical_id) == package_ids.end())
         package_ids.emplace_back(physical_id);
     }

@@ -23,7 +23,7 @@ static std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> cpuinfo_buffer()
   return ret;
 }
 
-template<unsigned int BufferSize> static std::string read_cpu_registry(const char *key)
+template<u32 BufferSize> static std::string read_cpu_registry(const u8 *key)
 {
   HKEY hkey;
   if (RegOpenKeyExA(HKEY_LOCAL_MACHINE, R"(HARDWARE\DESCRIPTION\System\CentralProcessor\0)", 0, KEY_READ, &hkey))
@@ -50,8 +50,8 @@ static std::string read_cpuinfo(const char *key)
   {
     if (line.find(key) == 0)
     {
-      const auto col_idx = line.find_first_of(':');
-      const auto nws_idx = line.find_first_not_of(" \t", col_idx + 1);
+      const umax col_idx = line.find_first_of(':');
+      const umax nws_idx = line.find_first_not_of(" \t", col_idx + 1);
       return line.c_str() + nws_idx;
     }
   }
