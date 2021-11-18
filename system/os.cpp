@@ -14,9 +14,8 @@
 #if defined(WIN)
 cspec::system::os_info_t cspec::system::os()
 {
-  const auto kernel_version = cspec::system::kernel_info();
-  return {"Windows NT",         version_name(),       kernel_version.major,
-          kernel_version.minor, kernel_version.patch, kernel_version.build};
+  const auto kernel = cspec::system::kernel();
+  return {"Windows NT", version_name(), kernel.major, kernel.minor, kernel.patch, kernel.build};
 }
 #else
 cspec::system::os_info_t cspec::system::os()
