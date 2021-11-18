@@ -27,9 +27,9 @@ endif
 ifeq ($(detected_OS),Windows)
     TARGET_FLAGS += -lgdi32 -lversion -lOle32 -lOleAut32 -lwbemuuid
 endif
-ifeq ($(detected_OS),Darwin)
+ifeq ($(hostos),Darwin)
 endif
-ifeq ($(detected_OS),Linux)
+ifeq ($(hostos),Linux)
 endif
 
 $(PCH_OUT): $(PCH_SRC)
