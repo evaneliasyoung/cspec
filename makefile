@@ -18,14 +18,16 @@ clean: EXEC = cspec.rel.exe cspec.dbg.exe
 default: release
 all: clean release run
 
+hostos_wrapper =
 ifeq ($(OS),Windows_NT)
-    hostos := Windows
+	hostos := Windows
 else
-    hostos := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
+	hostos := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
 endif
 
-ifeq ($(detected_OS),Windows)
-    TARGET_FLAGS += -lgdi32 -lversion -lOle32 -lOleAut32 -lwbemuuid
+libs_wrapper=
+ifeq ($(hostos),Windows)
+	TARGET_LIBS = -lgdi32 -lversion -lOle32 -lOleAut32 -lwbemuuid
 endif
 ifeq ($(hostos),Darwin)
 endif
@@ -39,10 +41,10 @@ $(PCH_OUT): $(PCH_SRC)
 	$(CC) $(BASE_FLAGS) $(TARGET_FLAGS) -c $< -o $@
 
 release: $(OBJECTS)
-	$(CC) $(BASE_FLAGS) $(TARGET_FLAGS) $(OBJECTS) -o $(EXEC)
+	$(CC) $(BASE_FLAGS) $(TARGET_FLAGS) $(OBJECTS) $(TARGET_LIBS) -o $(EXEC)
 
 debug: $(OBJECTS)
-	$(CC) $(BASE_FLAGS) $(TARGET_FLAGS) $(OBJECTS) -o $(EXEC)
+	$(CC) $(BASE_FLAGS) $(TARGET_FLAGS) $(OBJECTS) $(TARGET_LIBS) -o $(EXEC)
 
 leakcheck: debug
 	valgrind --leak-check=full ./$(EXEC)
