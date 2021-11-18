@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-11
- *  @date      2021-11-16
+ *  @date      2021-11-18
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -25,6 +25,7 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <map>
 #include <string>
 #include <unistd.h>
