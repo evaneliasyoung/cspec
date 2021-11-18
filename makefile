@@ -18,6 +18,20 @@ clean: EXEC = cspec.rel.exe cspec.dbg.exe
 default: release
 all: clean release run
 
+ifeq ($(OS),Windows_NT)
+    hostos := Windows
+else
+    hostos := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
+endif
+
+ifeq ($(detected_OS),Windows)
+    TARGET_FLAGS += -lgdi32 -lversion -lOle32 -lOleAut32 -lwbemuuid
+endif
+ifeq ($(detected_OS),Darwin)
+endif
+ifeq ($(detected_OS),Linux)
+endif
+
 $(PCH_OUT): $(PCH_SRC)
 	$(CC) $(FLAGS) -o $@ $<
 
