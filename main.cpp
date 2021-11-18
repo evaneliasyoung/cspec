@@ -15,9 +15,9 @@ int main(int argc, char const *argv[])
   const auto arch = cspec::cpu::architecture();
   const auto arch_map =
     std::map<cspec::cpu::architecture_t, std::string>({{cspec::cpu::architecture_t::x64, "x64"},
-                                                                {cspec::cpu::architecture_t::arm, "arm"},
-                                                                {cspec::cpu::architecture_t::itanium, "itanium"},
-                                                                {cspec::cpu::architecture_t::x86, "x86"},
+                                                       {cspec::cpu::architecture_t::arm, "arm"},
+                                                       {cspec::cpu::architecture_t::itanium, "itanium"},
+                                                       {cspec::cpu::architecture_t::x86, "x86"},
                                                        {cspec::cpu::architecture_t::unknown, "unknown"}});
 
   std::cout << "Arch: " << arch_map.at(arch) << '\n'
@@ -44,6 +44,26 @@ int main(int argc, char const *argv[])
               << "Association: " << (u16)cache.association << '\n'
               << '\n';
   }
+
+  const auto kernel = cspec::system::kernel();
+  const auto kernel_map =
+    std::map<cspec::system::kernel_t, std::string>({{cspec::system::kernel_t::nt, "nt"},
+                                                    {cspec::system::kernel_t::linux, "linux"},
+                                                    {cspec::system::kernel_t::darwin, "darwin"},
+                                                    {cspec::system::kernel_t::unknown, "unknown"}});
+  std::cout << "Kernel Type: " << kernel_map.at(kernel.type) << '\n'
+            << "Kernel Major: " << kernel.major << '\n'
+            << "Kernel Minor: " << kernel.minor << '\n'
+            << "Kernel Patch: " << kernel.patch << '\n'
+            << "Kernel Build: " << kernel.build << '\n'
+            << '\n';
+
+  const auto os = cspec::system::os();
+  std::cout << "OS Name: " << os.name << " (" << os.full_name << ')' << '\n'
+            << "OS Major: " << os.major << '\n'
+            << "OS Minor: " << os.minor << '\n'
+            << "OS Patch: " << os.patch << '\n'
+            << "OS Build: " << os.build << '\n';
 
   return 0;
 }
