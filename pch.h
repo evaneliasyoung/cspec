@@ -25,13 +25,15 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
-#include <memory>
 #include <map>
+#include <memory>
 #include <string>
 #include <unistd.h>
 #include <vector>
 
 #ifdef WIN
+#include <Wbemidl.h>
+#include <comdef.h>
 #include <windows.h>
 #endif
 
