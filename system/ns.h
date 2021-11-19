@@ -57,5 +57,4 @@ namespace cspec
     kernel_info_t kernel();
     times_t times();
   } // namespace system
-
 } // namespace cspec

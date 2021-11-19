@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "pch.h"
 #include "cspec.h"
+#include "pch.h"
 
 int main(int argc, char const *argv[]);
