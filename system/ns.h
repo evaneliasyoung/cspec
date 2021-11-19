@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-17
- *  @date      2021-11-17
+ *  @date      2021-11-19
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -47,8 +47,15 @@ namespace cspec
       u32 build;
     };
 
+    struct times_t
+    {
+      std::chrono::system_clock::time_point current;
+      std::chrono::system_clock::time_point boot;
+    };
+
     os_info_t os();
     kernel_info_t kernel();
+    times_t times();
   } // namespace system
 
 } // namespace cspec

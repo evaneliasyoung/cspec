@@ -4,11 +4,21 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-11
- *  @date      2021-11-18
+ *  @date      2021-11-19
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #include "main.h"
+
+std::string serialize_time_point(const std::chrono::system_clock::time_point &time,
+                                 const std::string &format = "%Y-%m-%d %H:%M:%S")
+{
+  std::time_t tt = std::chrono::system_clock::to_time_t(time);
+  std::tm tm = *std::gmtime(&tt);
+  std::stringstream ss;
+  ss << std::put_time(&tm, format.c_str());
+  return ss.str();
+}
 
 int main(int argc, char const *argv[])
 {
@@ -63,7 +73,13 @@ int main(int argc, char const *argv[])
             << "OS Major: " << os.major << '\n'
             << "OS Minor: " << os.minor << '\n'
             << "OS Patch: " << os.patch << '\n'
-            << "OS Build: " << os.build << '\n';
+            << "OS Build: " << os.build << '\n'
+            << '\n';
+
+  const auto times = cspec::system::times();
+  std::cout << "Current Time: " << serialize_time_point(times.current) << '\n'
+            << "Boot Time: " << serialize_time_point(times.boot) << '\n'
+            << '\n';
 
   return 0;
 }
