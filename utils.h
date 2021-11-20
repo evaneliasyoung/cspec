@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-19
- *  @date      2021-11-19
+ *  @date      2021-11-20
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -18,3 +18,5 @@
 #elif defined(MAC)
 #else
 #endif
+
+#include "utils/shell.hpp"
