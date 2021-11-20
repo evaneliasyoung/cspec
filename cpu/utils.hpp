@@ -11,6 +11,7 @@
 #pragma once
 
 #include "../pch.h"
+#include "../utils.h"
 
 #if defined(WIN)
 static std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> cpuinfo_buffer()
