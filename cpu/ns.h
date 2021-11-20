@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-15
- *  @date      2021-11-15
+ *  @date      2021-11-20
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -64,5 +64,7 @@ namespace cspec
     endian_t endian() noexcept;
     std::string vendor();
     std::string name();
+    architecture_t string_to_architecture(const std::string &architecture);
+    std::string architecture_to_string(const architecture_t &arch);
   } // namespace cpu
 } // namespace cspec

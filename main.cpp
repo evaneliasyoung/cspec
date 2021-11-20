@@ -38,15 +38,9 @@ void print_subheader(const std::string &name)
 void print_cpu()
 {
   const auto arch = cspec::cpu::architecture();
-  const auto arch_map =
-    std::map<cspec::cpu::architecture_t, std::string>({{cspec::cpu::architecture_t::x64, "x64"},
-                                                       {cspec::cpu::architecture_t::arm, "arm"},
-                                                       {cspec::cpu::architecture_t::itanium, "itanium"},
-                                                       {cspec::cpu::architecture_t::x86, "x86"},
-                                                       {cspec::cpu::architecture_t::unknown, "unknown"}});
 
   print_subheader("Meta");
-  std::cout << "Arch: " << arch_map.at(arch) << '\n'
+  std::cout << "Arch: " << cspec::cpu::architecture_to_string(arch) << '\n'
             << "Endian: " << (cspec::cpu::endian() == cspec::cpu::endian_t::big ? "big" : "little") << '\n'
             << "Vendor: " << cspec::cpu::vendor() << '\n'
             << "Name: " << cspec::cpu::name() << '\n'
@@ -75,13 +69,9 @@ void print_cpu()
 void print_system()
 {
   const auto kernel = cspec::system::kernel();
-  const auto kernel_map =
-    std::map<cspec::system::kernel_t, std::string>({{cspec::system::kernel_t::nt, "nt"},
-                                                    {cspec::system::kernel_t::linux, "linux"},
-                                                    {cspec::system::kernel_t::darwin, "darwin"},
-                                                    {cspec::system::kernel_t::unknown, "unknown"}});
+
   print_subheader("Kernel");
-  std::cout << "Kernel Type: " << kernel_map.at(kernel.type) << '\n'
+  std::cout << "Kernel Type: " << cspec::system::kernel_to_string(kernel.type) << '\n'
             << "Kernel Major: " << kernel.major << '\n'
             << "Kernel Minor: " << kernel.minor << '\n'
             << "Kernel Patch: " << kernel.patch << '\n'
@@ -104,6 +94,18 @@ void print_system()
             << '\n';
 }
 
+void print_gpu()
+{
+  const auto gpus = cspec::gpu::devices();
+  for (const auto gpu: gpus)
+  {
+    std::cout << "Vendor: " << cspec::gpu::vendor_to_string(gpu.vendor) << '\n'
+              << "Name: " << gpu.name << '\n'
+              << "Memory: " << gpu.memory << '\n'
+              << '\n';
+  }
+}
+
 int main(int argc, char const *argv[])
 {
   print_header("CPU");
@@ -111,6 +113,9 @@ int main(int argc, char const *argv[])
 
   print_header("System");
   print_system();
+
+  print_header("GPU");
+  print_gpu();
 
   return 0;
 }

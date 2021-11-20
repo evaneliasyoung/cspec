@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-17
- *  @date      2021-11-19
+ *  @date      2021-11-20
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -56,5 +56,7 @@ namespace cspec
     os_info_t os();
     kernel_info_t kernel();
     times_t times();
+    kernel_t string_to_kernel(const std::string &kernel);
+    std::string kernel_to_string(const kernel_t &kernel);
   } // namespace system
 } // namespace cspec

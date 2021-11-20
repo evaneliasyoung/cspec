@@ -4,11 +4,38 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-17
- *  @date      2021-11-17
+ *  @date      2021-11-20
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #include "ns.h"
+
+cspec::system::kernel_t cspec::system::string_to_kernel(const std::string &kernel)
+{
+  if (strcasecmp(kernel.c_str(), "Windows NT") == 0)
+    return cspec::system::kernel_t::nt;
+  else if (strcasecmp(kernel.c_str(), "Linux") == 0)
+    return cspec::system::kernel_t::linux;
+  else if (strcasecmp(kernel.c_str(), "Darwin") == 0)
+    return cspec::system::kernel_t::darwin;
+  else
+    return cspec::system::kernel_t::unknown;
+}
+
+std::string cspec::system::kernel_to_string(const cspec::system::kernel_t &kernel)
+{
+  switch (kernel)
+  {
+    case cspec::system::kernel_t::nt:
+      return "Windows NT";
+    case cspec::system::kernel_t::linux:
+      return "Linux";
+    case cspec::system::kernel_t::darwin:
+      return "Darwin";
+    default:
+      return "Unknown";
+  }
+}
 
 #if defined(WIN)
 cspec::system::kernel_info_t cspec::system::kernel()
@@ -42,11 +69,7 @@ cspec::system::kernel_info_t cspec::system::kernel()
   const u32 patch = std::strtoul(marker + 1, &marker, 10);
   const u32 build = std::strtoul(marker + 1, nullptr, 10);
 
-  auto kernel = cspec::system::kernel_t::unknown;
-  if (!std::strcmp(uts.sysname, "Linux"))
-    kernel = cspec::system::kernel_t::linux;
-  else if (!std::strcmp(uts.sysname, "Darwin"))
-    kernel = cspec::system::kernel_t::darwin;
+  const auto kernel = string_to_kernel(uts.sysname);
 
   return {kernel, major, minor, patch, build};
 }
