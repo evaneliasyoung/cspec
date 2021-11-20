@@ -8,6 +8,8 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
+#pragma once
+
 #include "../../pch.h"
 
 #ifdef WIN

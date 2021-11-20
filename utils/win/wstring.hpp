@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "../pch.h"
+#include "../../pch.h"
 
 #ifdef WIN
 static std::string transcode_from_wide(const wchar_t *wstr, std::size_t wstr_size)
@@ -26,14 +26,14 @@ static std::string transcode_from_wide(const wchar_t *wstr, std::size_t wstr_siz
   return ret;
 }
 
-std::string narrow_wstring(const wchar_t *wstr)
+static std::string narrow_wstring(const wchar_t *wstr)
 {
   if (!wstr)
     return {};
   return transcode_from_wide(wstr, std::wcslen(wstr));
 }
 
-std::string narrow_bstring(const wchar_t *bstr)
+static std::string narrow_bstring(const wchar_t *bstr)
 {
   if (!bstr)
     return {};
