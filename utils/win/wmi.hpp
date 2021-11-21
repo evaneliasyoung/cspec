@@ -64,6 +64,12 @@ class WMI
     return this->failed;
   }
 
+  WMI(const bool &prepare = false)
+  {
+    if (prepare)
+      this->prepare();
+  }
+
   ~WMI()
   {
     this->release_all();
@@ -111,10 +117,10 @@ class WMI
 
   void release_class()
   {
-    if (!this->_inits.com)
+    if (!this->_inits.klass)
       return;
     this->_res.klass->Release();
-    this->_inits.com = false;
+    this->_inits.klass = false;
   }
 
   bool initialize()
@@ -215,18 +221,49 @@ class WMI
     return this->widen(request.str());
   }
 
+  wstring build_request(const wstring &klass, const std::vector<wstring> &keys)
+  {
+    std::wstringstream request;
+
+    request << "SELECT ";
+    for (const auto &key: keys)
+      request << key << ", ";
+    request.seekp(-2, request.cur);
+    request << " FROM " << klass;
+
+    return request.str();
+  }
+
   bool prepare()
   {
     return this->initialize() && this->secure() && this->locate() && this->connect() && this->proxy();
   }
 
-  bool query(const string &klass, const std::vector<string> &keys)
+  template<typename StringWidth> bool query(const StringWidth &klass, const std::vector<StringWidth> &keys)
   {
     if (!this->_inits.service)
       return false;
 
+    // Construct SQL-esce request from keys
     wstring request = this->build_request(klass, keys);
+    this->status = this->_res.service->ExecQuery(BSTR(L"WQL"), (BSTR)request.c_str(),
+                                                 WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, NULL,
+                                                 &this->_res.enumerator);
+    this->_inits.enumerator = true;
 
+    if (this->Failed())
+      this->release_all();
+
+    return !this->failed;
+  }
+
+  template<typename StringWidth> bool query(const StringWidth &klass, const StringWidth &key)
+  {
+    if (!this->_inits.service)
+      return false;
+
+    // Construct SQL-esce request from keys
+    wstring request = this->build_request(klass, {key});
     this->status = this->_res.service->ExecQuery(BSTR(L"WQL"), (BSTR)request.c_str(),
                                                  WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, NULL,
                                                  &this->_res.enumerator);
@@ -245,32 +282,54 @@ class WMI
 
     ULONG ret = 0;
     this->_res.enumerator->Next(WBEM_INFINITE, 1, &this->_res.klass, &ret);
+    this->failed = ret == 0;
+    this->_inits.klass = !this->failed;
 
-    return ret != 0;
+    return !this->failed;
   }
 
   std::map<string, string> retrieve(const std::vector<string> &keys)
   {
+    // Start by converting all strings to wstrings
     std::vector<wstring> wkeys;
-    std::map<string, string> keyval;
     std::transform(keys.cbegin(), keys.cend(), back_inserter(wkeys),
                    [this](const auto &key)
                    {
                      return this->widen(key);
                    });
+    return this->retrieve(wkeys);
+  }
 
-    ULONG ret = 0;
-
+  std::map<string, string> retrieve(const std::vector<wstring> &keys)
+  {
+    std::map<string, string> keyval;
     while (this->_res.enumerator)
     {
       if (!this->enumerate())
         break;
 
       VARIANT prop;
-      for (const auto &key: wkeys)
+      for (const auto &key: keys)
       {
         this->_res.klass->Get(key.c_str(), 0, &prop, 0, 0);
-        keyval.insert(make_pair(this->narrow(key), this->narrow(prop.bstrVal)));
+        wstring val;
+
+        switch (prop.vt)
+        {         // I hate this, but I'm sure it's weird legacy garbage
+          case 3: // u64
+            val = std::to_wstring(prop.ullVal);
+            break;
+          case 8: // str
+            val = prop.bstrVal;
+            break;
+          case 11: // bool
+            val = std::to_wstring(prop.boolVal);
+            break;
+          default: // noent
+            continue;
+            break;
+        }
+        keyval.insert(make_pair(this->narrow(key), this->narrow(val)));
         VariantClear(&prop);
       };
 
@@ -279,11 +338,21 @@ class WMI
     return keyval;
   }
 
-  std::map<string, string> query_and_retrieve(const string &klass, const std::vector<string> &keys)
+  template<typename StringWidth> string retrieve(const StringWidth &key)
   {
-    if (!this->query(klass, keys))
-      return {};
-    return this->retrieve(keys);
+    return this->retrieve({key}).at(key);
+  }
+
+  template<typename StringWidth>
+  std::map<string, string> query_and_retrieve(const StringWidth &klass, const std::vector<StringWidth> &keys)
+  {
+    return this->query(klass, keys) ? this->retrieve(keys) : std::map<string, string>();
+  }
+
+  template<typename StringWidth>
+  string query_and_retrieve(const StringWidth &klass, const StringWidth &key)
+  {
+    return this->query(klass, key) ? this->retrieve(key) : "";
   }
 };
 #endif
