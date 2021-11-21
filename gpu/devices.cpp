@@ -71,6 +71,7 @@ std::vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 #else
 #include "../utils/shell.hpp"
 
+#include <iostream>
 #include <regex>
 #include <sstream>
 
@@ -91,6 +92,21 @@ std::vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
         {
           info.name = match[1];
           info.vendor = cspec::gpu::string_to_vendor(match[2]);
+        }
+        else if (std::regex_search(vga_line, match, std::regex(R"(Mem.* pre.*size=(\d+)([GMK]))")))
+        {
+          info.memory = std::stoul(match[1]);
+          switch (string(match[2])[0])
+          {
+            case 'G':
+              info.memory *= 1024;
+              [[fallthrough]];
+            case 'M':
+              info.memory *= 1024;
+              [[fallthrough]];
+            case 'K':
+              info.memory *= 1024;
+          }
         }
       }
       ret.push_back(info);
