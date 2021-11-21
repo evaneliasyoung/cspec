@@ -208,29 +208,29 @@ class WMI
     return !this->failed;
   }
 
+  template<typename StringWidth, typename StreamWidth>
+  StringWidth stream_request(StreamWidth &stream, const StringWidth klass, const std::vector<StringWidth> &keys)
+  {
+    stream << "SELECT ";
+    for (const auto &key: keys)
+      stream << key << ", ";
+    stream.seekp(-2, stream.cur);
+    stream << " FROM " << klass;
+    return stream.str();
+  }
+
+
   wstring build_request(const string &klass, const std::vector<string> &keys)
   {
     std::stringstream request;
-
-    request << "SELECT ";
-    for (const auto &key: keys)
-      request << key << ", ";
-    request.seekp(-2, request.cur);
-    request << " FROM " << klass;
-
+    this->stream_request(request, klass, keys);
     return this->widen(request.str());
   }
 
   wstring build_request(const wstring &klass, const std::vector<wstring> &keys)
   {
     std::wstringstream request;
-
-    request << "SELECT ";
-    for (const auto &key: keys)
-      request << key << ", ";
-    request.seekp(-2, request.cur);
-    request << " FROM " << klass;
-
+    this->stream_request(request, klass, keys);
     return request.str();
   }
 
@@ -259,20 +259,7 @@ class WMI
 
   template<typename StringWidth> bool query(const StringWidth &klass, const StringWidth &key)
   {
-    if (!this->_inits.service)
-      return false;
-
-    // Construct SQL-esce request from keys
-    wstring request = this->build_request(klass, {key});
-    this->status = this->_res.service->ExecQuery(BSTR(L"WQL"), (BSTR)request.c_str(),
-                                                 WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, NULL,
-                                                 &this->_res.enumerator);
-    this->_inits.enumerator = true;
-
-    if (this->Failed())
-      this->release_all();
-
-    return !this->failed;
+    return this->query(klass, std::vector<StringWidth>({key}));
   }
 
   bool enumerate()
