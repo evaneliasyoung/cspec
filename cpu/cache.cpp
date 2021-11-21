@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-16
- *  @date      2021-11-16
+ *  @date      2021-11-20
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -13,7 +13,7 @@
 #if defined(WIN)
 cspec::cpu::cache_t cspec::cpu::cache(u8 level)
 {
-  for (auto &&info: cpuinfo_buffer())
+  for (const auto &&info: cpuinfo_buffer())
   {
     if (info.Relationship == RelationCache)
     {
@@ -44,9 +44,11 @@ cspec::cpu::cache_t cspec::cpu::cache(u8 level)
 }
 #elif defined(MAC)
 #else
+#include <fstream>
+
 cspec::cpu::cache_t cspec::cpu::cache(u8 level)
 {
-  std::string prefix("/sys/devices/system/cpu/cpu0/cache/index" + std::to_string(level) + '/');
+  string prefix("/sys/devices/system/cpu/cpu0/cache/index" + std::to_string(level) + '/');
   cspec::cpu::cache_t ret{};
 
   {
@@ -89,7 +91,7 @@ cspec::cpu::cache_t cspec::cpu::cache(u8 level)
     std::ifstream type(prefix + "type");
     if (type.is_open() && type)
     {
-      std::string tmp;
+      string tmp;
       type >> tmp;
       if (tmp.find("nified") == 1)
         ret.type = cspec::cpu::cache_type_t::unified;

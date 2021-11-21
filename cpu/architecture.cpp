@@ -10,7 +10,7 @@
 
 #include "ns.h"
 
-cspec::cpu::architecture_t cspec::cpu::string_to_architecture(const std::string &architecture)
+cspec::cpu::architecture_t cspec::cpu::string_to_architecture(const string &architecture)
 {
   if (strcasecmp(architecture.c_str(), "x86_64") == 0)
     return cspec::cpu::architecture_t::x64;
@@ -24,7 +24,7 @@ cspec::cpu::architecture_t cspec::cpu::string_to_architecture(const std::string 
     return cspec::cpu::architecture_t::unknown;
 }
 
-std::string cspec::cpu::architecture_to_string(const cspec::cpu::architecture_t &arch)
+string cspec::cpu::architecture_to_string(const cspec::cpu::architecture_t &arch)
 {
   switch (arch)
   {
@@ -62,6 +62,8 @@ cspec::cpu::architecture_t cspec::cpu::architecture()
   }
 }
 #else
+#include <sys/utsname.h>
+
 cspec::cpu::architecture_t cspec::cpu::architecture()
 {
   utsname buf;

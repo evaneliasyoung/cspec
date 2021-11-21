@@ -11,7 +11,11 @@
 #pragma once
 
 #include "cspec.h"
-#include "utils.h"
-#include "pch.h"
+#include "core.h"
+
+#include <ctime>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
 
 int main(int argc, char const *argv[]);

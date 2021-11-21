@@ -8,12 +8,15 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../pch.h"
+#include "../core.h"
 
-static std::string exec(const char *cmd)
+#include <fstream>
+#include <memory>
+
+static string exec(const char *cmd)
 {
-  std::array<char, 128> buf;
-  std::string ret;
+  array<char, 128> buf;
+  string ret;
   std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
 
   if (!pipe)

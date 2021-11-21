@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-15
- *  @date      2021-11-16
+ *  @date      2021-11-20
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -31,6 +31,8 @@ u64 cspec::cpu::clock() noexcept
 }
 #elif defined(MAC)
 #else
+#include <fstream>
+
 u64 cspec::cpu::clock() noexcept
 {
   std::ifstream cpuinfo("/proc/cpuinfo");
@@ -38,7 +40,7 @@ u64 cspec::cpu::clock() noexcept
   if (!cpuinfo.is_open() || !cpuinfo)
     return 0;
 
-  for (std::string line; std::getline(cpuinfo, line);)
+  for (string line; std::getline(cpuinfo, line);)
   {
     if (line.find("cpu MHz") == 0)
     {

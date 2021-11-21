@@ -4,13 +4,13 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-19
- *  @date      2021-11-19
+ *  @date      2021-11-20
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #pragma once
 
-#include "../../pch.h"
+#include "../../core.h"
 
 #ifdef WIN
 static bool open_registry_path(HKEY *hkey, HKEY source_key, const char *path)
@@ -50,7 +50,7 @@ static umax read_registry_qw(HKEY source_key, const char *path, const char *key)
   return identifier;
 }
 
-template<u32 BufferSize> static std::string read_registry_sz(HKEY source_key, const char *path, const char *key)
+template<u32 BufferSize> static string read_registry_sz(HKEY source_key, const char *path, const char *key)
 {
   HKEY hkey;
   if (RegOpenKeyExA(source_key, path, 0, KEY_READ, &hkey))

@@ -4,18 +4,18 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-19
- *  @date      2021-11-19
+ *  @date      2021-11-20
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #pragma once
 
-#include "../../pch.h"
+#include "../../core.h"
 
 #ifdef WIN
-static std::string transcode_from_wide(const wchar_t *wstr, std::size_t wstr_size)
+static string transcode_from_wide(const wchar_t *wstr, std::size_t wstr_size)
 {
-  std::string ret;
+  string ret;
   // convert even embedded NUL
   if (const auto len = WideCharToMultiByte(CP_UTF8, 0, wstr, static_cast<int>(wstr_size), nullptr, 0, 0, 0))
   {
@@ -26,14 +26,14 @@ static std::string transcode_from_wide(const wchar_t *wstr, std::size_t wstr_siz
   return ret;
 }
 
-static std::string narrow_wstring(const wchar_t *wstr)
+static string narrow_wstring(const wchar_t *wstr)
 {
   if (!wstr)
     return {};
   return transcode_from_wide(wstr, std::wcslen(wstr));
 }
 
-static std::string narrow_bstring(const wchar_t *bstr)
+static string narrow_bstring(const wchar_t *bstr)
 {
   if (!bstr)
     return {};

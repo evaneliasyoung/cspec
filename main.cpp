@@ -4,14 +4,14 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-11
- *  @date      2021-11-19
+ *  @date      2021-11-20
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #include "main.h"
 
-std::string serialize_time_point(const std::chrono::system_clock::time_point &time,
-                                 const std::string &format = "%Y-%m-%d %H:%M:%S")
+string serialize_time_point(const std::chrono::system_clock::time_point &time,
+                                 const string &format = "%Y-%m-%d %H:%M:%S")
 {
   std::time_t tt = std::chrono::system_clock::to_time_t(time);
   std::tm tm = *std::gmtime(&tt);
@@ -20,17 +20,17 @@ std::string serialize_time_point(const std::chrono::system_clock::time_point &ti
   return ss.str();
 }
 
-void print_header(const std::string &name)
+void print_header(const string &name)
 {
   const umax pad_char_amt = 79 - (name.length() + 2);
   const bool even = pad_char_amt % 2 == 0;
   const umax l_amt = even ? pad_char_amt / 2 : (pad_char_amt + 1) / 2;
   const umax r_amt = even ? l_amt : l_amt - 1;
 
-  std::cout << std::string(l_amt, '=') << "  " << name << "  " << std::string(r_amt, '=') << '\n';
+  std::cout << string(l_amt, '=') << "  " << name << "  " << string(r_amt, '=') << '\n';
 }
 
-void print_subheader(const std::string &name)
+void print_subheader(const string &name)
 {
   std::cout << ">>> " << name << '\n';
 }

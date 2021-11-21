@@ -10,7 +10,9 @@
 
 #pragma once
 
-#include "../pch.h"
+#include "../core.h"
+
+#include <chrono>
 
 #ifdef linux
 #undef linux
@@ -22,8 +24,8 @@ namespace cspec
   {
     struct os_info_t
     {
-      std::string name;
-      std::string full_name;
+      string name;
+      string full_name;
       u32 major;
       u32 minor;
       u32 patch;
@@ -56,7 +58,7 @@ namespace cspec
     os_info_t os();
     kernel_info_t kernel();
     times_t times();
-    kernel_t string_to_kernel(const std::string &kernel);
-    std::string kernel_to_string(const kernel_t &kernel);
+    kernel_t string_to_kernel(const string &kernel);
+    string kernel_to_string(const kernel_t &kernel);
   } // namespace system
 } // namespace cspec

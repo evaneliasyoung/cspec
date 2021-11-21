@@ -10,7 +10,9 @@
 
 #pragma once
 
-#include "../pch.h"
+#include "../core.h"
+
+#include <vector>
 
 namespace cspec
 {
@@ -30,12 +32,12 @@ namespace cspec
     struct gpu_info_t
     {
       vendor_t vendor;
-      std::string name;
+      string name;
       umax memory;
     };
 
     std::vector<gpu_info_t> devices();
-    vendor_t string_to_vendor(const std::string &vendor);
-    std::string vendor_to_string(const vendor_t &vendor);
+    vendor_t string_to_vendor(const string &vendor);
+    string vendor_to_string(const vendor_t &vendor);
   } // namespace gpu
 } // namespace cspec

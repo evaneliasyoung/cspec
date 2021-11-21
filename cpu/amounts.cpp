@@ -4,25 +4,26 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-16
- *  @date      2021-11-16
+ *  @date      2021-11-20
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #include "ns.h"
-#include "utils.hpp"
 
 #if defined(WIN)
+#include <bitset>
+
 cspec::cpu::amounts_t cspec::cpu::amounts()
 {
   cspec::cpu::amounts_t ret{};
-  for (auto &&info: cpuinfo_buffer())
+  for (const auto &&info: cpuinfo_buffer())
   {
     switch (info.Relationship)
     {
       case RelationProcessorCore:
         ++ret.cores;
-        ret.threads += static_cast<u32>(
-          std::bitset<sizeof(ULONG_PTR) * 8>(static_cast<uptr>(info.ProcessorMask)).count());
+        ret.threads +=
+          static_cast<u32>(std::bitset<sizeof(ULONG_PTR) * 8>(static_cast<uptr>(info.ProcessorMask)).count());
         break;
       case RelationProcessorPackage:
         ++ret.packages;
@@ -36,6 +37,11 @@ cspec::cpu::amounts_t cspec::cpu::amounts()
 }
 #elif defined(MAC)
 #else
+#include <algorithm>
+#include <fstream>
+#include <unistd.h>
+#include <vector>
+
 cspec::cpu::amounts_t cspec::cpu::amounts()
 {
   cspec::cpu::amounts_t ret{};
@@ -47,7 +53,7 @@ cspec::cpu::amounts_t cspec::cpu::amounts()
     return ret;
 
   std::vector<u32> package_ids;
-  for (std::string line; std::getline(cpuinfo, line);)
+  for (string line; std::getline(cpuinfo, line);)
   {
     if (line.find("physical id") == 0)
     {

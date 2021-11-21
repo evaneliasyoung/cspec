@@ -10,7 +10,7 @@
 
 #include "ns.h"
 
-cspec::system::kernel_t cspec::system::string_to_kernel(const std::string &kernel)
+cspec::system::kernel_t cspec::system::string_to_kernel(const string &kernel)
 {
   if (strcasecmp(kernel.c_str(), "Windows NT") == 0)
     return cspec::system::kernel_t::nt;
@@ -22,7 +22,7 @@ cspec::system::kernel_t cspec::system::string_to_kernel(const std::string &kerne
     return cspec::system::kernel_t::unknown;
 }
 
-std::string cspec::system::kernel_to_string(const cspec::system::kernel_t &kernel)
+string cspec::system::kernel_to_string(const cspec::system::kernel_t &kernel)
 {
   switch (kernel)
   {
@@ -40,7 +40,7 @@ std::string cspec::system::kernel_to_string(const cspec::system::kernel_t &kerne
 #if defined(WIN)
 cspec::system::kernel_info_t cspec::system::kernel()
 {
-  std::string path;
+  string path;
   path.resize(GetSystemDirectoryA(nullptr, 0) - 1);
   GetSystemDirectoryA(&path[0], static_cast<UINT>(path.size() + 1));
   path += "\\kernel32.dll";
@@ -58,6 +58,8 @@ cspec::system::kernel_info_t cspec::system::kernel()
           LOWORD(file_version->dwProductVersionLS)};
 }
 #else
+#include <sys/utsname.h>
+
 cspec::system::kernel_info_t cspec::system::kernel()
 {
   utsname uts;

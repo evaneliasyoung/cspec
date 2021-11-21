@@ -8,10 +8,9 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../utils.h"
 #include "ns.h"
 
-cspec::gpu::vendor_t cspec::gpu::string_to_vendor(const std::string &vendor)
+cspec::gpu::vendor_t cspec::gpu::string_to_vendor(const string &vendor)
 {
   if (strcasecmp(vendor.c_str(), "NVIDIA") == 0)
     return cspec::gpu::vendor_t::nvidia;
@@ -30,7 +29,7 @@ cspec::gpu::vendor_t cspec::gpu::string_to_vendor(const std::string &vendor)
     return cspec::gpu::vendor_t::unknown;
 }
 
-std::string cspec::gpu::vendor_to_string(const cspec::gpu::vendor_t &vendor)
+string cspec::gpu::vendor_to_string(const cspec::gpu::vendor_t &vendor)
 {
   switch (vendor)
   {
@@ -59,7 +58,7 @@ std::vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 
   cspec::gpu::vendor_t vendor =
     cspec::gpu::string_to_vendor(read_registry_sz<13>(HKEY_LOCAL_MACHINE, gpu_path, "ProviderName"));
-  const std::string name = read_registry_sz<80>(HKEY_LOCAL_MACHINE, gpu_path, "HardwareInformation.AdapterString");
+  const string name = read_registry_sz<80>(HKEY_LOCAL_MACHINE, gpu_path, "HardwareInformation.AdapterString");
   const auto memory = read_registry_qw(HKEY_LOCAL_MACHINE, gpu_path, "HardwareInformation.qwMemorySize");
 
   ret.push_back({vendor, name, memory});
@@ -68,17 +67,22 @@ std::vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 }
 #elif defined(MAC)
 #else
+#include "../utils/shell.hpp"
+
+#include <regex>
+#include <sstream>
+
 std::vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 {
   std::vector<cspec::gpu::gpu_info_t> ret{};
 
   auto lspci_out = std::stringstream(exec("lspci -vnn"));
-  for (std::string line; std::getline(lspci_out, line, '\n');)
+  for (string line; std::getline(lspci_out, line, '\n');)
   {
-    if (line.find(" VGA ") != std::string::npos)
+    if (line.find(" VGA ") != string::npos)
     {
       gpu_info_t info{};
-      for (std::string vga_line; std::getline(lspci_out, vga_line, '\n') && vga_line.size() > 0;)
+      for (string vga_line; std::getline(lspci_out, vga_line, '\n') && vga_line.size() > 0;)
       {
         std::smatch match;
         if (std::regex_search(vga_line, match, std::regex(R"(Subsystem: ((\w+).+(?=\s\[)))")))

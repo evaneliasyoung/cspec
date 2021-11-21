@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "../pch.h"
+#include "../core.h"
 
 namespace cspec
 {
@@ -62,9 +62,9 @@ namespace cspec
     architecture_t architecture();
     u64 clock() noexcept;
     endian_t endian() noexcept;
-    std::string vendor();
-    std::string name();
-    architecture_t string_to_architecture(const std::string &architecture);
-    std::string architecture_to_string(const architecture_t &arch);
+    string vendor();
+    string name();
+    architecture_t string_to_architecture(const string &architecture);
+    string architecture_to_string(const architecture_t &arch);
   } // namespace cpu
 } // namespace cspec

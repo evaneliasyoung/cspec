@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-19
- *  @date      2021-11-19
+ *  @date      2021-11-20
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -20,6 +20,8 @@ cspec::system::times_t cspec::system::times()
 }
 #elif defined(MAC)
 #else
+#include <sys/sysinfo.h>
+
 cspec::system::times_t cspec::system::times()
 {
   struct sysinfo info;
