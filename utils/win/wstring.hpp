@@ -13,6 +13,8 @@
 #include "../../core.h"
 
 #ifdef WIN
+#include <windows.h>
+
 static string transcode_from_wide(const wchar_t *wstr, std::size_t wstr_size)
 {
   string ret;

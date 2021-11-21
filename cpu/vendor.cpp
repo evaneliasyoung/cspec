@@ -9,7 +9,6 @@
  */
 
 #include "ns.h"
-#include "utils.hpp"
 
 #if defined(WIN)
 #include "../utils/win/registry.hpp"

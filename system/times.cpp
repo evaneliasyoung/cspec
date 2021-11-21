@@ -11,6 +11,8 @@
 #include "ns.h"
 
 #if defined(WIN)
+#include <windows.h>
+
 cspec::system::times_t cspec::system::times()
 {
   const auto cur_time = std::chrono::system_clock::now();

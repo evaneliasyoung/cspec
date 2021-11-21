@@ -13,6 +13,8 @@
 #include "../../core.h"
 
 #ifdef WIN
+#include <windows.h>
+
 static bool open_registry_path(HKEY *hkey, HKEY source_key, const char *path)
 {
   if (RegOpenKeyExA(source_key, path, 0, KEY_READ, hkey))

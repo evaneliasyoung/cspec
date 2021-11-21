@@ -1,17 +1,18 @@
 /**
- *  @file      utils.hpp
- *  @brief     Utilities for cpu info.
+ *  @file      cpuinfo.hpp
+ *  @brief     Windows equivalent of /proc/cpuinfo.
  *
  *  @author    Evan Elias Young
- *  @date      2021-11-16
+ *  @date      2021-11-20
  *  @date      2021-11-20
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#pragma once
+#include "../../core.h"
 
-#if defined(WIN)
+#ifdef WIN
 #include <vector>
+#include <windows.h>
 
 static std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> cpuinfo_buffer()
 {
@@ -24,6 +25,4 @@ static std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> cpuinfo_buffer()
 
   return ret;
 }
-#elif defined(MAC)
-#else
 #endif

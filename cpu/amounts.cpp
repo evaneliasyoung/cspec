@@ -11,12 +11,14 @@
 #include "ns.h"
 
 #if defined(WIN)
+#include "../utils/win/cpuinfo.hpp"
+
 #include <bitset>
 
 cspec::cpu::amounts_t cspec::cpu::amounts()
 {
   cspec::cpu::amounts_t ret{};
-  for (const auto &&info: cpuinfo_buffer())
+  for (auto &&info: cpuinfo_buffer())
   {
     switch (info.Relationship)
     {

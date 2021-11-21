@@ -42,6 +42,8 @@ string cspec::cpu::architecture_to_string(const cspec::cpu::architecture_t &arch
 }
 
 #ifdef WIN
+#include <windows.h>
+
 cspec::cpu::architecture_t cspec::cpu::architecture()
 {
   SYSTEM_INFO sysinfo;

@@ -11,6 +11,8 @@
 #include "ns.h"
 
 #if defined(WIN)
+#include <windows.h>
+
 u64 cspec::cpu::clock() noexcept
 {
   HKEY hkey;

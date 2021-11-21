@@ -13,6 +13,10 @@
 #if defined(WIN)
 #include "../utils/win/wstring.hpp"
 
+#include <functional>
+#include <memory>
+#include <wbemcli.h>
+
 struct scope_wrapper
 {
   std::function<void()> func;

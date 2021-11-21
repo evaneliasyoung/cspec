@@ -38,6 +38,9 @@ string cspec::system::kernel_to_string(const cspec::system::kernel_t &kernel)
 }
 
 #if defined(WIN)
+#include <memory>
+#include <windows.h>
+
 cspec::system::kernel_info_t cspec::system::kernel()
 {
   string path;
@@ -46,7 +49,7 @@ cspec::system::kernel_info_t cspec::system::kernel()
   path += "\\kernel32.dll";
 
   const auto ver_info_len = GetFileVersionInfoSizeA(path.c_str(), nullptr);
-  auto ver_info = std::make_unique<std::uint8_t[]>(ver_info_len);
+  auto ver_info = std::make_unique<u8[]>(ver_info_len);
   GetFileVersionInfoA(path.c_str(), 0, ver_info_len, ver_info.get());
 
   VS_FIXEDFILEINFO *file_version;

@@ -11,9 +11,11 @@
 #include "ns.h"
 
 #if defined(WIN)
+#include "../utils/win/cpuinfo.hpp"
+
 cspec::cpu::cache_t cspec::cpu::cache(u8 level)
 {
-  for (const auto &&info: cpuinfo_buffer())
+  for (auto &&info: cpuinfo_buffer())
   {
     if (info.Relationship == RelationCache)
     {

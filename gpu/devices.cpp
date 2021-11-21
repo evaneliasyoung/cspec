@@ -51,6 +51,8 @@ string cspec::gpu::vendor_to_string(const cspec::gpu::vendor_t &vendor)
 }
 
 #if defined(WIN)
+#include "../utils/win/registry.hpp"
+
 std::vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 {
   std::vector<cspec::gpu::gpu_info_t> ret{};
