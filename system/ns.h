@@ -52,6 +52,7 @@ namespace cspec
     struct times_t
     {
       std::chrono::system_clock::time_point current;
+      std::chrono::system_clock::time_point install;
       std::chrono::system_clock::time_point boot;
     };
 

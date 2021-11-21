@@ -11,7 +11,7 @@
 #include "main.h"
 
 string serialize_time_point(const std::chrono::system_clock::time_point &time,
-                                 const string &format = "%Y-%m-%d %H:%M:%S")
+                            const string &format = "%Y-%m-%d %H:%M:%S")
 {
   std::time_t tt = std::chrono::system_clock::to_time_t(time);
   std::tm tm = *std::gmtime(&tt);
@@ -90,6 +90,7 @@ void print_system()
   print_subheader("Times");
   const auto times = cspec::system::times();
   std::cout << "Current Time: " << serialize_time_point(times.current) << '\n'
+            << "Install Time: " << serialize_time_point(times.install) << '\n'
             << "Boot Time: " << serialize_time_point(times.boot) << '\n'
             << '\n';
 }
