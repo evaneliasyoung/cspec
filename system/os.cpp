@@ -4,103 +4,22 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-17
- *  @date      2021-11-20
+ *  @date      2021-11-21
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #include "ns.h"
 
 #if defined(WIN)
-#include "../utils/win/wstring.hpp"
-
-#include <functional>
-#include <memory>
-#include <wbemcli.h>
-
-struct scope_wrapper
-{
-  std::function<void()> func;
-
-  scope_wrapper(const scope_wrapper &) = delete;
-  ~scope_wrapper()
-  {
-    if (func)
-      func();
-  }
-};
-
-struct release_deleter
-{
-  template<typename T> void operator()(T *ptr) const
-  {
-    ptr->Release();
-  }
-};
+#include "../utils/win/wmi.hpp"
 
 static string version_name()
 {
-  // Initialize COM.
-  auto err = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-  if (FAILED(err) && err != RPC_E_CHANGED_MODE)
-    return {};
-  scope_wrapper com_uninitialiser{CoUninitialize};
-
-  // Set COM security.
-  const auto init_result = CoInitializeSecurity(nullptr, -1, nullptr, nullptr, RPC_C_AUTHN_LEVEL_DEFAULT,
-                                                RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_NONE, nullptr);
-  if (FAILED(init_result) && init_result != RPC_E_TOO_LATE)
-    return {};
-
-  // Get pointer to WMI locater.
-  IWbemLocator *wbem_loc_ptr;
-  if (FAILED(CoCreateInstance(CLSID_WbemLocator, 0, CLSCTX_INPROC_SERVER, IID_IWbemLocator,
-                              reinterpret_cast<void **>(&wbem_loc_ptr))))
-    return {};
-  std::unique_ptr<IWbemLocator, release_deleter> wbem_loc(wbem_loc_ptr);
-
-  // Connect to WMI.
-  IWbemServices *wbem_services_ptr;
-  wchar_t net_res[] = LR"(ROOT\CIMV2)";
-  if (FAILED(wbem_loc->ConnectServer(net_res, nullptr, nullptr, 0, 0, 0, 0, &wbem_services_ptr)))
-    return {};
-  std::unique_ptr<IWbemServices, release_deleter> wbem_services(wbem_services_ptr);
-
-  // Set WMI Proxy security.
-  if (FAILED(CoSetProxyBlanket(wbem_services.get(), RPC_C_AUTHN_WINNT, RPC_C_AUTHZ_NONE, nullptr,
-                               RPC_C_AUTHN_LEVEL_CALL, RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_NONE)))
-    return {};
-
-  // Make WMI query.
-  IEnumWbemClassObject *qry_itr_ptr;
-  wchar_t query_lang[] = L"WQL";
-  wchar_t query[] = L"SELECT Name FROM Win32_OperatingSystem";
-  if (FAILED(wbem_services->ExecQuery(query_lang, query, WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, nullptr,
-                                      &qry_itr_ptr)))
-    return {};
-  std::unique_ptr<IEnumWbemClassObject, release_deleter> qry_itr(qry_itr_ptr);
-
-  // Get data from query.
-  string ret;
-  while (qry_itr)
-  {
-    IWbemClassObject *value_raw;
-    unsigned long iter_result;
-
-    qry_itr->Next(static_cast<LONG>(WBEM_INFINITE), 1, &value_raw, &iter_result);
-    if (!iter_result)
-      break;
-    std::unique_ptr<IWbemClassObject, release_deleter> value(value_raw);
-
-    VARIANT val;
-    value->Get(L"Name", 0, &val, 0, 0);
-    scope_wrapper val_destructor{[&]
-                                 {
-                                   VariantClear(&val);
-                                 }};
-
-    ret = narrow_bstring(val.bstrVal);
-  }
-  return ret.substr(0, ret.find('|'));
+  WMI wmi;
+  if (!wmi.prepare())
+    return "";
+  const auto full_name = wmi.query_and_retrieve("Win32_OperatingSystem", {"Name"}).at("Name");
+  return full_name.substr(0, full_name.find("|"));
 }
 
 cspec::system::os_info_t cspec::system::os()

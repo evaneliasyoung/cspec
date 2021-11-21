@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-20
- *  @date      2021-11-20
+ *  @date      2021-11-21
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -32,4 +32,5 @@ using u64 = std::uint64_t;
 using umax = std::uintmax_t;
 using uptr = std::uintptr_t;
 using string = std::string;
+using wstring = std::wstring;
 template<typename T, umax S> using array = std::array<T, S>;
