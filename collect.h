@@ -11,3 +11,4 @@
 #pragma once
 
 #include "collectors/cpu.hpp"
+#include "collectors/gpu.hpp"

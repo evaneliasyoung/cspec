@@ -10,7 +10,7 @@
 
 #include "ns.h"
 
-cspec::gpu::vendor_t cspec::gpu::string_to_vendor(const string &vendor)
+cspec::gpu::vendor_t cspec::gpu::stovnd(const string &vendor)
 {
   if (strcasecmp(vendor.c_str(), "NVIDIA") == 0)
     return cspec::gpu::vendor_t::nvidia;
@@ -29,7 +29,7 @@ cspec::gpu::vendor_t cspec::gpu::string_to_vendor(const string &vendor)
     return cspec::gpu::vendor_t::unknown;
 }
 
-string cspec::gpu::vendor_to_string(const cspec::gpu::vendor_t &vendor)
+string cspec::gpu::vndtos(const cspec::gpu::vendor_t &vendor)
 {
   switch (vendor)
   {
@@ -50,6 +50,18 @@ string cspec::gpu::vendor_to_string(const cspec::gpu::vendor_t &vendor)
   }
 }
 
+void cspec::gpu::to_json(json &j, const cspec::gpu::gpu_info_t &gpu)
+{
+  j = json{{"memory", gpu.memory}, {"name", gpu.name}, {"vendor", cspec::gpu::vndtos(gpu.vendor)}};
+}
+
+void cspec::gpu::from_json(const json &j, cspec::gpu::gpu_info_t &gpu)
+{
+  j.at("memory").get_to(gpu.memory);
+  j.at("name").get_to(gpu.name);
+  gpu.vendor = cspec::gpu::stovnd(j.at("vendor"));
+}
+
 #if defined(WIN)
 #include "../utils/win/registry.hpp"
 
@@ -58,8 +70,7 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
   vector<cspec::gpu::gpu_info_t> ret{};
   const auto gpu_path = R"(SYSTEM\ControlSet001\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000)";
 
-  cspec::gpu::vendor_t vendor =
-    cspec::gpu::string_to_vendor(read_registry_sz<13>(HKEY_LOCAL_MACHINE, gpu_path, "ProviderName"));
+  cspec::gpu::vendor_t vendor = cspec::gpu::stovnd(read_registry_sz<13>(HKEY_LOCAL_MACHINE, gpu_path, "ProviderName"));
   const string name = read_registry_sz<80>(HKEY_LOCAL_MACHINE, gpu_path, "HardwareInformation.AdapterString");
   const auto memory = read_registry_qw(HKEY_LOCAL_MACHINE, gpu_path, "HardwareInformation.qwMemorySize");
 
@@ -90,7 +101,7 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
         if (std::regex_search(vga_line, match, R"(Subsystem: ((\w+).+(?=\s\[)))"_regex))
         {
           info.name = match[1];
-          info.vendor = cspec::gpu::string_to_vendor(match[2]);
+          info.vendor = cspec::gpu::stovnd(match[2]);
         }
         else if (std::regex_search(vga_line, match, R"(Mem.* pre.*size=(\d+)([GMK]))"_regex))
         {
