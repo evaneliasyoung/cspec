@@ -21,7 +21,7 @@ cspec::cpu::group_t cspec::cpu::group()
   if (!wmi.prepare())
     return {};
 
-  const auto group_string = wmi.query_and_retrieve<string>("Win32_Processor", "Caption");
+  const auto group_string = wmi.query_and_retrieve<string>("Win32_Processor", {"Caption"}).at("Caption");
   std::smatch match;
 
   if (!std::regex_search(group_string, match, std::regex(R"(Family (\d+) Model (\d+) Stepping (\d+))")))

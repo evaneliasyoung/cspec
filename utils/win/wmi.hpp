@@ -276,6 +276,11 @@ class WMI
 
   std::map<string, string> retrieve(const std::vector<string> &keys)
   {
+    return this->retrieve_multiple(keys)[0];
+  }
+
+  std::vector<std::map<string, string>> retrieve_multiple(const std::vector<string> &keys)
+  {
     // Start by converting all strings to wstrings
     std::vector<wstring> wkeys;
     std::transform(keys.cbegin(), keys.cend(), back_inserter(wkeys),
@@ -283,14 +288,20 @@ class WMI
                    {
                      return this->widen(key);
                    });
-    return this->retrieve(wkeys);
+    return this->retrieve_multiple(wkeys);
   }
 
   std::map<string, string> retrieve(const std::vector<wstring> &keys)
   {
-    std::map<string, string> keyval;
+    return this->retrieve_multiple(keys)[0];
+  }
+
+  std::vector<std::map<string, string>> retrieve_multiple(const std::vector<wstring> &keys)
+  {
+    std::vector<std::map<string, string>> ret;
     while (this->_res.enumerator)
     {
+      std::map<string, string> keyval;
       if (!this->enumerate())
         break;
 
@@ -316,17 +327,14 @@ class WMI
             break;
         }
         keyval.insert(make_pair(this->narrow(key), this->narrow(val)));
+        std::wcout << key << ": " << val << '\n';
         VariantClear(&prop);
       };
 
       this->release_class();
+      ret.push_back(keyval);
     }
-    return keyval;
-  }
-
-  template<typename StringWidth> string retrieve(const StringWidth &key)
-  {
-    return this->retrieve({key}).at(key);
+    return ret;
   }
 
   template<typename StringWidth>
@@ -335,9 +343,10 @@ class WMI
     return this->query(klass, keys) ? this->retrieve(keys) : std::map<string, string>();
   }
 
-  template<typename StringWidth> string query_and_retrieve(const StringWidth &klass, const StringWidth &key)
+  template<typename StringWidth> std::vector<std::map<string, string>>
+  query_and_retrieve_multiple(const StringWidth &klass, const std::vector<StringWidth> &keys)
   {
-    return this->query(klass, key) ? this->retrieve(key) : "";
+    return this->query(klass, keys) ? this->retrieve_multiple(keys) : std::vector<std::map<string, string>>();
   }
 };
 #endif

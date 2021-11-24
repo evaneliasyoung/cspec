@@ -18,7 +18,7 @@ static string version_name()
   WMI wmi;
   if (!wmi.prepare())
     return "";
-  const auto full_name = wmi.query_and_retrieve<string>("Win32_OperatingSystem", "Name");
+  const auto full_name = wmi.query_and_retrieve<string>("Win32_OperatingSystem", {"Name"}).at("Name");
   return full_name.substr(0, full_name.find("|"));
 }
 
