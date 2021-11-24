@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-20
- *  @date      2021-11-23
+ *  @date      2021-11-24
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -72,7 +72,6 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 #include "../utils/shell.hpp"
 
 #include <iostream>
-#include <regex>
 #include <sstream>
 
 vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
@@ -88,12 +87,12 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
       for (string vga_line; std::getline(lspci_out, vga_line, '\n') && vga_line.size() > 0;)
       {
         std::smatch match;
-        if (std::regex_search(vga_line, match, std::regex(R"(Subsystem: ((\w+).+(?=\s\[)))")))
+        if (std::regex_search(vga_line, match, R"(Subsystem: ((\w+).+(?=\s\[)))"_regex))
         {
           info.name = match[1];
           info.vendor = cspec::gpu::string_to_vendor(match[2]);
         }
-        else if (std::regex_search(vga_line, match, std::regex(R"(Mem.* pre.*size=(\d+)([GMK]))")))
+        else if (std::regex_search(vga_line, match, R"(Mem.* pre.*size=(\d+)([GMK]))"_regex))
         {
           info.memory = std::stoul(match[1]);
           switch (string(match[2])[0])

@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-20
- *  @date      2021-11-23
+ *  @date      2021-11-24
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -23,6 +23,7 @@
 #include <array>
 #include <cstdint>
 #include <cstring>
+#include <regex>
 #include <string>
 #include <vector>
 
@@ -32,7 +33,12 @@ using u32 = std::uint32_t;
 using u64 = std::uint64_t;
 using umax = std::uintmax_t;
 using uptr = std::uintptr_t;
-using std::string;
-using std::wstring;
 using std::array;
+using std::string;
 using std::vector;
+using std::wstring;
+
+inline std::regex operator"" _regex(const char *s, umax n)
+{
+  return std::regex(s, n, std::regex_constants::ECMAScript);
+}

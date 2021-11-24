@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-23
- *  @date      2021-11-23
+ *  @date      2021-11-24
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -12,8 +12,6 @@
 
 #if defined(WIN)
 #include "../utils/win/wmi.hpp"
-
-#include <regex>
 
 cspec::cpu::group_t cspec::cpu::group()
 {
@@ -24,7 +22,7 @@ cspec::cpu::group_t cspec::cpu::group()
   const auto group_string = wmi.query_and_retrieve<string>("Win32_Processor", {"Caption"}).at("Caption");
   std::smatch match;
 
-  if (!std::regex_search(group_string, match, std::regex(R"(Family (\d+) Model (\d+) Stepping (\d+))")))
+  if (!std::regex_search(group_string, match, R"(Family (\d+) Model (\d+) Stepping (\d+))"_regex))
     return {};
 
   auto iter = 0;
