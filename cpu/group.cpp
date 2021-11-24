@@ -10,6 +10,18 @@
 
 #include "ns.h"
 
+void cspec::cpu::to_json(json &j, const cspec::cpu::group_t &grp)
+{
+  j = json{{"family", grp.family}, {"model", grp.model}, {"stepping", grp.stepping}};
+}
+
+void cspec::cpu::from_json(const json &j, cspec::cpu::group_t &grp)
+{
+  j.at("family").get_to(grp.family);
+  j.at("model").get_to(grp.model);
+  j.at("stepping").get_to(grp.stepping);
+}
+
 #if defined(WIN)
 #include "../utils/win/wmi.hpp"
 

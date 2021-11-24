@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-16
- *  @date      2021-11-23
+ *  @date      2021-11-24
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -14,6 +14,18 @@
 #include "../utils/win/cpuinfo.hpp"
 
 #include <bitset>
+
+void cspec::cpu::to_json(json &j, const cspec::cpu::amounts_t &amt)
+{
+  j = json{{"threads", amt.threads}, {"cores", amt.cores}, {"packages", amt.packages}};
+}
+
+void cspec::cpu::from_json(const json &j, cspec::cpu::amounts_t &amt)
+{
+  j.at("threads").get_to(amt.threads);
+  j.at("cores").get_to(amt.cores);
+  j.at("packages").get_to(amt.packages);
+}
 
 cspec::cpu::amounts_t cspec::cpu::amounts()
 {

@@ -4,11 +4,59 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-16
- *  @date      2021-11-20
+ *  @date      2021-11-24
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #include "ns.h"
+
+cspec::cpu::cache_type_t cspec::cpu::stocch(const string &cache_type)
+{
+  if (strcasecmp(cache_type.c_str(), "Unified") == 0)
+    return cspec::cpu::cache_type_t::instruction;
+  if (strcasecmp(cache_type.c_str(), "Instruction") == 0)
+    return cspec::cpu::cache_type_t::instruction;
+  if (strcasecmp(cache_type.c_str(), "Data") == 0)
+    return cspec::cpu::cache_type_t::data;
+  if (strcasecmp(cache_type.c_str(), "Trace") == 0)
+    return cspec::cpu::cache_type_t::trace;
+  return cspec::cpu::cache_type_t::unknown;
+}
+
+string cspec::cpu::cchtos(const cspec::cpu::cache_type_t &cache_type)
+{
+  switch (cache_type)
+  {
+    case cspec::cpu::cache_type_t::unified:
+      return "unified";
+    case cspec::cpu::cache_type_t::instruction:
+      return "instruction";
+    case cspec::cpu::cache_type_t::data:
+      return "data";
+    case cspec::cpu::cache_type_t::trace:
+      return "trace";
+    case cspec::cpu::cache_type_t::unknown:
+      [[fallthrough]];
+    default:
+      return "unknown";
+  }
+}
+
+void cspec::cpu::to_json(json &j, const cspec::cpu::cache_t &cch)
+{
+  j = json{{"association", cch.association},
+           {"line_size", cch.line_size},
+           {"size", cch.size},
+           {"type", cspec::cpu::cchtos(cch.type)}};
+}
+
+void cspec::cpu::from_json(const json &j, cspec::cpu::cache_t &cch)
+{
+  j.at("association").get_to(cch.association);
+  j.at("line_size").get_to(cch.line_size);
+  j.at("size").get_to(cch.size);
+  cch.type = cspec::cpu::stocch(j.at("type"));
+}
 
 #if defined(WIN)
 #include "../utils/win/cpuinfo.hpp"

@@ -4,11 +4,31 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-11
- *  @date      2021-11-11
+ *  @date      2021-11-24
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #include "ns.h"
+
+cspec::cpu::endian_t cspec::cpu::stoend(const string &endian_type)
+{
+  if (strcasecmp(endian_type.c_str(), "Big Endian"))
+    return cspec::cpu::endian_t::big;
+  return cspec::cpu::endian_t::little;
+}
+
+string cspec::cpu::endtos(const cspec::cpu::endian_t &endian_type)
+{
+  switch (endian_type)
+  {
+    case cspec::cpu::endian_t::big:
+      return "big";
+    case cspec::cpu::endian_t::little:
+      return "little";
+    default:
+      return "unknown";
+  }
+}
 
 cspec::cpu::endian_t cspec::cpu::endian() noexcept
 {

@@ -4,13 +4,13 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-11
- *  @date      2021-11-20
+ *  @date      2021-11-24
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #include "ns.h"
 
-cspec::cpu::architecture_t cspec::cpu::string_to_architecture(const string &architecture)
+cspec::cpu::architecture_t cspec::cpu::stoarch(const string &architecture)
 {
   if (strcasecmp(architecture.c_str(), "x86_64") == 0)
     return cspec::cpu::architecture_t::x64;
@@ -24,9 +24,9 @@ cspec::cpu::architecture_t cspec::cpu::string_to_architecture(const string &arch
     return cspec::cpu::architecture_t::unknown;
 }
 
-string cspec::cpu::architecture_to_string(const cspec::cpu::architecture_t &arch)
+string cspec::cpu::archtos(const cspec::cpu::architecture_t &architecture)
 {
-  switch (arch)
+  switch (architecture)
   {
     case cspec::cpu::architecture_t::x64:
       return "x64";
@@ -72,6 +72,6 @@ cspec::cpu::architecture_t cspec::cpu::architecture()
   if (uname(&buf) == -1)
     return cspec::cpu::architecture_t::unknown;
 
-  return string_to_architecture(buf.machine);
+  return stoarch(buf.machine);
 }
 #endif
