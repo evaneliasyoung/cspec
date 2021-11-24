@@ -35,4 +35,30 @@ cspec::cpu::group_t cspec::cpu::group()
 }
 #elif defined(MAC)
 #else
+#include <fstream>
+
+cspec::cpu::group_t cspec::cpu::group()
+{
+  cspec::cpu::group_t ret{};
+  std::ifstream cpuinfo("/proc/cpuinfo");
+
+  if (!cpuinfo.is_open() || !cpuinfo)
+    return ret;
+
+  const auto line_to_ul = [](const string line) -> umax
+  {
+    return std::strtoul(line.c_str() + line.find_first_of("1234567890"), nullptr, 10);
+  };
+  for (string line; std::getline(cpuinfo, line);)
+  {
+    if (line.find("cpu family") == 0)
+      ret.family = line_to_ul(line);
+    if (line.find("stepping") == 0)
+      ret.stepping = line_to_ul(line);
+    if (line.find("model") == 0)
+      ret.model = line_to_ul(line);
+  }
+
+  return ret;
+}
 #endif
