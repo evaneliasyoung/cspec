@@ -114,6 +114,26 @@ void print_gpu()
   }
 }
 
+void print_memory()
+{
+  const auto chips = cspec::memory::devices();
+  for (const auto chip: chips)
+  {
+    print_subheader("DIMM");
+    std::cout << "Min Voltage: " << chip.voltage.min << '\n'
+              << "Max Voltage: " << chip.voltage.max << '\n'
+              << "Configured Voltage: " << chip.voltage.configured << '\n'
+              << "Size: " << chip.size << '\n'
+              << "Speed: " << chip.speed << '\n'
+              << "Manufacturer: " << chip.manufacturer << '\n'
+              << "Form Factor: " << chip.form_factor << '\n'
+              << "Model: " << chip.model << '\n'
+              << "Serial: " << chip.serial << '\n'
+              << "Bank: " << chip.bank << '\n'
+              << '\n';
+  }
+}
+
 int main(int argc, char const *argv[])
 {
   print_header("CPU");
@@ -124,6 +144,9 @@ int main(int argc, char const *argv[])
 
   print_header("GPU");
   print_gpu();
+
+  print_header("Memory");
+  print_memory();
 
   return 0;
 }
