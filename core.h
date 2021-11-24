@@ -20,6 +20,8 @@
 #define TUX
 #endif
 
+#include "lib/json/single_include/nlohmann/json.hpp"
+
 #include <array>
 #include <cstdint>
 #include <cstring>
@@ -33,6 +35,7 @@ using u32 = std::uint32_t;
 using u64 = std::uint64_t;
 using umax = std::uintmax_t;
 using uptr = std::uintptr_t;
+using nlohmann::json;
 using std::array;
 using std::string;
 using std::vector;
