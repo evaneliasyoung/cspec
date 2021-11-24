@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-11
- *  @date      2021-11-20
+ *  @date      2021-11-23
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -119,7 +119,7 @@ void print_memory()
   const auto chips = cspec::memory::devices();
   for (const auto chip: chips)
   {
-    print_subheader("DIMM");
+    print_subheader("New Memory");
     std::cout << "Min Voltage: " << chip.voltage.min << '\n'
               << "Max Voltage: " << chip.voltage.max << '\n'
               << "Configured Voltage: " << chip.voltage.configured << '\n'
@@ -130,6 +130,22 @@ void print_memory()
               << "Model: " << chip.model << '\n'
               << "Serial: " << chip.serial << '\n'
               << "Bank: " << chip.bank << '\n'
+              << '\n';
+  }
+}
+
+void print_filesystem()
+{
+  const auto fss = cspec::filesystem::systems();
+  for (const auto fs: fss)
+  {
+    print_subheader("New System");
+    std::cout << "Name: " << fs.name << '\n'
+              << "Type: " << cspec::filesystem::filesystem_type_to_string(fs.type) << '\n'
+              << "Mount: " << fs.mount << '\n'
+              << "Size: " << fs.size << '\n'
+              << "Used: " << fs.used << '\n'
+              << "Avaiable: " << fs.available << '\n'
               << '\n';
   }
 }
@@ -147,6 +163,9 @@ int main(int argc, char const *argv[])
 
   print_header("Memory");
   print_memory();
+
+  print_header("Filesystem");
+  print_filesystem();
 
   return 0;
 }
