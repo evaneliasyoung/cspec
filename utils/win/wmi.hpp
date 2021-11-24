@@ -327,7 +327,6 @@ class WMI
             break;
         }
         keyval.insert(make_pair(this->narrow(key), this->narrow(val)));
-        std::wcout << key << ": " << val << '\n';
         VariantClear(&prop);
       };
 
