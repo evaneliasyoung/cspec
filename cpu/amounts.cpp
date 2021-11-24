@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-16
- *  @date      2021-11-20
+ *  @date      2021-11-23
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -54,7 +54,7 @@ cspec::cpu::amounts_t cspec::cpu::amounts()
   if (!cpuinfo.is_open() || !cpuinfo)
     return ret;
 
-  std::vector<u32> package_ids;
+  vector<u32> package_ids;
   for (string line; std::getline(cpuinfo, line);)
   {
     if (line.find("physical id") == 0)

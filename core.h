@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-20
- *  @date      2021-11-21
+ *  @date      2021-11-23
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -24,6 +24,7 @@
 #include <cstdint>
 #include <cstring>
 #include <string>
+#include <vector>
 
 using u8 = std::uint8_t;
 using u16 = std::uint16_t;
@@ -31,6 +32,7 @@ using u32 = std::uint32_t;
 using u64 = std::uint64_t;
 using umax = std::uintmax_t;
 using uptr = std::uintptr_t;
-using string = std::string;
-using wstring = std::wstring;
-template<typename T, umax S> using array = std::array<T, S>;
+using std::string;
+using std::wstring;
+using std::array;
+using std::vector;

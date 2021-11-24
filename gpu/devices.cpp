@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-20
- *  @date      2021-11-20
+ *  @date      2021-11-23
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -53,9 +53,9 @@ string cspec::gpu::vendor_to_string(const cspec::gpu::vendor_t &vendor)
 #if defined(WIN)
 #include "../utils/win/registry.hpp"
 
-std::vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
+vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 {
-  std::vector<cspec::gpu::gpu_info_t> ret{};
+  vector<cspec::gpu::gpu_info_t> ret{};
   const auto gpu_path = R"(SYSTEM\ControlSet001\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000)";
 
   cspec::gpu::vendor_t vendor =
@@ -75,9 +75,9 @@ std::vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 #include <regex>
 #include <sstream>
 
-std::vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
+vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 {
-  std::vector<cspec::gpu::gpu_info_t> ret{};
+  vector<cspec::gpu::gpu_info_t> ret{};
 
   auto lspci_out = std::stringstream(exec("lspci -vnn"));
   for (string line; std::getline(lspci_out, line, '\n');)

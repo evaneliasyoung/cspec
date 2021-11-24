@@ -37,6 +37,6 @@ namespace cspec
       string bank;
     };
 
-    std::vector<memory_t> devices();
+    vector<memory_t> devices();
   } // namespace memory
 } // namespace cspec

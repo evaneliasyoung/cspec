@@ -13,9 +13,9 @@
 #if defined(WIN)
 #include "../utils/win/wmi.hpp"
 
-std::vector<cspec::memory::memory_t> cspec::memory::devices()
+vector<cspec::memory::memory_t> cspec::memory::devices()
 {
-  std::vector<cspec::memory::memory_t> ret{};
+  vector<cspec::memory::memory_t> ret{};
 
   WMI wmi;
   if (!wmi.prepare())
@@ -27,8 +27,8 @@ std::vector<cspec::memory::memory_t> cspec::memory::devices()
      "Manufacturer", "PartNumber", "SerialNumber", "ConfiguredVoltage", "MinVoltage", "MaxVoltage"});
 
   const auto form_factors =
-    std::array{"Unknown", "Other", "SIP", "DIP",  "ZIP", "SOJ",  "Proprietary", "SIMM", "DIMM", "TSOP", "PGA",   "RIMM",
-               "SODIMM",  "SRIMM", "SMD", "SSMP", "QFP", "TQFP", "SOIC",        "LCC",  "PLCC", "BGA",  "FPBGA", "LGA"};
+    array{"Unknown", "Other", "SIP", "DIP",  "ZIP", "SOJ",  "Proprietary", "SIMM", "DIMM", "TSOP", "PGA",   "RIMM",
+          "SODIMM",  "SRIMM", "SMD", "SSMP", "QFP", "TQFP", "SOIC",        "LCC",  "PLCC", "BGA",  "FPBGA", "LGA"};
 
   for (const auto chip: chips)
   {

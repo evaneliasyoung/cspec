@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-20
- *  @date      2021-11-20
+ *  @date      2021-11-23
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -14,9 +14,9 @@
 #include <vector>
 #include <windows.h>
 
-static std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> cpuinfo_buffer()
+static vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> cpuinfo_buffer()
 {
-  std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> ret;
+  vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> ret;
 
   DWORD bytes = 0;
   GetLogicalProcessorInformation(nullptr, &bytes);

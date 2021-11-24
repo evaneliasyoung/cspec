@@ -22,7 +22,6 @@
 #include <locale>
 #include <map>
 #include <sstream>
-#include <vector>
 
 class WMI
 {
@@ -209,7 +208,7 @@ class WMI
   }
 
   template<typename StringWidth, typename StreamWidth>
-  StringWidth stream_request(StreamWidth &stream, const StringWidth klass, const std::vector<StringWidth> &keys)
+  StringWidth stream_request(StreamWidth &stream, const StringWidth klass, const vector<StringWidth> &keys)
   {
     stream << "SELECT ";
     for (const auto &key: keys)
@@ -219,14 +218,14 @@ class WMI
     return stream.str();
   }
 
-  wstring build_request(const string &klass, const std::vector<string> &keys)
+  wstring build_request(const string &klass, const vector<string> &keys)
   {
     std::stringstream request;
     this->stream_request(request, klass, keys);
     return this->widen(request.str());
   }
 
-  wstring build_request(const wstring &klass, const std::vector<wstring> &keys)
+  wstring build_request(const wstring &klass, const vector<wstring> &keys)
   {
     std::wstringstream request;
     this->stream_request(request, klass, keys);
@@ -238,7 +237,7 @@ class WMI
     return this->initialize() && this->secure() && this->locate() && this->connect() && this->proxy();
   }
 
-  template<typename StringWidth> bool query(const StringWidth &klass, const std::vector<StringWidth> &keys)
+  template<typename StringWidth> bool query(const StringWidth &klass, const vector<StringWidth> &keys)
   {
     if (!this->_inits.service)
       return false;
@@ -258,7 +257,7 @@ class WMI
 
   template<typename StringWidth> bool query(const StringWidth &klass, const StringWidth &key)
   {
-    return this->query(klass, std::vector<StringWidth>({key}));
+    return this->query(klass, vector<StringWidth>({key}));
   }
 
   bool enumerate()
@@ -274,15 +273,15 @@ class WMI
     return !this->failed;
   }
 
-  std::map<string, string> retrieve(const std::vector<string> &keys)
+  std::map<string, string> retrieve(const vector<string> &keys)
   {
     return this->retrieve_multiple(keys)[0];
   }
 
-  std::vector<std::map<string, string>> retrieve_multiple(const std::vector<string> &keys)
+  vector<std::map<string, string>> retrieve_multiple(const vector<string> &keys)
   {
     // Start by converting all strings to wstrings
-    std::vector<wstring> wkeys;
+    vector<wstring> wkeys;
     std::transform(keys.cbegin(), keys.cend(), back_inserter(wkeys),
                    [this](const auto &key)
                    {
@@ -291,14 +290,14 @@ class WMI
     return this->retrieve_multiple(wkeys);
   }
 
-  std::map<string, string> retrieve(const std::vector<wstring> &keys)
+  std::map<string, string> retrieve(const vector<wstring> &keys)
   {
     return this->retrieve_multiple(keys)[0];
   }
 
-  std::vector<std::map<string, string>> retrieve_multiple(const std::vector<wstring> &keys)
+  vector<std::map<string, string>> retrieve_multiple(const vector<wstring> &keys)
   {
-    std::vector<std::map<string, string>> ret;
+    vector<std::map<string, string>> ret;
     while (this->_res.enumerator)
     {
       std::map<string, string> keyval;
@@ -337,15 +336,15 @@ class WMI
   }
 
   template<typename StringWidth>
-  std::map<string, string> query_and_retrieve(const StringWidth &klass, const std::vector<StringWidth> &keys)
+  std::map<string, string> query_and_retrieve(const StringWidth &klass, const vector<StringWidth> &keys)
   {
     return this->query(klass, keys) ? this->retrieve(keys) : std::map<string, string>();
   }
 
-  template<typename StringWidth> std::vector<std::map<string, string>>
-  query_and_retrieve_multiple(const StringWidth &klass, const std::vector<StringWidth> &keys)
+  template<typename StringWidth> vector<std::map<string, string>>
+  query_and_retrieve_multiple(const StringWidth &klass, const vector<StringWidth> &keys)
   {
-    return this->query(klass, keys) ? this->retrieve_multiple(keys) : std::vector<std::map<string, string>>();
+    return this->query(klass, keys) ? this->retrieve_multiple(keys) : vector<std::map<string, string>>();
   }
 };
 #endif
