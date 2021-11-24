@@ -12,3 +12,4 @@
 
 #include "collectors/cpu.hpp"
 #include "collectors/gpu.hpp"
+#include "collectors/filesystem.hpp"

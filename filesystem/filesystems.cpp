@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-23
- *  @date      2021-11-23
+ *  @date      2021-11-24
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -13,7 +13,7 @@
 #if defined(WIN)
 #include "../utils/win/wmi.hpp"
 
-cspec::filesystem::filesystem_type_t cspec::filesystem::string_to_filesystem(const string &filesystem)
+cspec::filesystem::filesystem_type_t cspec::filesystem::stofs(const string &filesystem)
 {
   if (strcasecmp(filesystem.c_str(), "NTFS") == 0)
     return cspec::filesystem::filesystem_type_t::ntfs;
@@ -29,7 +29,7 @@ cspec::filesystem::filesystem_type_t cspec::filesystem::string_to_filesystem(con
     return cspec::filesystem::filesystem_type_t::unknown;
 }
 
-string cspec::filesystem::filesystem_type_to_string(const cspec::filesystem::filesystem_type_t &filesystem)
+string cspec::filesystem::fstos(const cspec::filesystem::filesystem_type_t &filesystem)
 {
   switch (filesystem)
   {
@@ -50,6 +50,31 @@ string cspec::filesystem::filesystem_type_to_string(const cspec::filesystem::fil
   }
 }
 
+void cspec::filesystem::to_json(json &j, const cspec::filesystem::sizes_t &sizes)
+{
+  j = json{{"available", sizes.available}, {"total", sizes.total}, {"used", sizes.used}};
+}
+
+void cspec::filesystem::from_json(const json &j, cspec::filesystem::sizes_t &sizes)
+{
+  j.at("available").get_to(sizes.available);
+  j.at("total").get_to(sizes.total);
+  j.at("used").get_to(sizes.used);
+}
+
+void cspec::filesystem::to_json(json &j, const cspec::filesystem::filesystem_t &fs)
+{
+  j = json{{"name", fs.name}, {"type", cspec::filesystem::fstos(fs.type)}, {"sizes", fs.sizes}, {"mount", fs.mount}};
+}
+
+void cspec::filesystem::from_json(const json &j, cspec::filesystem::filesystem_t &fs)
+{
+  j.at("name").get_to(fs.name);
+  j.at("sizes").get_to(fs.sizes);
+  j.at("mount").get_to(fs.mount);
+  fs.type = cspec::filesystem::stofs(j.at("type"));
+}
+
 vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
 {
   vector<cspec::filesystem::filesystem_t> ret{};
@@ -66,11 +91,11 @@ vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
     cspec::filesystem::filesystem_t filesystem;
 
     filesystem.name = fs.at("Caption");
-    filesystem.type = string_to_filesystem(fs.at("FileSystem"));
+    filesystem.type = stofs(fs.at("FileSystem"));
     filesystem.mount = fs.at("Caption");
-    filesystem.size = !fs.at("Size").empty() ? std::stoull(fs.at("Size")) : 0;
-    filesystem.available = !fs.at("FreeSpace").empty() ? std::stoull(fs.at("FreeSpace")) : 0;
-    filesystem.used = filesystem.size - filesystem.available;
+    filesystem.sizes.total = !fs.at("Size").empty() ? std::stoull(fs.at("Size")) : 0;
+    filesystem.sizes.available = !fs.at("FreeSpace").empty() ? std::stoull(fs.at("FreeSpace")) : 0;
+    filesystem.sizes.used = filesystem.sizes.total - filesystem.sizes.available;
 
     ret.push_back(filesystem);
   }
