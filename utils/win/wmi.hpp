@@ -219,7 +219,6 @@ class WMI
     return stream.str();
   }
 
-
   wstring build_request(const string &klass, const std::vector<string> &keys)
   {
     std::stringstream request;
@@ -336,8 +335,7 @@ class WMI
     return this->query(klass, keys) ? this->retrieve(keys) : std::map<string, string>();
   }
 
-  template<typename StringWidth>
-  string query_and_retrieve(const StringWidth &klass, const StringWidth &key)
+  template<typename StringWidth> string query_and_retrieve(const StringWidth &klass, const StringWidth &key)
   {
     return this->query(klass, key) ? this->retrieve(key) : "";
   }

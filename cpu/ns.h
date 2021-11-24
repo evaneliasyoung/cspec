@@ -57,6 +57,13 @@ namespace cspec
       cache_type_t type;
     };
 
+    struct group_t
+    {
+      umax family;
+      umax model;
+      umax stepping;
+    };
+
     amounts_t amounts();
     cache_t cache(u8 level);
     architecture_t architecture();
@@ -64,6 +71,7 @@ namespace cspec
     endian_t endian() noexcept;
     string vendor();
     string name();
+    group_t group();
     architecture_t string_to_architecture(const string &architecture);
     string architecture_to_string(const architecture_t &arch);
   } // namespace cpu

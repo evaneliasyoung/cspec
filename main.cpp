@@ -64,6 +64,13 @@ void print_cpu()
               << "Association: " << (u16)cache.association << '\n'
               << '\n';
   }
+
+  print_subheader("Group");
+  const auto group = cspec::cpu::group();
+  std::cout << "Family: " << group.family << '\n'
+            << "Model: " << group.model << '\n'
+            << "Stepping: " << group.stepping << '\n'
+            << '\n';
 }
 
 void print_system()
