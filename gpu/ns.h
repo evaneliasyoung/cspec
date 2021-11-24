@@ -41,7 +41,5 @@ namespace cspec
     void from_json(const json &j, gpu_info_t &gpu);
 
     vector<gpu_info_t> devices();
-    vendor_t string_to_vendor(const string &vendor);
-    string vendor_to_string(const vendor_t &vendor);
   } // namespace gpu
 } // namespace cspec
