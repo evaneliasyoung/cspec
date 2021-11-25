@@ -51,6 +51,8 @@ namespace cspec
     void from_json(const json &j, filesystem_t &fs);
 
     vector<filesystem_t> systems();
+    json collect();
+    json collect(const vector<string> &keys);
   } // namespace filesystem
 
 } // namespace cspec

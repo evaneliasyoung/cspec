@@ -1,5 +1,5 @@
 /**
- *  @file      cpu.hpp
+ *  @file      cpu.cpp
  *  @brief     Collects cpu information to a json object.
  *
  *  @author    Evan Elias Young
@@ -10,10 +10,9 @@
 
 #pragma once
 
-#include "../core.h"
-#include "../cpu/ns.h"
+#include "ns.h"
 
-json collect_cpu()
+json cspec::cpu::collect()
 {
   auto ret = R"({})"_json;
 
@@ -34,10 +33,10 @@ json collect_cpu()
   return ret;
 }
 
-json collect_cpu(const vector<string> &keys)
+json cspec::cpu::collect(const vector<string> &keys)
 {
   if (keys.size() == 1 && (strcasecmp(keys[0].c_str(), "all") == 0 || keys[0] == "*"))
-    return collect_cpu();
+    return cspec::cpu::collect();
 
   auto ret = R"({})"_json;
   for (const auto &key: keys)
@@ -64,9 +63,7 @@ json collect_cpu(const vector<string> &keys)
       ret["cache"] = json(caches);
     }
     else
-    {
       throw std::invalid_argument("invalid CPU request key.");
-    }
   }
 
   return ret;

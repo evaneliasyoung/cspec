@@ -42,5 +42,7 @@ namespace cspec
     void from_json(const json &j, memory_t &mem);
 
     vector<memory_t> devices();
+    json collect();
+    json collect(const vector<string> &keys);
   } // namespace memory
 } // namespace cspec

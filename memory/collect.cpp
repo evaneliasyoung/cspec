@@ -1,5 +1,5 @@
 /**
- *  @file      memory.hpp
+ *  @file      collect.cpp
  *  @brief     Collects memory information to a json object.
  *
  *  @author    Evan Elias Young
@@ -10,10 +10,9 @@
 
 #pragma once
 
-#include "../core.h"
-#include "../memory/ns.h"
+#include "ns.h"
 
-json collect_memory()
+json cspec::memory::collect()
 {
   auto ret = R"([])"_json;
   const auto devices = cspec::memory::devices();
@@ -24,10 +23,10 @@ json collect_memory()
   return ret;
 }
 
-json collect_memory(const vector<string> &keys)
+json cspec::memory::collect(const vector<string> &keys)
 {
   if (keys.size() == 1 && (strcasecmp(keys[0].c_str(), "all") == 0 || keys[0] == "*"))
-    return collect_memory();
+    return cspec::memory::collect();
 
   auto ret = R"([])"_json;
   const auto devices = cspec::memory::devices();

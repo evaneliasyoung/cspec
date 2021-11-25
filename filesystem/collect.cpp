@@ -1,5 +1,5 @@
 /**
- *  @file      filesystem.hpp
+ *  @file      collect.cpp
  *  @brief     Collects filesystem information to a json object.
  *
  *  @author    Evan Elias Young
@@ -11,9 +11,9 @@
 #pragma once
 
 #include "../core.h"
-#include "../filesystem/ns.h"
+#include "ns.h"
 
-json collect_filesystem()
+json cspec::filesystem::collect()
 {
   auto ret = R"([])"_json;
   const auto systems = cspec::filesystem::systems();
@@ -24,10 +24,10 @@ json collect_filesystem()
   return ret;
 }
 
-json collect_filesystem(const vector<string> &keys)
+json cspec::filesystem::collect(const vector<string> &keys)
 {
   if (keys.size() == 1 && (strcasecmp(keys[0].c_str(), "all") == 0 || keys[0] == "*"))
-    return collect_filesystem();
+    return cspec::filesystem::collect();
 
   auto ret = R"([])"_json;
   const auto systems = cspec::filesystem::systems();
@@ -45,9 +45,7 @@ json collect_filesystem(const vector<string> &keys)
       else if (strcasecmp(key.c_str(), "type") == 0)
         filesystemj["architecture"] = cspec::filesystem::fstos(filesystem.type);
       else
-      {
         throw std::invalid_argument("invalid filesystem request key.");
-      }
     }
     ret.push_back(filesystemj);
   }

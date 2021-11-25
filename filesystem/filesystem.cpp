@@ -10,9 +10,6 @@
 
 #include "ns.h"
 
-#if defined(WIN)
-#include "../utils/win/wmi.hpp"
-
 cspec::filesystem::filesystem_type_t cspec::filesystem::stofs(const string &filesystem)
 {
   if (strcasecmp(filesystem.c_str(), "NTFS") == 0)
@@ -74,6 +71,9 @@ void cspec::filesystem::from_json(const json &j, cspec::filesystem::filesystem_t
   j.at("mount").get_to(fs.mount);
   fs.type = cspec::filesystem::stofs(j.at("type"));
 }
+
+#if defined(WIN)
+#include "../utils/win/wmi.hpp"
 
 vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
 {

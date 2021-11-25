@@ -85,5 +85,7 @@ namespace cspec
     string vendor();
     string name();
     group_t group();
+    json collect();
+    json collect(const vector<string> &keys);
   } // namespace cpu
 } // namespace cspec

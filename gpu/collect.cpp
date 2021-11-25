@@ -1,5 +1,5 @@
 /**
- *  @file      gpu.hpp
+ *  @file      collect.cpp
  *  @brief     Collects gpu information to a json object.
  *
  *  @author    Evan Elias Young
@@ -10,10 +10,9 @@
 
 #pragma once
 
-#include "../core.h"
-#include "../gpu/ns.h"
+#include "ns.h"
 
-json collect_gpu()
+json cspec::gpu::collect()
 {
   auto ret = R"([])"_json;
   const auto devices = cspec::gpu::devices();
@@ -24,10 +23,10 @@ json collect_gpu()
   return ret;
 }
 
-json collect_gpu(const vector<string> &keys)
+json cspec::gpu::collect(const vector<string> &keys)
 {
   if (keys.size() == 1 && (strcasecmp(keys[0].c_str(), "all") == 0 || keys[0] == "*"))
-    return collect_gpu();
+    return cspec::gpu::collect();
 
   auto ret = R"([])"_json;
   const auto devices = cspec::gpu::devices();

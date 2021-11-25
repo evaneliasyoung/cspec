@@ -62,6 +62,7 @@ namespace cspec
     os_info_t os();
     kernel_info_t kernel();
     times_t times();
-
+    json collect();
+    json collect(const vector<string> &keys);
   } // namespace system
 } // namespace cspec
