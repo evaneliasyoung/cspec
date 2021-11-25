@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-23
- *  @date      2021-11-23
+ *  @date      2021-11-24
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -24,6 +24,8 @@ namespace cspec
       double max;
       double configured;
     };
+    void to_json(json &j, const voltages_t &vlt);
+    void from_json(const json &j, voltages_t &vlt);
 
     struct memory_t
     {
@@ -36,6 +38,8 @@ namespace cspec
       string serial;
       string bank;
     };
+    void to_json(json &j, const memory_t &mem);
+    void from_json(const json &j, memory_t &mem);
 
     vector<memory_t> devices();
   } // namespace memory
