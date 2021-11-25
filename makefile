@@ -4,7 +4,7 @@ SOURCES    = $(wildcard *.cpp) $(wildcard **/*.cpp)
 OBJECTS    = ${SOURCES:%.cpp=%.o}
 EXEC       = cspec.exe
 
-release: TARGET_FLAGS = -O3
+release: TARGET_FLAGS = -O3 -static-libgcc -static-libstdc++
 debug: TARGET_FLAGS = -g -Wall -O0 -W -pedantic-errors
 
 release: EXEC = cspec.rel.exe
