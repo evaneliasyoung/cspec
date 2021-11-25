@@ -4,13 +4,13 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-17
- *  @date      2021-11-20
+ *  @date      2021-11-24
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #include "ns.h"
 
-cspec::system::kernel_t cspec::system::string_to_kernel(const string &kernel)
+cspec::system::kernel_t cspec::system::stokrn(const string &kernel)
 {
   if (strcasecmp(kernel.c_str(), "Windows NT") == 0)
     return cspec::system::kernel_t::nt;
@@ -22,7 +22,7 @@ cspec::system::kernel_t cspec::system::string_to_kernel(const string &kernel)
     return cspec::system::kernel_t::unknown;
 }
 
-string cspec::system::kernel_to_string(const cspec::system::kernel_t &kernel)
+string cspec::system::krntos(const cspec::system::kernel_t &kernel)
 {
   switch (kernel)
   {
@@ -35,6 +35,17 @@ string cspec::system::kernel_to_string(const cspec::system::kernel_t &kernel)
     default:
       return "Unknown";
   }
+}
+
+void cspec::system::to_json(json &j, const cspec::system::kernel_info_t &krn)
+{
+  j = json{{"version", krn.version}, {"type", cspec::system::krntos(krn.type)}};
+}
+
+void cspec::system::from_json(const json &j, cspec::system::kernel_info_t &krn)
+{
+  j.at("version").get_to(krn.version);
+  krn.type = cspec::system::stokrn(j.at("type"));
 }
 
 #if defined(WIN)
@@ -56,9 +67,9 @@ cspec::system::kernel_info_t cspec::system::kernel()
   unsigned int file_version_len;
   VerQueryValueA(ver_info.get(), "", reinterpret_cast<void **>(&file_version), &file_version_len);
 
-  return {cspec::system::kernel_t::nt, HIWORD(file_version->dwProductVersionMS),
-          LOWORD(file_version->dwProductVersionMS), HIWORD(file_version->dwProductVersionLS),
-          LOWORD(file_version->dwProductVersionLS)};
+  return {cspec::system::kernel_t::nt,
+          {HIWORD(file_version->dwProductVersionMS), LOWORD(file_version->dwProductVersionMS),
+           HIWORD(file_version->dwProductVersionLS), LOWORD(file_version->dwProductVersionLS)}};
 }
 #else
 #include <sys/utsname.h>
@@ -74,8 +85,8 @@ cspec::system::kernel_info_t cspec::system::kernel()
   const u32 patch = std::strtoul(marker + 1, &marker, 10);
   const u32 build = std::strtoul(marker + 1, nullptr, 10);
 
-  const auto kernel = string_to_kernel(uts.sysname);
+  const auto kernel = stokrn(uts.sysname);
 
-  return {kernel, major, minor, patch, build};
+  return {kernel, {major, minor, patch, build}};
 }
 #endif

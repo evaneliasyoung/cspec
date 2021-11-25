@@ -14,3 +14,4 @@
 #include "collectors/gpu.hpp"
 #include "collectors/filesystem.hpp"
 #include "collectors/memory.hpp"
+#include "collectors/system.hpp"

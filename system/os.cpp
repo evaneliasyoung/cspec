@@ -10,6 +10,18 @@
 
 #include "ns.h"
 
+void cspec::system::to_json(json &j, const cspec::system::os_info_t &os)
+{
+  j = json{{"name", os.name}, {"full_name", os.full_name}, {"version", os.version}};
+}
+
+void cspec::system::from_json(const json &j, cspec::system::os_info_t &os)
+{
+  j.at("name").get_to(os.name);
+  j.at("full_name").get_to(os.full_name);
+  j.at("version").get_to(os.version);
+}
+
 #if defined(WIN)
 #include "../utils/win/wmi.hpp"
 
@@ -24,8 +36,8 @@ static string version_name()
 
 cspec::system::os_info_t cspec::system::os()
 {
-  const auto kernel = cspec::system::kernel();
-  return {"Windows NT", version_name(), kernel.major, kernel.minor, kernel.patch, kernel.build};
+  const auto version = cspec::system::kernel().version;
+  return {"Windows NT", version_name(), version};
 }
 #else
 #include <fstream>
