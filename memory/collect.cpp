@@ -8,6 +8,7 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
+#include "../utils/strcmp.hpp"
 #include "ns.h"
 
 json cspec::memory::collect()
@@ -23,7 +24,7 @@ json cspec::memory::collect()
 
 json cspec::memory::collect(const vector<string> &keys)
 {
-  if (keys.size() == 1 && (strcasecmp(keys[0].c_str(), "all") == 0 || keys[0] == "*"))
+  if (keys.size() == 1 && (icaseis(keys[0], "all") || keys[0] == "*"))
     return cspec::memory::collect();
 
   auto ret = R"([])"_json;
@@ -33,21 +34,21 @@ json cspec::memory::collect(const vector<string> &keys)
     auto memoryj = R"({})"_json;
     for (const auto &key: keys)
     {
-      if (strcasecmp(key.c_str(), "voltage") == 0)
+      if (icaseis(key, "voltage"))
         memoryj["voltage"] = memory.voltage;
-      else if (strcasecmp(key.c_str(), "form_factor") == 0)
+      else if (icaseis(key, "form_factor"))
         memoryj["form_factor"] = memory.form_factor;
-      else if (strcasecmp(key.c_str(), "size") == 0)
+      else if (icaseis(key, "size"))
         memoryj["size"] = memory.size;
-      else if (strcasecmp(key.c_str(), "speed") == 0)
+      else if (icaseis(key, "speed"))
         memoryj["speed"] = memory.speed;
-      else if (strcasecmp(key.c_str(), "manufacturer") == 0)
+      else if (icaseis(key, "manufacturer"))
         memoryj["manufacturer"] = memory.manufacturer;
-      else if (strcasecmp(key.c_str(), "model") == 0)
+      else if (icaseis(key, "model"))
         memoryj["model"] = memory.model;
-      else if (strcasecmp(key.c_str(), "serial") == 0)
+      else if (icaseis(key, "serial"))
         memoryj["serial"] = memory.serial;
-      else if (strcasecmp(key.c_str(), "bank") == 0)
+      else if (icaseis(key, "bank"))
         memoryj["bank"] = memory.bank;
       else
       {

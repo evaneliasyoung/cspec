@@ -4,19 +4,20 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-17
- *  @date      2021-11-24
+ *  @date      2021-11-25
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
+#include "../utils/strcmp.hpp"
 #include "ns.h"
 
 cspec::system::kernel_t cspec::system::stokrn(const string &kernel)
 {
-  if (strcasecmp(kernel.c_str(), "Windows NT") == 0)
+  if (icaseis(kernel, "Windows NT"))
     return cspec::system::kernel_t::nt;
-  else if (strcasecmp(kernel.c_str(), "Linux") == 0)
+  else if (icaseis(kernel, "Linux"))
     return cspec::system::kernel_t::linux;
-  else if (strcasecmp(kernel.c_str(), "Darwin") == 0)
+  else if (icaseis(kernel, "Darwin"))
     return cspec::system::kernel_t::darwin;
   else
     return cspec::system::kernel_t::unknown;

@@ -8,6 +8,7 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
+#include "../utils/strcmp.hpp"
 #include "ns.h"
 
 json cspec::gpu::collect()
@@ -23,7 +24,7 @@ json cspec::gpu::collect()
 
 json cspec::gpu::collect(const vector<string> &keys)
 {
-  if (keys.size() == 1 && (strcasecmp(keys[0].c_str(), "all") == 0 || keys[0] == "*"))
+  if (keys.size() == 1 && (icaseis(keys[0], "all") || keys[0] == "*"))
     return cspec::gpu::collect();
 
   auto ret = R"([])"_json;
@@ -33,11 +34,11 @@ json cspec::gpu::collect(const vector<string> &keys)
     auto gpuj = R"({})"_json;
     for (const auto &key: keys)
     {
-      if (strcasecmp(key.c_str(), "name") == 0)
+      if (icaseis(key, "name"))
         gpuj["name"] = gpu.name;
-      else if (strcasecmp(key.c_str(), "memory") == 0)
+      else if (icaseis(key, "memory"))
         gpuj["memory"] = gpu.memory;
-      else if (strcasecmp(key.c_str(), "vendor") == 0)
+      else if (icaseis(key, "vendor"))
         gpuj["architecture"] = cspec::gpu::vndtos(gpu.vendor);
       else
       {

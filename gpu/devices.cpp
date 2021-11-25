@@ -4,26 +4,26 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-20
- *  @date      2021-11-24
+ *  @date      2021-11-25
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
+#include "../utils/strcmp.hpp"
 #include "ns.h"
 
 cspec::gpu::vendor_t cspec::gpu::stovnd(const string &vendor)
 {
-  if (strcasecmp(vendor.c_str(), "NVIDIA") == 0)
+  if (icaseis(vendor, "NVIDIA"))
     return cspec::gpu::vendor_t::nvidia;
-  else if (strcasecmp(vendor.c_str(), "AMD") == 0 || strcasecmp(vendor.c_str(), "ATi") == 0
-           || strcasecmp(vendor.c_str(), "Advanced Micro Devices") == 0)
+  else if (icaseis(vendor, "AMD") || icaseis(vendor, "ATi") || icaseis(vendor, "Advanced Micro Devices"))
     return cspec::gpu::vendor_t::amd;
-  else if (strcasecmp(vendor.c_str(), "Intel") == 0)
+  else if (icaseis(vendor, "Intel"))
     return cspec::gpu::vendor_t::intel;
-  else if (strcasecmp(vendor.c_str(), "Microsoft") == 0)
+  else if (icaseis(vendor, "Microsoft"))
     return cspec::gpu::vendor_t::microsoft;
-  else if (strcasecmp(vendor.c_str(), "Qualcomm") == 0)
+  else if (icaseis(vendor, "Qualcomm"))
     return cspec::gpu::vendor_t::qualcomm;
-  else if (strcasecmp(vendor.c_str(), "VMware") == 0)
+  else if (icaseis(vendor, "VMware"))
     return cspec::gpu::vendor_t::vmware;
   else
     return cspec::gpu::vendor_t::unknown;

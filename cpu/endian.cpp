@@ -4,15 +4,16 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-11
- *  @date      2021-11-24
+ *  @date      2021-11-25
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
+#include "../utils/strcmp.hpp"
 #include "ns.h"
 
 cspec::cpu::endian_t cspec::cpu::stoend(const string &endian_type)
 {
-  if (strcasecmp(endian_type.c_str(), "Big Endian"))
+  if (icaseis(endian_type, "Big Endian"))
     return cspec::cpu::endian_t::big;
   return cspec::cpu::endian_t::little;
 }

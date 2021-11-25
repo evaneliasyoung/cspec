@@ -8,6 +8,7 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
+#include "../utils/strcmp.hpp"
 #include "ns.h"
 
 #include <map>
@@ -29,18 +30,18 @@ void cspec::cli::list(argparse::ArgumentParser args)
 
   for (const auto &ns: listings)
   {
-    if (strcasecmp(ns.c_str(), "all.all") == 0)
+    if (icaseis(ns, "all.all"))
     {
       complete = true;
       break;
     }
-    else if (strcasecmp(ns.c_str(), "all") == 0)
+    else if (icaseis(ns, "all"))
     {
       overview = true;
       break;
     }
     for (const auto &exp: namespaces)
-      if (strcasecmp(ns.c_str(), exp.c_str()) == 0)
+      if (icaseis(ns, exp))
       {
         captured.insert({exp, all_queries.at(exp)});
         break;

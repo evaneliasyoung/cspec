@@ -4,21 +4,22 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-16
- *  @date      2021-11-24
+ *  @date      2021-11-25
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
+#include "../utils/strcmp.hpp"
 #include "ns.h"
 
 cspec::cpu::cache_type_t cspec::cpu::stocch(const string &cache_type)
 {
-  if (strcasecmp(cache_type.c_str(), "Unified") == 0)
+  if (icaseis(cache_type, "Unified"))
     return cspec::cpu::cache_type_t::instruction;
-  if (strcasecmp(cache_type.c_str(), "Instruction") == 0)
+  if (icaseis(cache_type, "Instruction"))
     return cspec::cpu::cache_type_t::instruction;
-  if (strcasecmp(cache_type.c_str(), "Data") == 0)
+  if (icaseis(cache_type, "Data"))
     return cspec::cpu::cache_type_t::data;
-  if (strcasecmp(cache_type.c_str(), "Trace") == 0)
+  if (icaseis(cache_type, "Trace"))
     return cspec::cpu::cache_type_t::trace;
   return cspec::cpu::cache_type_t::unknown;
 }

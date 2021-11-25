@@ -8,7 +8,7 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../core.h"
+#include "../utils/strcmp.hpp"
 #include "ns.h"
 
 json cspec::filesystem::collect()
@@ -24,7 +24,7 @@ json cspec::filesystem::collect()
 
 json cspec::filesystem::collect(const vector<string> &keys)
 {
-  if (keys.size() == 1 && (strcasecmp(keys[0].c_str(), "all") == 0 || keys[0] == "*"))
+  if (keys.size() == 1 && (icaseis(keys[0], "all") || keys[0] == "*"))
     return cspec::filesystem::collect();
 
   auto ret = R"([])"_json;
@@ -34,13 +34,13 @@ json cspec::filesystem::collect(const vector<string> &keys)
     auto filesystemj = R"({})"_json;
     for (const auto &key: keys)
     {
-      if (strcasecmp(key.c_str(), "name") == 0)
+      if (icaseis(key, "name"))
         filesystemj["name"] = filesystem.name;
-      else if (strcasecmp(key.c_str(), "sizes") == 0)
+      else if (icaseis(key, "sizes"))
         filesystemj["sizes"] = filesystem.sizes;
-      else if (strcasecmp(key.c_str(), "mount") == 0)
+      else if (icaseis(key, "mount"))
         filesystemj["mount"] = filesystem.mount;
-      else if (strcasecmp(key.c_str(), "type") == 0)
+      else if (icaseis(key, "type"))
         filesystemj["architecture"] = cspec::filesystem::fstos(filesystem.type);
       else
         throw std::invalid_argument("invalid filesystem request key.");

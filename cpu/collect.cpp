@@ -8,6 +8,7 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
+#include "../utils/strcmp.hpp"
 #include "ns.h"
 
 json cspec::cpu::collect()
@@ -33,27 +34,27 @@ json cspec::cpu::collect()
 
 json cspec::cpu::collect(const vector<string> &keys)
 {
-  if (keys.size() == 1 && (strcasecmp(keys[0].c_str(), "all") == 0 || keys[0] == "*"))
+  if (keys.size() == 1 && (icaseis(keys[0], "all") || keys[0] == "*"))
     return cspec::cpu::collect();
 
   auto ret = R"({})"_json;
   for (const auto &key: keys)
   {
-    if (strcasecmp(key.c_str(), "name") == 0)
+    if (icaseis(key, "name"))
       ret["name"] = cspec::cpu::name();
-    else if (strcasecmp(key.c_str(), "amounts") == 0)
+    else if (icaseis(key, "amounts"))
       ret["amounts"] = cspec::cpu::amounts();
-    else if (strcasecmp(key.c_str(), "architecture") == 0)
+    else if (icaseis(key, "architecture"))
       ret["architecture"] = cspec::cpu::archtos(cspec::cpu::architecture());
-    else if (strcasecmp(key.c_str(), "clock") == 0)
+    else if (icaseis(key, "clock"))
       ret["clock"] = cspec::cpu::clock();
-    else if (strcasecmp(key.c_str(), "endian") == 0)
+    else if (icaseis(key, "endian"))
       ret["endian"] = cspec::cpu::endian() == cspec::cpu::endian_t::big ? "big" : "little";
-    else if (strcasecmp(key.c_str(), "vendor") == 0)
+    else if (icaseis(key, "vendor"))
       ret["vendor"] = cspec::cpu::vendor();
-    else if (strcasecmp(key.c_str(), "group") == 0)
+    else if (icaseis(key, "group"))
       ret["group"] = cspec::cpu::group();
-    else if (strcasecmp(key.c_str(), "cache") == 0)
+    else if (icaseis(key, "cache"))
     {
       auto caches = array<cspec::cpu::cache_t, 4>{};
       for (auto i = 0; i < 4; ++i)

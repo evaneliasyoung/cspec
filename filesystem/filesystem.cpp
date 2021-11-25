@@ -4,23 +4,24 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-23
- *  @date      2021-11-24
+ *  @date      2021-11-25
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
+#include "../utils/strcmp.hpp"
 #include "ns.h"
 
 cspec::filesystem::filesystem_type_t cspec::filesystem::stofs(const string &filesystem)
 {
-  if (strcasecmp(filesystem.c_str(), "NTFS") == 0)
+  if (icaseis(filesystem, "NTFS"))
     return cspec::filesystem::filesystem_type_t::ntfs;
-  else if (strcasecmp(filesystem.c_str(), "FAT") == 0)
+  else if (icaseis(filesystem, "FAT"))
     return cspec::filesystem::filesystem_type_t::fat;
-  else if (strcasecmp(filesystem.c_str(), "exFAT") == 0)
+  else if (icaseis(filesystem, "exFAT"))
     return cspec::filesystem::filesystem_type_t::exfat;
-  else if (strcasecmp(filesystem.c_str(), "HFS") == 0)
+  else if (icaseis(filesystem, "HFS"))
     return cspec::filesystem::filesystem_type_t::hfs;
-  else if (strcasecmp(filesystem.c_str(), "EXT") == 0)
+  else if (icaseis(filesystem, "EXT"))
     return cspec::filesystem::filesystem_type_t::ext;
   else
     return cspec::filesystem::filesystem_type_t::unknown;

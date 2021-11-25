@@ -8,6 +8,7 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
+#include "../utils/strcmp.hpp"
 #include "ns.h"
 
 json cspec::system::collect()
@@ -23,17 +24,17 @@ json cspec::system::collect()
 
 json cspec::system::collect(const vector<string> &keys)
 {
-  if (keys.size() == 1 && (strcasecmp(keys[0].c_str(), "all") == 0 || keys[0] == "*"))
+  if (keys.size() == 1 && (icaseis(keys[0], "all") || keys[0] == "*"))
     return cspec::system::collect();
 
   auto ret = R"({})"_json;
   for (const auto &key: keys)
   {
-    if (strcasecmp(key.c_str(), "os") == 0)
+    if (icaseis(key, "os"))
       ret["os"] = cspec::system::os();
-    else if (strcasecmp(key.c_str(), "kernel") == 0)
+    else if (icaseis(key, "kernel"))
       ret["kernel"] = cspec::system::kernel();
-    else if (strcasecmp(key.c_str(), "times") == 0)
+    else if (icaseis(key, "times"))
       ret["times"] = cspec::system::times();
     else
       throw std::invalid_argument("invalid system request key.");
