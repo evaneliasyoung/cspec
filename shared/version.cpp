@@ -29,10 +29,10 @@ cspec::shared::version_t cspec::shared::stover(const string &ver)
     return {};
 
   auto iter = 0;
-  const auto major = std::stoull(match[++iter]);
-  const auto minor = std::stoull(match[++iter]);
-  const auto patch = std::stoull(match[++iter]);
-  const auto build = std::stoull(match[++iter]);
+  const auto major = std::stoul(match[++iter]);
+  const auto minor = std::stoul(match[++iter]);
+  const auto patch = std::stoul(match[++iter]);
+  const auto build = std::stoul(match[++iter]);
 
   return {major, minor, patch, build};
 }
