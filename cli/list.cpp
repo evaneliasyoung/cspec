@@ -39,16 +39,12 @@ void cspec::cli::list(argparse::ArgumentParser args)
       overview = true;
       break;
     }
-    else if (strcasecmp(ns.c_str(), "CPU") == 0)
-      captured.insert({"cpu", all_queries.at("cpu")});
-    else if (strcasecmp(ns.c_str(), "Filesystem") == 0)
-      captured.insert({"filesystem", all_queries.at("filesystem")});
-    else if (strcasecmp(ns.c_str(), "GPU") == 0)
-      captured.insert({"gpu", all_queries.at("gpu")});
-    else if (strcasecmp(ns.c_str(), "Memory") == 0)
-      captured.insert({"memory", all_queries.at("memory")});
-    else if (strcasecmp(ns.c_str(), "System") == 0)
-      captured.insert({"system", all_queries.at("system")});
+    for (const auto &exp: namespaces)
+      if (strcasecmp(ns.c_str(), exp.c_str()) == 0)
+      {
+        captured.insert({exp, all_queries.at(exp)});
+        break;
+      }
   }
 
   if (format == cspec::cli::format_t::json)
