@@ -13,6 +13,7 @@
 #include "../core.h"
 
 #include <algorithm>
+#include <iostream>
 
 inline bool icaseis(const char *&a, const char *&b)
 {
@@ -21,17 +22,17 @@ inline bool icaseis(const char *&a, const char *&b)
 
 inline bool icaseis(const string &a, const string &b)
 {
-  return icaseis(a.c_str(), b.c_str());
+  return strcasecmp(a.c_str(), b.c_str()) == 0;
 }
 
 inline bool icaseis(const string &a, const char *&b)
 {
-  return icaseis(a.c_str(), b);
+  return strcasecmp(a.c_str(), b) == 0;
 }
 
 inline bool icaseis(const char *&a, const string &b)
 {
-  return icaseis(a, b.c_str());
+  return strcasecmp(a, b.c_str()) == 0;
 }
 
 inline bool contains_icase(const vector<string> &v, const string &s)
@@ -40,5 +41,6 @@ inline bool contains_icase(const vector<string> &v, const string &s)
                       [&s](const string &x) -> bool
                       {
                         return icaseis(s, x);
-                      }) != std::end(v);
+                      })
+         != std::end(v);
 }
