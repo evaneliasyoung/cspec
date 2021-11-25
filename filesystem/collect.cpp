@@ -4,11 +4,9 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-24
- *  @date      2021-11-24
+ *  @date      2021-11-25
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
-
-#pragma once
 
 #include "../core.h"
 #include "ns.h"
