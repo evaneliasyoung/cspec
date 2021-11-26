@@ -25,6 +25,8 @@ cspec::filesystem::filesystem_type_t cspec::filesystem::stofs(const string &file
     return cspec::filesystem::filesystem_type_t::ext;
   else if (icaseis(filesystem, "EXT4"))
     return cspec::filesystem::filesystem_type_t::ext4;
+  else if (icaseis(filesystem, "AFPS"))
+    return cspec::filesystem::filesystem_type_t::afps;
   else
     return cspec::filesystem::filesystem_type_t::unknown;
 }
