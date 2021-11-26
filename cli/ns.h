@@ -12,13 +12,54 @@
 
 #include "../core.h"
 #include "../lib/argparse/include/argparse/argparse.hpp"
+#include "../utils/strcmp.hpp"
 
 #include <iostream>
+#include <map>
 
 namespace cspec
 {
   namespace cli
   {
+    enum class namespace_t
+    {
+      cpu,
+      filesystem,
+      gpu,
+      memory,
+      system
+    };
+    namespace_t stons(const string &ns);
+    string nstos(const namespace_t &ns);
+
+    const std::map<string, vector<string>> queries = {
+      {"cpu", {"all", "name", "amounts", "architecture", "clock", "endian", "vendor", "group"}},
+      {"filesystem", {"all", "name", "sizes", "mount", "type"}},
+      {"gpu", {"all", "name", "memory", "architecture"}},
+      {"memory", {"all", "voltage", "form_factor", "size", "speed", "manufacturer", "model", "serial", "bank"}},
+      {"system", {"all", "os", "kernel", "times"}}};
+    const vector<string> namespaces = {"cpu", "filesystem", "gpu", "memory", "system"};
+
+    class exception
+    {
+      protected:
+      string _msg;
+      public:
+      const char *what() const;
+    };
+
+    class invalid_namespace: public exception
+    {
+      public:
+      invalid_namespace(const string &ns);
+    };
+
+    class invalid_query: public exception
+    {
+      public:
+      invalid_query(const string &ns, const string &query);
+    };
+
     enum class format_t
     {
       list,
@@ -28,10 +69,6 @@ namespace cspec
     };
 
     argparse::ArgumentParser parse_args(int argc, char const *argv[]);
-    void stream(const json &j);
-    void stream(const vector<string> &values);
-    void stream(const format_t &format, const vector<string> &values);
-    void stream(const format_t &format, const std::map<string, string> &keyval);
     void list(argparse::ArgumentParser args);
     void get(argparse::ArgumentParser args);
     void run(argparse::ArgumentParser args);

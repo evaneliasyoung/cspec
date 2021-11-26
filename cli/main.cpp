@@ -15,7 +15,20 @@ void cspec::cli::run(argparse::ArgumentParser args)
   if (args.get("action") == "list")
     cspec::cli::list(args);
   else
-    cspec::cli::get(args);
+  {
+    try
+    {
+      cspec::cli::get(args);
+    }
+    catch (const cspec::cli::invalid_namespace &e)
+    {
+      std::cerr << e.what() << '\n';
+    }
+    catch (const cspec::cli::invalid_query &e)
+    {
+      std::cerr << e.what() << '\n';
+    }
+  }
 }
 
 void cspec::cli::main(int argc, char const *argv[])
