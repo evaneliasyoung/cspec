@@ -36,7 +36,7 @@ argparse::ArgumentParser cspec::cli::parse_args(int argc, char const *argv[])
     .help("set output format; one of 'list', 'compact', 'value' (only), 'json'")
     .nargs(1);
 
-  args.add_argument("--human").default_value(false).implicit_value(true).nargs(0).help(
+  args.add_argument("--human", "-H").default_value(false).implicit_value(true).nargs(0).help(
     "displays values in a human-friendly format");
 
   args.add_argument("action")
