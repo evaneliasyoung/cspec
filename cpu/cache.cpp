@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-16
- *  @date      2021-11-25
+ *  @date      2021-11-26
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -95,6 +95,8 @@ cspec::cpu::cache_t cspec::cpu::cache(u8 level)
 }
 #elif defined(MAC)
 #else
+#include "../utils/bitpow.hpp"
+
 #include <fstream>
 
 cspec::cpu::cache_t cspec::cpu::cache(u8 level)
@@ -119,6 +121,7 @@ cspec::cpu::cache_t cspec::cpu::cache(u8 level)
         case 'K':
           ret.size *= 1024;
       }
+      ret.size = depow2(ret.size);
     }
   }
 

@@ -8,6 +8,7 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
+#include "../utils/bitpow.hpp"
 #include "../utils/strcmp.hpp"
 #include "ns.h"
 
@@ -63,7 +64,6 @@ void cspec::gpu::from_json(const json &j, cspec::gpu::gpu_info_t &gpu)
 }
 
 #if defined(WIN)
-#include "../utils/bitpow.hpp"
 #include "../utils/win/registry.hpp"
 
 vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
@@ -118,6 +118,7 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
             case 'K':
               info.memory *= 1024;
           }
+          info.memory = depow2(info.memory);
         }
       }
       ret.push_back(info);
