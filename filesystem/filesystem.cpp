@@ -126,7 +126,6 @@ vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
     if (line.size() > 0 && line[0] == '/')
     {
       cspec::filesystem::filesystem_t fs;
-      std::cout << line << '\n';
       const auto name_space = line.find_first_of(' ');
       const auto mount_space = line.find_first_of(' ', name_space + 1);
       const auto type_space = line.find_first_of(' ', mount_space + 1);
