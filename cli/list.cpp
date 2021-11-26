@@ -10,46 +10,45 @@
 
 #include "ns.h"
 
+void stream(const cspec::cli::format_t &format, const std::map<string, vector<string>> &queries)
+{
+  if (format == cspec::cli::format_t::json)
+    std::cout << json(queries).dump(2) << '\n';
+  else
+    for (const auto &[ns, keys]: queries)
+      for (const auto &key: keys)
+        std::cout << ns << '.' << key << '\n';
+}
+
+void stream(const cspec::cli::format_t &format, const vector<string> &namespaces)
+{
+  if (format == cspec::cli::format_t::json)
+    std::cout << json(namespaces).dump(2) << '\n';
+  else
+    for (const auto &ns: namespaces)
+      std::cout << ns << '\n';
+}
+
+std::map<string, vector<string>> capture(const vector<string> &query)
+{
+  std::map<string, vector<string>> captured = {};
+  for (const auto &ns: query)
+    if (contains_icase(cspec::cli::namespaces, ns))
+      captured.insert({ns, cspec::cli::queries.at(ns)});
+    else
+      throw cspec::cli::invalid_namespace(ns);
+  return captured;
+}
+
 void cspec::cli::list(argparse::ArgumentParser args)
 {
-  auto listings = args.get<vector<string>>("query");
-  auto format = args.get<cspec::cli::format_t>("format");
-  std::map<string, vector<string>> captured = {};
-  bool overview = false;
-  bool complete = false;
+  const auto format = args.get<cspec::cli::format_t>("format");
+  const auto query = args.get<vector<string>>("query");
 
-  for (const auto &ns: listings)
-  {
-    if (icaseis(ns, "all.all"))
-    {
-      complete = true;
-      break;
-    }
-    else if (icaseis(ns, "all"))
-    {
-      overview = true;
-      break;
-    }
-    else
-      captured.insert({ns, cspec::cli::queries.at(ns)});
-  }
-
-  if (format == cspec::cli::format_t::json)
-    if (complete)
-      std::cout << json(cspec::cli::queries).dump(2) << '\n';
-    else if (overview)
-      std::cout << json(cspec::cli::namespaces).dump(2) << '\n';
-    else
-      std::cout << json(captured).dump(2) << '\n';
-  else if (complete)
-    for (const auto &[ns, keys]: cspec::cli::queries)
-      for (const auto &key: keys)
-        std::cout << ns << '.' << key << '\n';
-  else if (overview)
-    for (const auto &[ns, keys]: cspec::cli::queries)
-      std::cout << ns << '\n';
+  if (contains_icase(query, "all.all"))
+    stream(format, cspec::cli::queries);
+  else if (contains_icase(query, "all"))
+    stream(format, cspec::cli::namespaces);
   else
-    for (const auto &[ns, keys]: captured)
-      for (const auto &key: keys)
-        std::cout << ns << '.' << key << '\n';
+    stream(format, capture(query));
 }
