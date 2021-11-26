@@ -22,11 +22,11 @@ namespace cspec
   namespace cli
   {
     const std::map<string, vector<string>> queries = {
-      {"cpu", {"all", "name", "amounts", "architecture", "clock", "endian", "vendor", "group"}},
-      {"filesystem", {"all", "name", "sizes", "mount", "type"}},
-      {"gpu", {"all", "name", "memory", "architecture"}},
-      {"memory", {"all", "voltage", "form_factor", "size", "speed", "manufacturer", "model", "serial", "bank"}},
-      {"system", {"all", "os", "kernel", "times"}}};
+      {"cpu", {"name", "amounts", "architecture", "clock", "endian", "vendor", "group"}},
+      {"filesystem", {"name", "sizes", "mount", "type"}},
+      {"gpu", {"name", "memory", "architecture"}},
+      {"memory", {"voltage", "form_factor", "size", "speed", "manufacturer", "model", "serial", "bank"}},
+      {"system", {"os", "kernel", "times"}}};
     const vector<string> namespaces = {"cpu", "filesystem", "gpu", "memory", "system"};
 
     class exception

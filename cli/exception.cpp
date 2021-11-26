@@ -18,7 +18,7 @@ const char *cspec::cli::exception::what() const
 cspec::cli::invalid_namespace::invalid_namespace(const string &ns)
 {
   std::stringstream ss;
-  ss << "invalid namespace " << '"' << ns << '"' << "; excepted one of {";
+  ss << "invalid namespace " << '"' << ns << '"' << "; excepted \"all\" or one of {";
   for (const auto &exp: cspec::cli::namespaces)
     ss << '"' << exp << '"' << ',' << ' ';
   ss.seekp(ss.cur - 3, std::ios_base::end);
@@ -29,7 +29,7 @@ cspec::cli::invalid_namespace::invalid_namespace(const string &ns)
 cspec::cli::invalid_query::invalid_query(const string &ns, const string &query)
 {
   std::stringstream ss;
-  ss << "invalid query " << '"' << query << '"' << " in " << '"' << ns << '"' << "; excepted one of {";
+  ss << "invalid query " << '"' << query << '"' << " in " << '"' << ns << '"' << "; excepted \"all\" or one of {";
   for (const auto &exp: cspec::cli::queries.at(ns))
     ss << '"' << exp << '"' << ',' << ' ';
   ss.seekp(ss.cur - 3, std::ios_base::end);
