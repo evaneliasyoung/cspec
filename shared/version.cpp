@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-24
- *  @date      2021-11-24
+ *  @date      2021-11-26
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -29,10 +29,10 @@ cspec::shared::version_t cspec::shared::stover(const string &ver)
     return {};
 
   auto iter = 0;
-  const auto major = std::stoul(match[++iter]);
-  const auto minor = std::stoul(match[++iter]);
-  const auto patch = std::stoul(match[++iter]);
-  const auto build = std::stoul(match[++iter]);
+  const u64 major = std::stoull(match[++iter]);
+  const u64 minor = std::stoull(match[++iter]);
+  const u64 patch = std::stoull(match[++iter]);
+  const u64 build = std::stoull(match[++iter]);
 
   return {major, minor, patch, build};
 }

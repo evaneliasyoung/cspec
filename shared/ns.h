@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-24
- *  @date      2021-11-24
+ *  @date      2021-11-26
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -20,10 +20,10 @@ namespace cspec
   {
     struct version_t
     {
-      u32 major;
-      u32 minor;
-      u32 patch;
-      u32 build;
+      u64 major;
+      u64 minor;
+      u64 patch;
+      u64 build;
     };
     string vertos(const version_t &ver);
     version_t stover(const string &ver);
