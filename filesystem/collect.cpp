@@ -42,8 +42,6 @@ json cspec::filesystem::collect(const vector<string> &keys)
         filesystemj["mount"] = filesystem.mount;
       else if (icaseis(key, "type"))
         filesystemj["architecture"] = cspec::filesystem::fstos(filesystem.type);
-      else
-        throw std::invalid_argument("invalid filesystem request key.");
     }
     ret.push_back(filesystemj);
   }

@@ -36,8 +36,6 @@ json cspec::system::collect(const vector<string> &keys)
       ret["kernel"] = cspec::system::kernel();
     else if (icaseis(key, "times"))
       ret["times"] = cspec::system::times();
-    else
-      throw std::invalid_argument("invalid system request key.");
   }
   return ret;
 }

@@ -40,10 +40,6 @@ json cspec::gpu::collect(const vector<string> &keys)
         gpuj["memory"] = gpu.memory;
       else if (icaseis(key, "vendor"))
         gpuj["architecture"] = cspec::gpu::vndtos(gpu.vendor);
-      else
-      {
-        throw std::invalid_argument("invalid gpu request key.");
-      }
     }
     ret.push_back(gpuj);
   }

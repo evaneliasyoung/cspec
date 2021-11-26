@@ -61,8 +61,6 @@ json cspec::cpu::collect(const vector<string> &keys)
         caches[i] = cspec::cpu::cache(i);
       ret["cache"] = json(caches);
     }
-    else
-      throw std::invalid_argument("invalid CPU request key.");
   }
 
   return ret;

@@ -50,10 +50,6 @@ json cspec::memory::collect(const vector<string> &keys)
         memoryj["serial"] = memory.serial;
       else if (icaseis(key, "bank"))
         memoryj["bank"] = memory.bank;
-      else
-      {
-        throw std::invalid_argument("invalid memory request key.");
-      }
     }
     ret.push_back(memoryj);
   }
