@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-17
- *  @date      2021-11-21
+ *  @date      2021-11-26
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -53,10 +53,10 @@ static cspec::system::os_info_t lsb_release(std::ifstream &release)
     else if (line.find("DISTRIB_RELEASE") == 0)
     {
       char *marker = &line[line.find('=') + 1];
-      ret.major = std::strtoul(marker, &marker, 10);
-      ret.minor = std::strtoul(marker + 1, &marker, 10);
-      ret.patch = std::strtoul(marker + 1, &marker, 10);
-      ret.build = std::strtoul(marker + 1, nullptr, 10);
+      ret.version.major = std::strtoul(marker, &marker, 10);
+      ret.version.minor = std::strtoul(marker + 1, &marker, 10);
+      ret.version.patch = std::strtoul(marker + 1, &marker, 10);
+      ret.version.build = std::strtoul(marker + 1, nullptr, 10);
     }
     else if (line.find("DISTRIB_DESCRIPTION") == 0)
     {
@@ -109,13 +109,13 @@ cspec::system::os_info_t cspec::system::os()
       char *marker = &line[line.find('=') + 1];
       if (marker[0] == '"')
         ++marker;
-      ret.major = std::strtoul(marker, &marker, 10);
+      ret.version.major = std::strtoul(marker, &marker, 10);
       if (marker[0] && marker[0] != '"')
-        ret.minor = std::strtoul(marker + 1, &marker, 10);
+        ret.version.minor = std::strtoul(marker + 1, &marker, 10);
       if (marker[0] && marker[0] != '"')
-        ret.patch = std::strtoul(marker + 1, &marker, 10);
+        ret.version.patch = std::strtoul(marker + 1, &marker, 10);
       if (marker[0] && marker[0] != '"')
-        ret.build = std::strtoul(marker + 1, nullptr, 10);
+        ret.version.build = std::strtoul(marker + 1, nullptr, 10);
     }
   }
 
