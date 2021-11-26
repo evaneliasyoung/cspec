@@ -14,7 +14,7 @@ void cspec::cli::list(argparse::ArgumentParser args)
 {
   auto listings = args.get<vector<string>>("query");
   auto format = args.get<cspec::cli::format_t>("format");
-  std::map<cspec::cli::namespace_t, vector<string>> captured = {};
+  std::map<string, vector<string>> captured = {};
   bool overview = false;
   bool complete = false;
 
@@ -31,7 +31,7 @@ void cspec::cli::list(argparse::ArgumentParser args)
       break;
     }
     else
-      captured.insert({cspec::cli::stons(ns), cspec::cli::queries.at(ns)});
+      captured.insert({ns, cspec::cli::queries.at(ns)});
   }
 
   if (format == cspec::cli::format_t::json)
@@ -51,5 +51,5 @@ void cspec::cli::list(argparse::ArgumentParser args)
   else
     for (const auto &[ns, keys]: captured)
       for (const auto &key: keys)
-        std::cout << cspec::cli::nstos(ns) << '.' << key << '\n';
+        std::cout << ns << '.' << key << '\n';
 }

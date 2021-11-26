@@ -21,17 +21,6 @@ namespace cspec
 {
   namespace cli
   {
-    enum class namespace_t
-    {
-      cpu,
-      filesystem,
-      gpu,
-      memory,
-      system
-    };
-    namespace_t stons(const string &ns);
-    string nstos(const namespace_t &ns);
-
     const std::map<string, vector<string>> queries = {
       {"cpu", {"all", "name", "amounts", "architecture", "clock", "endian", "vendor", "group"}},
       {"filesystem", {"all", "name", "sizes", "mount", "type"}},
@@ -44,6 +33,7 @@ namespace cspec
     {
       protected:
       string _msg;
+
       public:
       const char *what() const;
     };
