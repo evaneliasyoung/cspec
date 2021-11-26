@@ -75,7 +75,7 @@ namespace cspec
                         const umax &prec = SI_PREC);
     string human_format(const double &n, const si_unit_t &to, const string &suf = "", const umax &prec = SI_PREC);
     string human_format(const double &n, const string &suf = "", const umax &prec = SI_PREC);
-    json human_friendly_json(json &j);
+    void human_friendly_json(json &j);
 
     argparse::ArgumentParser parse_args(int argc, char const *argv[]);
     void list(argparse::ArgumentParser args);

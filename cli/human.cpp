@@ -48,7 +48,7 @@ string cspec::cli::human_format(const double &n, const string &suf, const umax &
   return cspec::cli::human_format(n, (cspec::cli::si_unit_t)(umax)std::floor(std::log(n) / std::log(1000)), suf, prec);
 }
 
-json cspec::cli::human_friendly_json(json &j)
+void cspec::cli::human_friendly_json(json &j)
 {
   if (j.contains("cpu"))
     if (j["cpu"].contains("clock"))
@@ -77,5 +77,4 @@ json cspec::cli::human_friendly_json(json &j)
           vlt =
             cspec::cli::human_format(vlt.get<double>(), cspec::cli::si_unit_t::base, cspec::cli::si_unit_t::base, "V");
     }
-  return j;
 }
