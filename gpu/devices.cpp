@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-20
- *  @date      2021-11-25
+ *  @date      2021-11-26
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -63,6 +63,7 @@ void cspec::gpu::from_json(const json &j, cspec::gpu::gpu_info_t &gpu)
 }
 
 #if defined(WIN)
+#include "../utils/bitpow.hpp"
 #include "../utils/win/registry.hpp"
 
 vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
@@ -72,7 +73,7 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 
   cspec::gpu::vendor_t vendor = cspec::gpu::stovnd(read_registry_sz<13>(HKEY_LOCAL_MACHINE, gpu_path, "ProviderName"));
   const string name = read_registry_sz<80>(HKEY_LOCAL_MACHINE, gpu_path, "HardwareInformation.AdapterString");
-  const auto memory = read_registry_qw(HKEY_LOCAL_MACHINE, gpu_path, "HardwareInformation.qwMemorySize");
+  const auto memory = depow2(read_registry_qw(HKEY_LOCAL_MACHINE, gpu_path, "HardwareInformation.qwMemorySize"));
 
   ret.push_back({vendor, name, memory});
 

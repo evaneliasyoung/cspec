@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-23
- *  @date      2021-11-24
+ *  @date      2021-11-26
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -47,6 +47,7 @@ void cspec::memory::from_json(const json &j, cspec::memory::memory_t &mem)
 }
 
 #if defined(WIN)
+#include "../utils/bitpow.hpp"
 #include "../utils/win/wmi.hpp"
 
 vector<cspec::memory::memory_t> cspec::memory::devices()
@@ -76,7 +77,7 @@ vector<cspec::memory::memory_t> cspec::memory::devices()
     memory.serial = chip.at("SerialNumber");
     memory.model = chip.at("PartNumber");
     memory.manufacturer = !chip.at("Manufacturer").empty() ? chip.at("Manufacturer") : "Unknown";
-    memory.size = !chip.at("Capacity").empty() ? std::stoull(chip.at("Capacity")) : 0;
+    memory.size = !chip.at("Capacity").empty() ? depow2(std::stoull(chip.at("Capacity"))) : 0;
     memory.speed = std::stoul(raw_speed) * 1000 * 1000;
     memory.voltage.configured =
       !chip.at("ConfiguredVoltage").empty() ? std::stod(chip.at("ConfiguredVoltage")) / 1000 : 0;

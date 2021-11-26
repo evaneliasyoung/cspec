@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-23
- *  @date      2021-11-25
+ *  @date      2021-11-26
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -74,6 +74,7 @@ void cspec::filesystem::from_json(const json &j, cspec::filesystem::filesystem_t
 }
 
 #if defined(WIN)
+#include "../utils/bitpow.hpp"
 #include "../utils/win/wmi.hpp"
 
 vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
@@ -94,8 +95,8 @@ vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
     filesystem.name = fs.at("Caption");
     filesystem.type = stofs(fs.at("FileSystem"));
     filesystem.mount = fs.at("Caption");
-    filesystem.sizes.total = !fs.at("Size").empty() ? std::stoull(fs.at("Size")) : 0;
-    filesystem.sizes.available = !fs.at("FreeSpace").empty() ? std::stoull(fs.at("FreeSpace")) : 0;
+    filesystem.sizes.total = !fs.at("Size").empty() ? depow2(std::stoull(fs.at("Size"))) : 0;
+    filesystem.sizes.available = !fs.at("FreeSpace").empty() ? depow2(std::stoull(fs.at("FreeSpace"))) : 0;
     filesystem.sizes.used = filesystem.sizes.total - filesystem.sizes.available;
 
     ret.push_back(filesystem);
