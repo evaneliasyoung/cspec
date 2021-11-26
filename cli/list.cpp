@@ -8,23 +8,13 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../utils/strcmp.hpp"
 #include "ns.h"
-
-#include <map>
 
 void cspec::cli::list(argparse::ArgumentParser args)
 {
   auto listings = args.get<vector<string>>("query");
   auto format = args.get<cspec::cli::format_t>("format");
-  const std::map<string, vector<string>> all_queries = {
-    {"cpu", {"all", "name", "amounts", "architecture", "clock", "endian", "vendor", "group"}},
-    {"filesystem", {"all", "name", "sizes", "mount", "type"}},
-    {"gpu", {"all", "name", "memory", "architecture"}},
-    {"memory", {"all", "voltage", "form_factor", "size", "speed", "manufacturer", "model", "serial", "bank"}},
-    {"system", {"all", "os", "kernel", "times"}}};
-  const vector<string> namespaces = {"cpu", "filesystem", "gpu", "memory", "system"};
-  std::map<string, vector<string>> captured = {};
+  std::map<cspec::cli::namespace_t, vector<string>> captured = {};
   bool overview = false;
   bool complete = false;
 
@@ -40,30 +30,26 @@ void cspec::cli::list(argparse::ArgumentParser args)
       overview = true;
       break;
     }
-    for (const auto &exp: namespaces)
-      if (icaseis(ns, exp))
-      {
-        captured.insert({exp, all_queries.at(exp)});
-        break;
-      }
+    else
+      captured.insert({cspec::cli::stons(ns), cspec::cli::queries.at(ns)});
   }
 
   if (format == cspec::cli::format_t::json)
     if (complete)
-      std::cout << json(all_queries).dump(2) << '\n';
+      std::cout << json(cspec::cli::queries).dump(2) << '\n';
     else if (overview)
-      std::cout << json(namespaces).dump(2) << '\n';
+      std::cout << json(cspec::cli::namespaces).dump(2) << '\n';
     else
       std::cout << json(captured).dump(2) << '\n';
   else if (complete)
-    for (const auto &[ns, keys]: all_queries)
+    for (const auto &[ns, keys]: cspec::cli::queries)
       for (const auto &key: keys)
         std::cout << ns << '.' << key << '\n';
   else if (overview)
-    for (const auto &[ns, keys]: all_queries)
+    for (const auto &[ns, keys]: cspec::cli::queries)
       std::cout << ns << '\n';
   else
     for (const auto &[ns, keys]: captured)
       for (const auto &key: keys)
-        std::cout << ns << '.' << key << '\n';
+        std::cout << cspec::cli::nstos(ns) << '.' << key << '\n';
 }

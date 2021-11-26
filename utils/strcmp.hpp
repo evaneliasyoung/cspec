@@ -15,6 +15,27 @@
 #include <algorithm>
 #include <iostream>
 
+inline string to_lower(const string &s)
+{
+  string ret{};
+  std::transform(s.begin(), s.end(), ret.begin(),
+                 [](auto c)
+                 {
+                   return std::tolower(c);
+                 });
+  return ret;
+}
+
+inline string to_lower(string &s)
+{
+  std::transform(s.begin(), s.end(), s.begin(),
+                 [](auto c)
+                 {
+                   return std::tolower(c);
+                 });
+  return s;
+}
+
 inline bool icaseis(const char *&a, const char *&b)
 {
   return strcasecmp(a, b) == 0;
