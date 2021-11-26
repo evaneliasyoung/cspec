@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-24
- *  @date      2021-11-25
+ *  @date      2021-11-26
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -41,7 +41,7 @@ json cspec::filesystem::collect(const vector<string> &keys)
       else if (icaseis(key, "mount"))
         filesystemj["mount"] = filesystem.mount;
       else if (icaseis(key, "type"))
-        filesystemj["architecture"] = cspec::filesystem::fstos(filesystem.type);
+        filesystemj["type"] = cspec::filesystem::fstos(filesystem.type);
     }
     ret.push_back(filesystemj);
   }
