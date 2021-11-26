@@ -10,25 +10,6 @@
 
 #include "ns.h"
 
-void stream(const cspec::cli::format_t &format, const std::map<string, vector<string>> &queries)
-{
-  if (format == cspec::cli::format_t::json)
-    std::cout << json(queries).dump(2) << '\n';
-  else
-    for (const auto &[ns, keys]: queries)
-      for (const auto &key: keys)
-        std::cout << ns << '.' << key << '\n';
-}
-
-void stream(const cspec::cli::format_t &format, const vector<string> &namespaces)
-{
-  if (format == cspec::cli::format_t::json)
-    std::cout << json(namespaces).dump(2) << '\n';
-  else
-    for (const auto &ns: namespaces)
-      std::cout << ns << '\n';
-}
-
 std::map<string, vector<string>> collect(const vector<string> &query)
 {
   std::map<string, vector<string>> collected = {};

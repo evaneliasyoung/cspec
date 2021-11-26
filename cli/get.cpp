@@ -11,17 +11,6 @@
 #include "../cspec.h"
 #include "ns.h"
 
-void stream(const cspec::cli::format_t &format, const std::map<string, std::map<string, string>> &queries)
-{
-  const auto del = format == cspec::cli::format_t::compact ? '=' : '\n';
-  if (format == cspec::cli::format_t::json)
-    std::cout << json(queries).dump(2) << '\n';
-  else
-    for (const auto &[ns, keys]: queries)
-      for (const auto &[key, val]: keys)
-        std::cout << ns << '.' << key << del << val << '\n';
-}
-
 std::map<string, vector<string>> capture(const vector<string> &query)
 {
   if (contains_icase(query, "all.all") || contains_icase(query, "all"))
@@ -52,36 +41,6 @@ std::map<string, vector<string>> capture(const vector<string> &query)
   return captured;
 }
 
-void stream_json_sub(const cspec::cli::format_t &format, vector<string> &pre, const json &j)
-{
-  if (j.is_object())
-  {
-    for (const auto &[subkey, subval]: j.items())
-    {
-      pre.push_back(subkey);
-      stream_json_sub(format, pre, j[subkey]);
-      pre.pop_back();
-    }
-  }
-  else if (j.is_array())
-  {
-    for (umax i = 0; i < j.size(); ++i)
-    {
-      pre.push_back("[" + std::to_string(i) + "]");
-      stream_json_sub(format, pre, j[i]);
-      pre.pop_back();
-    }
-  }
-  else if (format != cspec::cli::format_t::value)
-  {
-    for (const auto &key: pre)
-      std::cout << (key.back() == ']' ? "\b" : "") << key << '.';
-    std::cout << '\b' << (format == cspec::cli::format_t::compact ? "=" : " \n") << j << '\n';
-  }
-  else
-    std::cout << j << '\n';
-}
-
 void cspec::cli::get(argparse::ArgumentParser args)
 {
   const auto format = args.get<cspec::cli::format_t>("format");
@@ -96,6 +55,6 @@ void cspec::cli::get(argparse::ArgumentParser args)
   else
   {
     auto pre = vector<string>{};
-    stream_json_sub(format, pre, j);
+    stream(format, pre, j);
   }
 }

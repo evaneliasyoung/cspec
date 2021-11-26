@@ -57,6 +57,12 @@ namespace cspec
       value,
       json
     };
+    const auto format_delimiters = std::map<format_t, string>{
+      {format_t::list, " \n"},
+      {format_t::compact, "="},
+      {format_t::value, ""},
+      {format_t::json, ""},
+    };
 
     enum class si_unit_t
     {
@@ -76,6 +82,11 @@ namespace cspec
     string human_format(const double &n, const si_unit_t &to, const string &suf = "", const umax &prec = SI_PREC);
     string human_format(const double &n, const string &suf = "", const umax &prec = SI_PREC);
     void human_friendly_json(json &j);
+
+    void stream(const format_t &format, vector<string> &pre, const json &j);
+    void stream(const format_t &format, const std::map<string, vector<string>> &queries);
+    void stream(const format_t &format, const vector<string> &namespaces);
+    void stream(const format_t &format, const std::map<string, std::map<string, string>> &queries);
 
     argparse::ArgumentParser parse_args(int argc, char const *argv[]);
     void list(argparse::ArgumentParser args);
