@@ -22,7 +22,7 @@ namespace cspec
   namespace cli
   {
     const std::map<string, vector<string>> queries = {
-      {"cpu", {"name", "amounts", "architecture", "clock", "endian", "vendor", "group"}},
+      {"cpu", {"name", "amounts", "architecture", "clock", "cache", "endian", "vendor", "group"}},
       {"filesystem", {"name", "sizes", "mount", "type"}},
       {"gpu", {"name", "memory", "architecture"}},
       {"memory", {"voltage", "form_factor", "size", "speed", "manufacturer", "model", "serial", "bank"}},
@@ -57,6 +57,25 @@ namespace cspec
       value,
       json
     };
+
+    enum class si_unit_t
+    {
+      base,
+      kilo,
+      mega,
+      giga,
+      tera
+    };
+    const auto SI_PREC = 2;
+    string human_format(const umax &n, const si_unit_t &from, const si_unit_t &to, const string &suf = "",
+                        const umax &prec = SI_PREC);
+    string human_format(const umax &n, const si_unit_t &to, const string &suf = "", const umax &prec = SI_PREC);
+    string human_format(const umax &n, const string &suf = "", const umax &prec = SI_PREC);
+    string human_format(const double &n, const si_unit_t &from, const si_unit_t &to, const string &suf = "",
+                        const umax &prec = SI_PREC);
+    string human_format(const double &n, const si_unit_t &to, const string &suf = "", const umax &prec = SI_PREC);
+    string human_format(const double &n, const string &suf = "", const umax &prec = SI_PREC);
+    json human_friendly_json(json &j);
 
     argparse::ArgumentParser parse_args(int argc, char const *argv[]);
     void list(argparse::ArgumentParser args);
