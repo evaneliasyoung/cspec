@@ -23,6 +23,8 @@ cspec::filesystem::filesystem_type_t cspec::filesystem::stofs(const string &file
     return cspec::filesystem::filesystem_type_t::hfs;
   else if (icaseis(filesystem, "EXT"))
     return cspec::filesystem::filesystem_type_t::ext;
+  else if (icaseis(filesystem, "EXT4"))
+    return cspec::filesystem::filesystem_type_t::ext4;
   else
     return cspec::filesystem::filesystem_type_t::unknown;
 }
@@ -41,6 +43,8 @@ string cspec::filesystem::fstos(const cspec::filesystem::filesystem_type_t &file
       return "HFS";
     case cspec::filesystem::filesystem_type_t::ext:
       return "EXT";
+    case cspec::filesystem::filesystem_type_t::ext4:
+      return "EXT4";
     case cspec::filesystem::filesystem_type_t::afps:
       return "AFPS";
     default:
@@ -122,10 +126,13 @@ vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
     if (line.size() > 0 && line[0] == '/')
     {
       cspec::filesystem::filesystem_t fs;
-      const auto first_space = line.find(' ');
-      const auto last_space = line.find(' ', first_space);
-      fs.name = line.substr(0, first_space);
-      fs.mount = line.substr(first_space + 1, last_space - first_space + 1);
+      std::cout << line << '\n';
+      const auto name_space = line.find_first_of(' ');
+      const auto mount_space = line.find_first_of(' ', name_space + 1);
+      const auto type_space = line.find_first_of(' ', mount_space + 1);
+      fs.name = line.substr(0, name_space);
+      fs.mount = line.substr(name_space + 1, mount_space - name_space - 1);
+      fs.type = cspec::filesystem::stofs(line.substr(mount_space + 1, type_space - mount_space - 1));
 
       const auto si = std::filesystem::space(fs.mount);
       fs.sizes.total = si.capacity;

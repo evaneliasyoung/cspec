@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-23
- *  @date      2021-11-24
+ *  @date      2021-11-26
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -25,6 +25,7 @@ namespace cspec
       exfat,
       hfs,
       ext,
+      ext4,
       afps,
       unknown
     };
