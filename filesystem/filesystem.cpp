@@ -106,4 +106,34 @@ vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
 }
 #elif defined(MAC)
 #else
+#include <filesystem>
+#include <fstream>
+#include <map>
+
+vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
+{
+  vector<cspec::filesystem::filesystem_t> ret{};
+
+  std::ifstream proc_mounts("/proc/mounts");
+  if (!proc_mounts.is_open() || !proc_mounts)
+    return ret;
+
+  for (string line; std::getline(proc_mounts, line);)
+    if (line.size() > 0 && line[0] == '/')
+    {
+      cspec::filesystem::filesystem_t fs;
+      const auto first_space = line.find(' ');
+      const auto last_space = line.find(' ', first_space);
+      fs.name = line.substr(0, first_space);
+      fs.mount = line.substr(first_space + 1, last_space - first_space + 1);
+
+      const auto si = std::filesystem::space(fs.mount);
+      fs.sizes.total = si.capacity;
+      fs.sizes.available = si.available;
+      fs.sizes.used = fs.sizes.total - fs.sizes.available;
+      ret.push_back(fs);
+    };
+
+  return ret;
+}
 #endif
