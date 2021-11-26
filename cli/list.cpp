@@ -29,15 +29,15 @@ void stream(const cspec::cli::format_t &format, const vector<string> &namespaces
       std::cout << ns << '\n';
 }
 
-std::map<string, vector<string>> capture(const vector<string> &query)
+std::map<string, vector<string>> collect(const vector<string> &query)
 {
-  std::map<string, vector<string>> captured = {};
+  std::map<string, vector<string>> collected = {};
   for (const auto &ns: query)
     if (contains_icase(cspec::cli::namespaces, ns))
-      captured.insert({ns, cspec::cli::queries.at(ns)});
+      collected.insert({ns, cspec::cli::queries.at(ns)});
     else
       throw cspec::cli::invalid_namespace(ns);
-  return captured;
+  return collected;
 }
 
 void cspec::cli::list(argparse::ArgumentParser args)
@@ -50,5 +50,5 @@ void cspec::cli::list(argparse::ArgumentParser args)
   else if (contains_icase(query, "all"))
     stream(format, cspec::cli::namespaces);
   else
-    stream(format, capture(query));
+    stream(format, collect(query));
 }
