@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-16
- *  @date      2021-11-26
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -94,6 +94,12 @@ cspec::cpu::cache_t cspec::cpu::cache(u8 level)
   return {};
 }
 #elif defined(MAC)
+cspec::cpu::cache_t cspec::cpu::cache(u8 level)
+{
+  cspec::cpu::cache_t ret{};
+
+  return ret;
+}
 #else
 #include "../utils/bitpow.hpp"
 

@@ -59,6 +59,10 @@ cspec::system::times_t cspec::system::times()
   return {cur_time, install_time, boot_time};
 }
 #elif defined(MAC)
+cspec::system::times_t cspec::system::times()
+{
+  return {};
+}
 #else
 #include <sys/stat.h>
 #include <sys/sysinfo.h>

@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-23
- *  @date      2021-11-26
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -111,6 +111,12 @@ vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
   return ret;
 }
 #elif defined(MAC)
+vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
+{
+  vector<cspec::filesystem::filesystem_t> ret{};
+
+  return ret;
+}
 #else
 #include <filesystem>
 #include <fstream>

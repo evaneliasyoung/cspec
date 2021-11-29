@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-15
- *  @date      2021-11-24
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -26,6 +26,15 @@ string cspec::cpu::name()
                                     "ProcessorNameString"));
 }
 #elif defined(MAC)
+string cspec::cpu::vendor()
+{
+  return "unknown";
+}
+
+string cspec::cpu::name()
+{
+  return "unknown";
+}
 #else
 #include <fstream>
 

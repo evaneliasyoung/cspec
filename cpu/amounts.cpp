@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-16
- *  @date      2021-11-26
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -50,6 +50,12 @@ cspec::cpu::amounts_t cspec::cpu::amounts()
   return ret;
 }
 #elif defined(MAC)
+cspec::cpu::amounts_t cspec::cpu::amounts()
+{
+  cspec::cpu::amounts_t ret{};
+
+  return ret;
+}
 #else
 #include <algorithm>
 #include <fstream>

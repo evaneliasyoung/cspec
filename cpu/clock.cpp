@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-15
- *  @date      2021-11-20
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -32,6 +32,10 @@ u64 cspec::cpu::clock() noexcept
   return clock_mhz * 1000000;
 }
 #elif defined(MAC)
+u64 cspec::cpu::clock() noexcept
+{
+  return 0;
+}
 #else
 #include <fstream>
 

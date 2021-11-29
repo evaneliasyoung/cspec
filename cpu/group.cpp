@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-23
- *  @date      2021-11-24
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -44,6 +44,12 @@ cspec::cpu::group_t cspec::cpu::group()
   return {family, model, stepping};
 }
 #elif defined(MAC)
+cspec::cpu::group_t cspec::cpu::group()
+{
+  cspec::cpu::group_t ret{};
+
+  return ret;
+}
 #else
 #include <fstream>
 

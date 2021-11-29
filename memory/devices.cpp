@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-23
- *  @date      2021-11-26
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -91,5 +91,11 @@ vector<cspec::memory::memory_t> cspec::memory::devices()
   return ret;
 }
 #elif defined(MAC)
+vector<cspec::memory::memory_t> cspec::memory::devices()
+{
+  vector<cspec::memory::memory_t> ret{};
+
+  return ret;
+}
 #else
 #endif
