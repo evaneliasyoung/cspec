@@ -4,7 +4,7 @@ SOURCES    = $(wildcard *.cpp) $(wildcard **/*.cpp)
 OBJECTS    = ${SOURCES:%.cpp=%.o}
 EXEC       = cspec.exe
 
-release: TARGET_FLAGS = -O3 -static-libgcc -static-libstdc++
+release: TARGET_FLAGS = -O3
 debug: TARGET_FLAGS = -g -Wall -O0 -W -pedantic-errors
 
 release: EXEC = cspec.rel.exe
@@ -26,6 +26,7 @@ endif
 libs_wrapper=
 ifeq ($(hostos),Windows)
 	TARGET_LIBS = -lgdi32 -lversion -lOle32 -lOleAut32 -lwbemuuid
+	TARGET_FLAGS += -static-libgcc -static-libstdc++
 endif
 ifeq ($(hostos),Darwin)
 endif
