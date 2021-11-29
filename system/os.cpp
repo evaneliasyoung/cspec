@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-17
- *  @date      2021-11-26
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -38,6 +38,44 @@ cspec::system::os_info_t cspec::system::os()
 {
   const auto version = cspec::system::kernel().version;
   return {"Windows NT", version_name(), version};
+}
+#elif defined(MAC)
+#include "../utils/mac/sysctl.hpp"
+
+cspec::system::os_info_t cspec::system::os()
+{
+  cspec::shared::version_t ver{};
+  string buf;
+  string name;
+  string full_name;
+
+  if (sysctlstring<16>("kern.osrelease", buf))
+  {
+    umax kern = std::stoull(buf.substr(0, buf.find_first_of('.'))) - 4;
+    array ver_names = {"Cheetah",      "Puma",        "Jaguar",        "Panther",   "Tiger",    "Leopard",
+                       "Snow Leopard", "Lion",        "Mountain Lion", "Mavericks", "Yosemite", "El Capitan",
+                       "Sierra",       "High Sierra", "Mojave",        "Catalina",  "Big Sur",  "Monterey"};
+    name = kern < 16 ? "Mac OS X" : "macOS";
+    full_name = name + " " + string(kern < ver_names.size() ? ver_names[kern] : "Unknown");
+  }
+
+  if (sysctlstring<16>("kern.osproductversion", buf))
+  {
+    std::smatch mt;
+    if (std::regex_search(buf, mt, R"(^(\d+)(?:\.(\d+))?(?:\.(\d+))?$)"_regex))
+    {
+      if (!mt[1].str().empty())
+        ver.major = std::stoull(mt[1]);
+      if (!mt[2].str().empty())
+        ver.minor = std::stoull(mt[2]);
+      if (!mt[3].str().empty())
+        ver.patch = std::stoull(mt[3]);
+    }
+  }
+  if (sysctlstring<16>("kern.osversion", buf))
+    ver.build = std::stoull(buf, 0, 16);
+
+  return {name, full_name, ver};
 }
 #else
 #include <fstream>
