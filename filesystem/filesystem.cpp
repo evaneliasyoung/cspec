@@ -25,8 +25,10 @@ cspec::filesystem::filesystem_type_t cspec::filesystem::stofs(const string &file
     return cspec::filesystem::filesystem_type_t::ext;
   else if (icaseis(filesystem, "EXT4"))
     return cspec::filesystem::filesystem_type_t::ext4;
-  else if (icaseis(filesystem, "AFPS"))
-    return cspec::filesystem::filesystem_type_t::afps;
+  else if (icaseis(filesystem, "APFS"))
+    return cspec::filesystem::filesystem_type_t::apfs;
+  else if (icaseis(filesystem, "DevFS"))
+    return cspec::filesystem::filesystem_type_t::devfs;
   else
     return cspec::filesystem::filesystem_type_t::unknown;
 }
@@ -47,8 +49,10 @@ string cspec::filesystem::fstos(const cspec::filesystem::filesystem_type_t &file
       return "EXT";
     case cspec::filesystem::filesystem_type_t::ext4:
       return "EXT4";
-    case cspec::filesystem::filesystem_type_t::afps:
-      return "AFPS";
+    case cspec::filesystem::filesystem_type_t::apfs:
+      return "APFS";
+    case cspec::filesystem::filesystem_type_t::devfs:
+      return "DevFS";
     default:
       return "Unknown";
   }
@@ -111,9 +115,33 @@ vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
   return ret;
 }
 #elif defined(MAC)
+#include <iostream>
+#include <sys/mount.h>
+
 vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
 {
   vector<cspec::filesystem::filesystem_t> ret{};
+
+  struct statfs *mounts;
+  umax num = getmntinfo(&mounts, MNT_WAIT);
+  if (num < 0)
+    return ret;
+
+  for (auto i = 0; i < num; ++i)
+    if (mounts[i].f_blocks > 0)
+    {
+      cspec::filesystem::filesystem_t fs;
+      const auto mt = mounts[i];
+      const auto bsize = mt.f_bsize;
+      fs.type = cspec::filesystem::stofs(mt.f_fstypename);
+      fs.mount = mt.f_mntonname;
+      if (fs.mount.find_last_of('/') != string::npos)
+        fs.name = fs.mount.substr(fs.mount.find_last_of('/') + 1);
+      fs.sizes.total = mt.f_blocks * bsize;
+      fs.sizes.available = mt.f_bavail * bsize;
+      fs.sizes.used = fs.sizes.total - fs.sizes.available;
+      ret.push_back(fs);
+    }
 
   return ret;
 }
