@@ -43,3 +43,8 @@ template<typename T, size_t Size> bool sysctlarray(const char *path, array<T, Si
 {
   return basesysctl<array<T, Size>, T, Size>(path, out);
 }
+
+template<class T> bool sysctlstruct(const char *path, T &out)
+{
+  return basesysctl<T, T, 1>(path, out);
+}

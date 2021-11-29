@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-19
- *  @date      2021-11-20
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -29,9 +29,7 @@ std::chrono::system_clock::time_point stotm(const string &time)
 
 void cspec::system::to_json(json &j, const cspec::system::times_t &tms)
 {
-  j = json{{"current", tmtos(tms.current)},
-           {"install", tmtos(tms.install)},
-           {"boot", tmtos(tms.boot)}};
+  j = json{{"current", tmtos(tms.current)}, {"install", tmtos(tms.install)}, {"boot", tmtos(tms.boot)}};
 }
 
 void cspec::system::from_json(const json &j, cspec::system::times_t &tms)
@@ -59,9 +57,27 @@ cspec::system::times_t cspec::system::times()
   return {cur_time, install_time, boot_time};
 }
 #elif defined(MAC)
+#include "../utils/mac/sysctl.hpp"
+#include "../utils/shell.hpp"
+
 cspec::system::times_t cspec::system::times()
 {
-  return {};
+  struct timeval tv
+  {
+  };
+  const auto cur_time = std::chrono::system_clock::now();
+  sysctlstruct<struct timeval>("kern.boottime", tv);
+  const auto uptime = std::chrono::seconds(tv.tv_sec);
+  const auto boot_time = std::chrono::system_clock::time_point(uptime);
+
+  const auto raw_update = exec(
+    R"(system_profiler SPInstallHistoryDataType | grep -A4 -E '^\s{4}(macOS|OS X)' | tail -n1 | awk '{ print $3 $4; }')");
+  std::tm uptv = {};
+  std::stringstream ss(raw_update);
+  ss >> std::get_time(&uptv, "%Y-%m-%d,%H:%M");
+  const auto update_time = std::chrono::system_clock::from_time_t(std::mktime(&uptv));
+
+  return {cur_time, update_time, boot_time};
 }
 #else
 #include <sys/stat.h>
