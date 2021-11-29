@@ -50,20 +50,15 @@ cspec::cpu::amounts_t cspec::cpu::amounts()
   return ret;
 }
 #elif defined(MAC)
-#include <sys/sysctl.h>
+#include "../utils/mac/sysctl.hpp"
 
 cspec::cpu::amounts_t cspec::cpu::amounts()
 {
   cspec::cpu::amounts_t ret{};
-  u32 buf;
-  size_t len = sizeof(buf);
 
-  if (sysctlbyname("hw.physicalcpu", &buf, &len, NULL, 0) == 0)
-    ret.cores = buf;
-  if (sysctlbyname("hw.logicalcpu", &buf, &len, NULL, 0) == 0)
-    ret.threads = buf;
-  if (sysctlbyname("hw.packages", &buf, &len, NULL, 0) == 0)
-    ret.packages = buf;
+  sysctlintegral("hw.physicalcpu", ret.cores);
+  sysctlintegral("hw.logicalcpu", ret.threads);
+  sysctlintegral("hw.packages", ret.packages);
 
   return ret;
 }

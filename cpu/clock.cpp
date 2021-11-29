@@ -32,16 +32,12 @@ u64 cspec::cpu::clock() noexcept
   return clock_mhz * 1000000;
 }
 #elif defined(MAC)
-#include <sys/sysctl.h>
+#include "../utils/mac/sysctl.hpp"
 
 u64 cspec::cpu::clock() noexcept
 {
   u64 buf;
-  size_t len = sizeof(buf);
-
-  if (sysctlbyname("hw.cpufrequency", &buf, &len, NULL, 0) != 0)
-    return 0;
-
+  sysctlintegral("hw.cpufrequency", buf);
   return buf;
 }
 #else

@@ -44,20 +44,15 @@ cspec::cpu::group_t cspec::cpu::group()
   return {family, model, stepping};
 }
 #elif defined(MAC)
-#include <sys/sysctl.h>
+#include "../utils/mac/sysctl.hpp"
 
 cspec::cpu::group_t cspec::cpu::group()
 {
   cspec::cpu::group_t ret{};
-  u32 buf;
-  size_t len = sizeof(buf);
 
-  if (sysctlbyname("machdep.cpu.family", &buf, &len, NULL, 0) == 0)
-    ret.family = buf;
-  if (sysctlbyname("machdep.cpu.model", &buf, &len, NULL, 0) == 0)
-    ret.model = buf;
-  if (sysctlbyname("machdep.cpu.stepping", &buf, &len, NULL, 0) == 0)
-    ret.stepping = buf;
+  sysctlintegral("machdep.cpu.family", ret.family);
+  sysctlintegral("machdep.cpu.model", ret.model);
+  sysctlintegral("machdep.cpu.stepping", ret.stepping);
 
   return ret;
 }

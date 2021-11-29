@@ -95,21 +95,17 @@ cspec::cpu::cache_t cspec::cpu::cache(u8 level)
   return {};
 }
 #elif defined(MAC)
-#include <sys/sysctl.h>
+#include "../utils/mac/sysctl.hpp"
 
 cspec::cpu::cache_t cspec::cpu::cache(u8 level)
 {
   cspec::cpu::cache_t ret{};
-  u64 buf;
   array<u64, 10> all_buf;
-  size_t len = sizeof(buf);
-  size_t all_len = sizeof(u64) * sizeof(all_buf);
 
-  if (sysctlbyname("hw.cachelinesize", &buf, &len, NULL, 0) == 0)
-    ret.line_size = buf;
-  if (sysctlbyname("hw.cachesize", &all_buf, &all_len, NULL, 0) == 0)
+  sysctlintegral("hw.cachelinesize", ret.line_size);
+  if (sysctlarray("hw.cachesize", all_buf))
     ret.size = depow2(all_buf[level == 0 ? 1 : level]);
-  if (sysctlbyname("hw.cacheconfig", &all_buf, &all_len, NULL, 0) == 0)
+  if (sysctlarray("hw.cacheconfig", all_buf))
     ret.association = depow2(all_buf[level]);
   ret.type = cspec::cpu::cache_type_t::unified;
 
