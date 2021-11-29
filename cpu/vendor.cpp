@@ -26,14 +26,41 @@ string cspec::cpu::name()
                                     "ProcessorNameString"));
 }
 #elif defined(MAC)
+#include <iostream>
+#include <sys/sysctl.h>
+
 string cspec::cpu::vendor()
 {
-  return "unknown";
+  array<char, 13> buf;
+  size_t len = sizeof(char) * sizeof(buf);
+  size_t real_len = 0;
+
+  if (sysctlbyname("machdep.cpu.vendor", &buf, &len, NULL, 0) != 0)
+    return "unknown";
+
+  while (buf[real_len] != 0)
+    ++real_len;
+
+  return string(buf.begin(), real_len);
 }
 
 string cspec::cpu::name()
 {
-  return "unknown";
+  array<char, 65> buf;
+  size_t len = sizeof(char) * sizeof(buf);
+  size_t real_len = 0;
+
+  if (sysctlbyname("machdep.cpu.brand_string", &buf, &len, NULL, 0) != 0)
+    return "unknown";
+
+  while (buf[real_len] != 0)
+    ++real_len;
+
+  auto ret = string(buf.begin(), real_len);
+  if (ret.find('@') != string::npos)
+    ret.erase(ret.find(" @"));
+
+  return ret;
 }
 #else
 #include <fstream>
