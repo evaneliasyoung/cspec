@@ -91,9 +91,86 @@ vector<cspec::memory::memory_t> cspec::memory::devices()
   return ret;
 }
 #elif defined(MAC)
+#include "../utils/shell.hpp"
+
 vector<cspec::memory::memory_t> cspec::memory::devices()
 {
   vector<cspec::memory::memory_t> ret{};
+  std::map<string, string> manuf = {{"0x014F", "Transcend Information"},
+                                    {"0x2C00", "Micron"},
+                                    {"0x802C", "Micron"},
+                                    {"0x80AD", "Hynix"},
+                                    {"0xAD00", "Hynix"},
+                                    {"0x80CE", "Samsung"},
+                                    {"0xCE00", "Samsung"},
+                                    {"0x02FE", "Elpida"},
+                                    {"0x5105", "Qimonda AG"},
+                                    {"0x8551", "Qimonda AG"},
+                                    {"0x859B", "Crucial"}};
+
+  std::stringstream ss(exec("system_profiler SPMemoryDataType"));
+
+  for (string line; std::getline(ss, line, '\n');)
+  {
+    if (line.find("BANK ") != string::npos)
+    {
+      cspec::memory::memory_t chip;
+      chip.bank = line.substr(line.find_first_not_of(' '));
+      chip.bank.erase(chip.bank.length() - 1);
+      u8 flag = 0;
+      for (string chip_line; std::getline(ss, chip_line, '\n');)
+      {
+        if (chip_line.empty())
+          if (++flag == 2)
+            break;
+          else
+            continue;
+
+        std::smatch mt;
+        if (std::regex_search(chip_line, mt, R"(Size: (\d+) ([GMK]))"_regex))
+        {
+          chip.size = std::stoul(mt[1]);
+          switch (mt[2].str()[0])
+          {
+            case 'G':
+              chip.size *= 1000;
+              [[fallthrough]];
+            case 'M':
+              chip.size *= 1000;
+              [[fallthrough]];
+            case 'K':
+              chip.size *= 1000;
+          }
+        }
+        else if (std::regex_search(chip_line, mt, R"(Speed: (\d+) ([GMK]))"_regex))
+        {
+          chip.speed = std::stoul(mt[1]);
+          switch (mt[2].str()[0])
+          {
+            case 'G':
+              chip.speed *= 1000;
+              [[fallthrough]];
+            case 'M':
+              chip.speed *= 1000;
+              [[fallthrough]];
+            case 'K':
+              chip.speed *= 1000;
+          }
+        }
+        else if (chip_line.find("Manuf") != string::npos)
+          if (manuf.find(chip_line.substr(chip_line.find(':') + 2)) != manuf.end())
+            chip.manufacturer = manuf.at(chip_line.substr(chip_line.find(':') + 2));
+          else
+            chip.manufacturer = "unknown";
+        else if (chip_line.find("Serial") != string::npos)
+          chip.serial = chip_line.substr(chip_line.find(':') + 2);
+        else if (chip_line.find("Part Number") != string::npos)
+          chip.model = chip_line.substr(chip_line.find(':') + 2);
+      }
+      chip.form_factor = "unknown";
+      ret.push_back(chip);
+    }
+  }
 
   return ret;
 }
