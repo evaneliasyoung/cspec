@@ -4,13 +4,11 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-25
- *  @date      2021-11-25
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
 #include "cspec.h"
-
-#include <iostream>
 
 json cspec::collect(const std::map<string, vector<string>> &captured)
 {
