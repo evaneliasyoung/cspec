@@ -9,7 +9,6 @@
  */
 
 #include "../shared/ns.h"
-
 #include "ns.h"
 
 json cspec::filesystem::collect()

@@ -85,7 +85,7 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
   {
     const auto datamap = wmi.query_and_retrieve<string>("Win32_VideoController", {"VideoMemoryType", "PNPDeviceID"});
     dynamic = datamap.at("VideoMemoryType") == "2";
-    if (datamap.at("PNPDeviceID").substr(0,3) == "PCI")
+    if (datamap.at("PNPDeviceID").substr(0, 3) == "PCI")
       bus = "PCIe";
   }
 

@@ -9,7 +9,6 @@
  */
 
 #include "../shared/ns.h"
-
 #include "ns.h"
 
 cspec::system::kernel_t cspec::system::stokrn(const string &kernel)

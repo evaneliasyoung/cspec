@@ -8,8 +8,8 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "ns.h"
 #include "../shared/ns.h"
+#include "ns.h"
 
 json cspec::cpu::collect()
 {

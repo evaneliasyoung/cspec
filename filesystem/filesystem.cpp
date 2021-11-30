@@ -9,7 +9,6 @@
  */
 
 #include "../shared/ns.h"
-
 #include "ns.h"
 
 cspec::filesystem::filesystem_type_t cspec::filesystem::stofs(const string &filesystem)
@@ -107,7 +106,8 @@ vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
     filesystem.type = stofs(fs.at("FileSystem"));
     filesystem.mount = fs.at("Caption");
     filesystem.sizes.total = !fs.at("Size").empty() ? cspec::shared::depow2(std::stoull(fs.at("Size"))) : 0;
-    filesystem.sizes.available = !fs.at("FreeSpace").empty() ? cspec::shared::depow2(std::stoull(fs.at("FreeSpace"))) : 0;
+    filesystem.sizes.available =
+      !fs.at("FreeSpace").empty() ? cspec::shared::depow2(std::stoull(fs.at("FreeSpace"))) : 0;
     filesystem.sizes.used = filesystem.sizes.total - filesystem.sizes.available;
 
     ret.push_back(filesystem);

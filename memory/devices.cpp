@@ -8,8 +8,8 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "ns.h"
 #include "../shared/ns.h"
+#include "ns.h"
 
 void cspec::memory::to_json(json &j, const cspec::memory::voltages_t &vlt)
 {
