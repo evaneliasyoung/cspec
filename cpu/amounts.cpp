@@ -66,7 +66,6 @@ cspec::cpu::amounts_t cspec::cpu::amounts()
 #include <algorithm>
 #include <fstream>
 #include <unistd.h>
-#include <vector>
 
 cspec::cpu::amounts_t cspec::cpu::amounts()
 {

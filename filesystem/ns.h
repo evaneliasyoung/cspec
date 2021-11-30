@@ -12,8 +12,6 @@
 
 #include "../core.h"
 
-#include <vector>
-
 namespace cspec
 {
   namespace filesystem
