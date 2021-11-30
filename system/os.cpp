@@ -23,11 +23,11 @@ void cspec::system::from_json(const json &j, cspec::system::os_info_t &os)
 }
 
 #if defined(WIN)
-#include "../utils/win/wmi.hpp"
+#include "../shared/ns.h"
 
 static string version_name()
 {
-  WMI wmi;
+  cspec::shared::WMI wmi;
   if (!wmi.prepare())
     return "";
   const auto full_name = wmi.query_and_retrieve<string>("Win32_OperatingSystem", {"Name"}).at("Name");

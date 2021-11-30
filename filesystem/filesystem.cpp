@@ -85,13 +85,12 @@ void cspec::filesystem::from_json(const json &j, cspec::filesystem::filesystem_t
 
 #if defined(WIN)
 #include "../shared/ns.h"
-#include "../utils/win/wmi.hpp"
 
 vector<cspec::filesystem::filesystem_t> cspec::filesystem::systems()
 {
   vector<cspec::filesystem::filesystem_t> ret{};
 
-  WMI wmi;
+  cspec::shared::WMI wmi;
   if (!wmi.prepare())
     return ret;
 

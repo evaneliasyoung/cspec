@@ -23,11 +23,11 @@ void cspec::cpu::from_json(const json &j, cspec::cpu::group_t &grp)
 }
 
 #if defined(WIN)
-#include "../utils/win/wmi.hpp"
+#include "../shared/ns.h"
 
 cspec::cpu::group_t cspec::cpu::group()
 {
-  WMI wmi;
+  cspec::shared::WMI wmi;
   if (!wmi.prepare())
     return {};
 

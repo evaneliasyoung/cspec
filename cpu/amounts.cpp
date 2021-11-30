@@ -23,14 +23,14 @@ void cspec::cpu::from_json(const json &j, cspec::cpu::amounts_t &amt)
 }
 
 #if defined(WIN)
-#include "../utils/win/cpuinfo.hpp"
+#include "../shared/ns.h"
 
 #include <bitset>
 
 cspec::cpu::amounts_t cspec::cpu::amounts()
 {
   cspec::cpu::amounts_t ret{};
-  for (auto &&info: cpuinfo_buffer())
+  for (auto &&info: cspec::shared::cpuinfo_buffer())
   {
     switch (info.Relationship)
     {

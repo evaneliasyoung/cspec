@@ -12,17 +12,16 @@
 
 #if defined(WIN)
 #include "../shared/ns.h"
-#include "../utils/win/registry.hpp"
 
 string cspec::cpu::vendor()
 {
-  return cspec::shared::rtrim(
-    read_registry_sz<13>(HKEY_LOCAL_MACHINE, R"(HARDWARE\DESCRIPTION\System\CentralProcessor\0)", "VendorIdentifier"));
+  return cspec::shared::rtrim(cspec::shared::read_registry_sz<13>(
+    HKEY_LOCAL_MACHINE, R"(HARDWARE\DESCRIPTION\System\CentralProcessor\0)", "VendorIdentifier"));
 }
 
 string cspec::cpu::name()
 {
-  return cspec::shared::rtrim(read_registry_sz<65>(
+  return cspec::shared::rtrim(cspec::shared::read_registry_sz<65>(
     HKEY_LOCAL_MACHINE, R"(HARDWARE\DESCRIPTION\System\CentralProcessor\0)", "ProcessorNameString"));
 }
 #elif defined(MAC)

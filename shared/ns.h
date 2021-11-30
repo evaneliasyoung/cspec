@@ -15,6 +15,7 @@
 #include <sstream>
 
 #if defined(WIN)
+#include "win/ns.h"
 #elif defined(MAC)
 #include "mac/ns.h"
 #else

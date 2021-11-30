@@ -40,7 +40,7 @@ void cspec::system::from_json(const json &j, cspec::system::times_t &tms)
 }
 
 #if defined(WIN)
-#include "../utils/win/registry.hpp"
+#include "../shared/ns.h"
 
 #include <windows.h>
 
@@ -50,8 +50,8 @@ cspec::system::times_t cspec::system::times()
   const auto uptime = std::chrono::milliseconds(GetTickCount64());
   const auto boot_time = cur_time - uptime;
 
-  const auto since_install =
-    read_registry_dw(HKEY_LOCAL_MACHINE, R"(SOFTWARE\Microsoft\Windows NT\CurrentVersion)", "InstallDate");
+  const auto since_install = cspec::shared::read_registry_dw(
+    HKEY_LOCAL_MACHINE, R"(SOFTWARE\Microsoft\Windows NT\CurrentVersion)", "InstallDate");
   const auto install_time = std::chrono::system_clock::from_time_t(since_install);
 
   return {cur_time, install_time, boot_time};

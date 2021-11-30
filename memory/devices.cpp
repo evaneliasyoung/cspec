@@ -48,13 +48,11 @@ void cspec::memory::from_json(const json &j, cspec::memory::memory_t &mem)
 }
 
 #if defined(WIN)
-#include "../utils/win/wmi.hpp"
-
 vector<cspec::memory::memory_t> cspec::memory::devices()
 {
   vector<cspec::memory::memory_t> ret{};
 
-  WMI wmi;
+  cspec::shared::WMI wmi;
   if (!wmi.prepare())
     return ret;
 

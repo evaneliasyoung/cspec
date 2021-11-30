@@ -1,6 +1,6 @@
 CC         = g++
 BASE_FLAGS = -std=c++17
-SOURCES    = $(wildcard *.cpp) $(wildcard **/*.cpp)
+SOURCES    = $(wildcard *.cpp) $(wildcard **/*.cpp) $(wildcard **/**/*.cpp)
 OBJECTS    = ${SOURCES:%.cpp=%.o}
 EXEC       = cspec.exe
 

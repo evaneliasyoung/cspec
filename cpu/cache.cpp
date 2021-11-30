@@ -60,11 +60,9 @@ void cspec::cpu::from_json(const json &j, cspec::cpu::cache_t &cch)
 }
 
 #if defined(WIN)
-#include "../utils/win/cpuinfo.hpp"
-
 cspec::cpu::cache_t cspec::cpu::cache(u8 level)
 {
-  for (auto &&info: cpuinfo_buffer())
+  for (auto &&info: cspec::shared::cpuinfo_buffer())
   {
     if (info.Relationship == RelationCache)
     {
