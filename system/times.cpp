@@ -42,10 +42,7 @@ cspec::system::times_t cspec::system::times()
 
   const auto raw_update = cspec::shared::exec(
     R"(system_profiler SPInstallHistoryDataType | grep -A4 -E '^\s{4}(macOS|OS X)' | tail -n1 | awk '{ print $3 $4; }')");
-  std::tm uptv = {};
-  std::stringstream ss(raw_update);
-  ss >> std::get_time(&uptv, "%Y-%m-%d,%H:%M");
-  const auto update_time = std::chrono::system_clock::from_time_t(std::mktime(&uptv));
+  const auto update_time = cspec::shared::stotm(raw_update, "%Y-%m-%d,%H:%M");
 
   return {cur_time, update_time, boot_time};
 }
