@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-24
- *  @date      2021-11-26
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -31,5 +31,6 @@ namespace cspec
     void from_json(const json &j, version_t &ver);
 
     string exec(const char *cmd);
+    umax depow2(const umax &bi);
   } // namespace shared
 } // namespace cspec

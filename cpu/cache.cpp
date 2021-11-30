@@ -8,9 +8,9 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../utils/bitpow.hpp"
 #include "../utils/strcmp.hpp"
 #include "ns.h"
+#include "../shared/ns.h"
 
 cspec::cpu::cache_type_t cspec::cpu::stocch(const string &cache_type)
 {
@@ -104,9 +104,9 @@ cspec::cpu::cache_t cspec::cpu::cache(u8 level)
 
   sysctlintegral("hw.cachelinesize", ret.line_size);
   if (sysctlarray("hw.cachesize", all_buf))
-    ret.size = depow2(all_buf[level == 0 ? 1 : level]);
+    ret.size = cspec::shared::depow2(all_buf[level == 0 ? 1 : level]);
   if (sysctlarray("hw.cacheconfig", all_buf))
-    ret.association = depow2(all_buf[level]);
+    ret.association = cspec::shared::depow2(all_buf[level]);
   ret.type = cspec::cpu::cache_type_t::unified;
 
   return ret;
@@ -136,7 +136,7 @@ cspec::cpu::cache_t cspec::cpu::cache(u8 level)
         case 'K':
           ret.size *= 1024;
       }
-      ret.size = depow2(ret.size);
+      ret.size = cspec::shared::depow2(ret.size);
     }
   }
 

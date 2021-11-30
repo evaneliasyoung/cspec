@@ -8,7 +8,6 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../utils/bitpow.hpp"
 #include "../utils/strcmp.hpp"
 #include "../shared/ns.h"
 #include "ns.h"
@@ -75,7 +74,7 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 
   cspec::gpu::vendor_t vendor = cspec::gpu::stovnd(read_registry_sz<13>(HKEY_LOCAL_MACHINE, gpu_path, "ProviderName"));
   const string name = read_registry_sz<80>(HKEY_LOCAL_MACHINE, gpu_path, "HardwareInformation.AdapterString");
-  const auto memory = depow2(read_registry_qw(HKEY_LOCAL_MACHINE, gpu_path, "HardwareInformation.qwMemorySize"));
+  const auto memory = cspec::shared::depow2(read_registry_qw(HKEY_LOCAL_MACHINE, gpu_path, "HardwareInformation.qwMemorySize"));
 
   ret.push_back({vendor, name, memory});
 
@@ -156,7 +155,7 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
             case 'K':
               info.memory *= 1024;
           }
-          info.memory = depow2(info.memory);
+          info.memory = cspec::shared::depow2(info.memory);
         }
       }
       ret.push_back(info);
