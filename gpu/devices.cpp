@@ -9,15 +9,14 @@
  */
 
 #include "../shared/ns.h"
-
-#include "../shared/ns.h"
 #include "ns.h"
 
 cspec::gpu::vendor_t cspec::gpu::stovnd(const string &vendor)
 {
   if (cspec::shared::icaseis(vendor, "NVIDIA"))
     return cspec::gpu::vendor_t::nvidia;
-  else if (cspec::shared::icaseis(vendor, "AMD") || cspec::shared::icaseis(vendor, "ATi") || cspec::shared::icaseis(vendor, "Advanced Micro Devices"))
+  else if (cspec::shared::icaseis(vendor, "AMD") || cspec::shared::icaseis(vendor, "ATi")
+           || cspec::shared::icaseis(vendor, "Advanced Micro Devices"))
     return cspec::gpu::vendor_t::amd;
   else if (cspec::shared::icaseis(vendor, "Intel"))
     return cspec::gpu::vendor_t::intel;
@@ -67,6 +66,7 @@ void cspec::gpu::from_json(const json &j, cspec::gpu::gpu_info_t &gpu)
 
 #if defined(WIN)
 #include "../utils/win/registry.hpp"
+#include "../utils/win/wmi.hpp"
 
 vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 {
@@ -75,9 +75,21 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 
   cspec::gpu::vendor_t vendor = cspec::gpu::stovnd(read_registry_sz<13>(HKEY_LOCAL_MACHINE, gpu_path, "ProviderName"));
   const string name = read_registry_sz<80>(HKEY_LOCAL_MACHINE, gpu_path, "HardwareInformation.AdapterString");
-  const auto memory = cspec::shared::depow2(read_registry_qw(HKEY_LOCAL_MACHINE, gpu_path, "HardwareInformation.qwMemorySize"));
+  const auto memory =
+    cspec::shared::depow2(read_registry_qw(HKEY_LOCAL_MACHINE, gpu_path, "HardwareInformation.qwMemorySize"));
+  bool dynamic = false;
+  string bus = "";
 
-  ret.push_back({vendor, name, memory});
+  WMI wmi(true);
+  if (!wmi.failed)
+  {
+    const auto datamap = wmi.query_and_retrieve<string>("Win32_VideoController", {"VideoMemoryType", "PNPDeviceID"});
+    dynamic = datamap.at("VideoMemoryType") == "2";
+    if (datamap.at("PNPDeviceID").substr(0,3) == "PCI")
+      bus = "PCIe";
+  }
+
+  ret.push_back({vendor, name, memory, bus, dynamic});
 
   return ret;
 }
@@ -114,7 +126,7 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
       }
     }
     else if (line.find("Bus") != string::npos)
-      gpu.bus = line.substr(line.find(':')+2);
+      gpu.bus = line.substr(line.find(':') + 2);
   }
   ret.push_back(gpu);
 
