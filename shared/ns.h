@@ -14,6 +14,12 @@
 
 #include <sstream>
 
+#if defined(WIN)
+#elif defined(MAC)
+#include "mac/ns.h"
+#else
+#endif
+
 namespace cspec
 {
   namespace shared

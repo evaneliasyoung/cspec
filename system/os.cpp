@@ -40,7 +40,7 @@ cspec::system::os_info_t cspec::system::os()
   return {"Windows NT", version_name(), version};
 }
 #elif defined(MAC)
-#include "../utils/mac/sysctl.hpp"
+#include "../shared/ns.h"
 
 cspec::system::os_info_t cspec::system::os()
 {
@@ -49,7 +49,7 @@ cspec::system::os_info_t cspec::system::os()
   string name;
   string full_name;
 
-  if (sysctlstring<16>("kern.osrelease", buf))
+  if (cspec::shared::sysctlstring<16>("kern.osrelease", buf))
   {
     umax kern = std::stoull(buf.substr(0, buf.find_first_of('.'))) - 4;
     array ver_names = {"Cheetah",      "Puma",        "Jaguar",        "Panther",   "Tiger",    "Leopard",
@@ -59,7 +59,7 @@ cspec::system::os_info_t cspec::system::os()
     full_name = name + " " + string(kern < ver_names.size() ? ver_names[kern] : "Unknown");
   }
 
-  if (sysctlstring<16>("kern.osproductversion", buf))
+  if (cspec::shared::sysctlstring<16>("kern.osproductversion", buf))
   {
     std::smatch mt;
     if (std::regex_search(buf, mt, R"(^(\d+)(?:\.(\d+))?(?:\.(\d+))?$)"_regex))
@@ -72,7 +72,7 @@ cspec::system::os_info_t cspec::system::os()
         ver.patch = std::stoull(mt[3]);
     }
   }
-  if (sysctlstring<16>("kern.osversion", buf))
+  if (cspec::shared::sysctlstring<16>("kern.osversion", buf))
     ver.build = std::stoull(buf, 0, 16);
 
   return {name, full_name, ver};

@@ -44,15 +44,15 @@ cspec::cpu::group_t cspec::cpu::group()
   return {family, model, stepping};
 }
 #elif defined(MAC)
-#include "../utils/mac/sysctl.hpp"
+#include "../shared/ns.h"
 
 cspec::cpu::group_t cspec::cpu::group()
 {
   cspec::cpu::group_t ret{};
 
-  sysctlintegral("machdep.cpu.family", ret.family);
-  sysctlintegral("machdep.cpu.model", ret.model);
-  sysctlintegral("machdep.cpu.stepping", ret.stepping);
+  cspec::shared::sysctlintegral("machdep.cpu.family", ret.family);
+  cspec::shared::sysctlintegral("machdep.cpu.model", ret.model);
+  cspec::shared::sysctlintegral("machdep.cpu.stepping", ret.stepping);
 
   return ret;
 }

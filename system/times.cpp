@@ -9,7 +9,6 @@
  */
 
 #include "ns.h"
-#include "../shared/ns.h"
 
 string tmtos(const std::chrono::system_clock::time_point &time)
 {
@@ -58,7 +57,7 @@ cspec::system::times_t cspec::system::times()
   return {cur_time, install_time, boot_time};
 }
 #elif defined(MAC)
-#include "../utils/mac/sysctl.hpp"
+#include "../shared/ns.h"
 
 cspec::system::times_t cspec::system::times()
 {
@@ -66,7 +65,7 @@ cspec::system::times_t cspec::system::times()
   {
   };
   const auto cur_time = std::chrono::system_clock::now();
-  sysctlstruct<struct timeval>("kern.boottime", tv);
+  cspec::shared::sysctlstruct<struct timeval>("kern.boottime", tv);
   const auto uptime = std::chrono::seconds(tv.tv_sec);
   const auto boot_time = std::chrono::system_clock::time_point(uptime);
 

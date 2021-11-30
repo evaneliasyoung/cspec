@@ -50,15 +50,15 @@ cspec::cpu::amounts_t cspec::cpu::amounts()
   return ret;
 }
 #elif defined(MAC)
-#include "../utils/mac/sysctl.hpp"
+#include "../shared/ns.h"
 
 cspec::cpu::amounts_t cspec::cpu::amounts()
 {
   cspec::cpu::amounts_t ret{};
 
-  sysctlintegral("hw.physicalcpu", ret.cores);
-  sysctlintegral("hw.logicalcpu", ret.threads);
-  sysctlintegral("hw.packages", ret.packages);
+  cspec::shared::sysctlintegral("hw.physicalcpu", ret.cores);
+  cspec::shared::sysctlintegral("hw.logicalcpu", ret.threads);
+  cspec::shared::sysctlintegral("hw.packages", ret.packages);
 
   return ret;
 }

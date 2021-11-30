@@ -26,12 +26,12 @@ string cspec::cpu::name()
     HKEY_LOCAL_MACHINE, R"(HARDWARE\DESCRIPTION\System\CentralProcessor\0)", "ProcessorNameString"));
 }
 #elif defined(MAC)
-#include "../utils/mac/sysctl.hpp"
+#include "../shared/ns.h"
 
 string cspec::cpu::vendor()
 {
   string vendor;
-  if (!sysctlstring("machdep.cpu.vendor", vendor))
+  if (!cspec::shared::sysctlstring("machdep.cpu.vendor", vendor))
     return "Unknown";
   return vendor;
 }
@@ -40,7 +40,7 @@ string cspec::cpu::name()
 {
   string name;
 
-  if (!sysctlstring("machdep.cpu.brand_string", name))
+  if (!cspec::shared::sysctlstring("machdep.cpu.brand_string", name))
     return "Unknown";
   if (name.find('@') != string::npos)
     name.erase(name.find(" @"));

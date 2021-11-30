@@ -8,8 +8,8 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "ns.h"
 #include "../shared/ns.h"
+#include "ns.h"
 
 cspec::cpu::cache_type_t cspec::cpu::stocch(const string &cache_type)
 {
@@ -94,17 +94,15 @@ cspec::cpu::cache_t cspec::cpu::cache(u8 level)
   return {};
 }
 #elif defined(MAC)
-#include "../utils/mac/sysctl.hpp"
-
 cspec::cpu::cache_t cspec::cpu::cache(u8 level)
 {
   cspec::cpu::cache_t ret{};
   array<u64, 10> all_buf;
 
-  sysctlintegral("hw.cachelinesize", ret.line_size);
-  if (sysctlarray("hw.cachesize", all_buf))
+  cspec::shared::sysctlintegral("hw.cachelinesize", ret.line_size);
+  if (cspec::shared::sysctlarray("hw.cachesize", all_buf))
     ret.size = cspec::shared::depow2(all_buf[level == 0 ? 1 : level]);
-  if (sysctlarray("hw.cacheconfig", all_buf))
+  if (cspec::shared::sysctlarray("hw.cacheconfig", all_buf))
     ret.association = cspec::shared::depow2(all_buf[level]);
   ret.type = cspec::cpu::cache_type_t::unified;
 
