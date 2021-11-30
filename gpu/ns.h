@@ -36,6 +36,8 @@ namespace cspec
       vendor_t vendor;
       string name;
       umax memory;
+      string bus;
+      bool dynamic;
     };
     void to_json(json &j, const gpu_info_t &gpu);
     void from_json(const json &j, gpu_info_t &gpu);

@@ -38,8 +38,12 @@ json cspec::gpu::collect(const vector<string> &keys)
         gpuj["name"] = gpu.name;
       else if (icaseis(key, "memory"))
         gpuj["memory"] = gpu.memory;
+      else if (icaseis(key, "bus"))
+        gpuj["bus"] = gpu.bus;
+      else if (icaseis(key, "dynamic"))
+        gpuj["dynamic"] = gpu.dynamic;
       else if (icaseis(key, "vendor"))
-        gpuj["architecture"] = cspec::gpu::vndtos(gpu.vendor);
+        gpuj["vendor"] = cspec::gpu::vndtos(gpu.vendor);
     }
     ret.push_back(gpuj);
   }

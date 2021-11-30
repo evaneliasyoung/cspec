@@ -53,13 +53,14 @@ string cspec::gpu::vndtos(const cspec::gpu::vendor_t &vendor)
 
 void cspec::gpu::to_json(json &j, const cspec::gpu::gpu_info_t &gpu)
 {
-  j = json{{"memory", gpu.memory}, {"name", gpu.name}, {"vendor", cspec::gpu::vndtos(gpu.vendor)}};
+  j = json{{"memory", gpu.memory}, {"bus", gpu.bus}, {"name", gpu.name}, {"vendor", cspec::gpu::vndtos(gpu.vendor)}};
 }
 
 void cspec::gpu::from_json(const json &j, cspec::gpu::gpu_info_t &gpu)
 {
   j.at("memory").get_to(gpu.memory);
   j.at("name").get_to(gpu.name);
+  j.at("bus").get_to(gpu.bus);
   gpu.vendor = cspec::gpu::stovnd(j.at("vendor"));
 }
 
@@ -80,9 +81,43 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
   return ret;
 }
 #elif defined(MAC)
+#include "../utils/shell.hpp"
+
 vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 {
   vector<cspec::gpu::gpu_info_t> ret{};
+  std::stringstream ss(exec("system_profiler SPDisplaysDataType | grep -A5 'Chipset Model:'"));
+
+  cspec::gpu::gpu_info_t gpu;
+  for (string line; std::getline(ss, line, '\n');)
+  {
+    std::smatch mt;
+    if (line == "--")
+      ret.push_back(gpu);
+    else if (line.find("Chipset Model") != string::npos)
+      gpu.name = line.substr(line.find(':') + 2);
+    else if (std::regex_search(line, mt, R"(Vendor: (.*) \()"_regex))
+      gpu.vendor = cspec::gpu::stovnd(mt[1].str());
+    else if (std::regex_search(line, mt, R"(VRAM.*: (\d+) ([GMK]))"_regex))
+    {
+      gpu.dynamic = line.find("Dynamic") != string::npos;
+      gpu.memory = std::stoull(mt[1]);
+      switch (mt[2].str()[0])
+      {
+        case 'G':
+          gpu.memory *= 1000;
+          [[fallthrough]];
+        case 'M':
+          gpu.memory *= 1000;
+          [[fallthrough]];
+        case 'K':
+          gpu.memory *= 1000;
+      }
+    }
+    else if (line.find("Bus") != string::npos)
+      gpu.bus = line.substr(line.find(':')+2);
+  }
+  ret.push_back(gpu);
 
   return ret;
 }

@@ -24,7 +24,7 @@ namespace cspec
     const std::map<string, vector<string>> queries = {
       {"cpu", {"name", "amounts", "architecture", "clock", "cache", "endian", "vendor", "group"}},
       {"filesystem", {"name", "sizes", "mount", "type"}},
-      {"gpu", {"name", "memory", "architecture"}},
+      {"gpu", {"name", "memory", "vendor", "bus", "dynamic"}},
       {"memory", {"voltage", "form_factor", "size", "speed", "manufacturer", "model", "serial", "bank"}},
       {"system", {"os", "kernel", "times"}}};
     const vector<string> namespaces = {"cpu", "filesystem", "gpu", "memory", "system"};
