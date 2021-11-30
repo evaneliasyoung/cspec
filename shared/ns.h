@@ -12,6 +12,7 @@
 
 #include "../core.h"
 
+#include <chrono>
 #include <sstream>
 
 #if defined(WIN)
@@ -39,6 +40,9 @@ namespace cspec
 
     string exec(const char *cmd);
     umax depow2(const umax &bi);
+
+    string tmtos(const std::chrono::system_clock::time_point &time, const char *fmt = "%Y-%m-%d %H:%M:%S");
+    std::chrono::system_clock::time_point stotm(const string &time, const char *fmt = "%Y-%m-%d %H:%M:%S");
 
     string rtrim(string s, const char *t = " \t\n\r\f\v");
     string ltrim(string s, const char *t = " \t\n\r\f\v");

@@ -10,35 +10,6 @@
 
 #include "ns.h"
 
-string tmtos(const std::chrono::system_clock::time_point &time)
-{
-  auto tt = std::chrono::system_clock::to_time_t(time);
-  auto tm = *std::gmtime(&tt);
-  std::stringstream ss;
-  ss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
-  return ss.str();
-}
-
-std::chrono::system_clock::time_point stotm(const string &time)
-{
-  auto tm = *std::gmtime(nullptr);
-  std::stringstream ss(time);
-  ss >> std::get_time(&tm, "%Y-%m-%d %H:%M:%S");
-  return std::chrono::system_clock::from_time_t(std::mktime(&tm));
-}
-
-void cspec::system::to_json(json &j, const cspec::system::times_t &tms)
-{
-  j = json{{"current", tmtos(tms.current)}, {"install", tmtos(tms.install)}, {"boot", tmtos(tms.boot)}};
-}
-
-void cspec::system::from_json(const json &j, cspec::system::times_t &tms)
-{
-  tms.current = stotm(j.at("current"));
-  tms.install = stotm(j.at("install"));
-  tms.boot = stotm(j.at("boot"));
-}
-
 #if defined(WIN)
 #include "../shared/ns.h"
 

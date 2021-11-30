@@ -43,22 +43,6 @@ string cspec::cpu::cchtos(const cspec::cpu::cache_type_t &cache_type)
   }
 }
 
-void cspec::cpu::to_json(json &j, const cspec::cpu::cache_t &cch)
-{
-  j = json{{"association", cch.association},
-           {"line_size", cch.line_size},
-           {"size", cch.size},
-           {"type", cspec::cpu::cchtos(cch.type)}};
-}
-
-void cspec::cpu::from_json(const json &j, cspec::cpu::cache_t &cch)
-{
-  j.at("association").get_to(cch.association);
-  j.at("line_size").get_to(cch.line_size);
-  j.at("size").get_to(cch.size);
-  cch.type = cspec::cpu::stocch(j.at("type"));
-}
-
 #if defined(WIN)
 cspec::cpu::cache_t cspec::cpu::cache(u8 level)
 {

@@ -10,18 +10,6 @@
 
 #include "ns.h"
 
-void cspec::cpu::to_json(json &j, const cspec::cpu::amounts_t &amt)
-{
-  j = json{{"threads", amt.threads}, {"cores", amt.cores}, {"packages", amt.packages}};
-}
-
-void cspec::cpu::from_json(const json &j, cspec::cpu::amounts_t &amt)
-{
-  j.at("threads").get_to(amt.threads);
-  j.at("cores").get_to(amt.cores);
-  j.at("packages").get_to(amt.packages);
-}
-
 #if defined(WIN)
 #include "../shared/ns.h"
 

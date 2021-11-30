@@ -10,18 +10,6 @@
 
 #include "ns.h"
 
-void cspec::system::to_json(json &j, const cspec::system::os_info_t &os)
-{
-  j = json{{"name", os.name}, {"full_name", os.full_name}, {"version", os.version}};
-}
-
-void cspec::system::from_json(const json &j, cspec::system::os_info_t &os)
-{
-  j.at("name").get_to(os.name);
-  j.at("full_name").get_to(os.full_name);
-  j.at("version").get_to(os.version);
-}
-
 #if defined(WIN)
 #include "../shared/ns.h"
 

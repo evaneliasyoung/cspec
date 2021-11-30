@@ -38,17 +38,6 @@ string cspec::system::krntos(const cspec::system::kernel_t &kernel)
   }
 }
 
-void cspec::system::to_json(json &j, const cspec::system::kernel_info_t &krn)
-{
-  j = json{{"version", krn.version}, {"type", cspec::system::krntos(krn.type)}};
-}
-
-void cspec::system::from_json(const json &j, cspec::system::kernel_info_t &krn)
-{
-  j.at("version").get_to(krn.version);
-  krn.type = cspec::system::stokrn(j.at("type"));
-}
-
 #if defined(WIN)
 #include <memory>
 #include <windows.h>
