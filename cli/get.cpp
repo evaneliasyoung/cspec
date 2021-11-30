@@ -11,41 +11,11 @@
 #include "../cspec.h"
 #include "ns.h"
 
-std::map<string, vector<string>> capture(const vector<string> &query)
-{
-  if (cspec::shared::contains_icase(query, "all.all") || cspec::shared::contains_icase(query, "all"))
-    return cspec::cli::queries;
-
-  std::map<string, vector<string>> captured = {};
-  for (const auto &coll: query)
-  {
-    const auto per_idx = coll.find_first_of('.');
-    const auto ns = per_idx == string::npos ? coll : coll.substr(0, per_idx);
-    const auto key = per_idx == string::npos ? "all" : coll.substr(per_idx + 1);
-
-    if (cspec::shared::contains_icase(cspec::cli::namespaces, ns))
-      if (cspec::shared::icaseis(key, "all") || cspec::shared::contains_icase(cspec::cli::queries.at(ns), key))
-      {
-        if (captured.find(ns) == captured.end())
-          captured.insert({ns, {}});
-        if (cspec::shared::icaseis(key, "all"))
-          captured.at(ns) = cspec::cli::queries.at(ns);
-        else if (!cspec::shared::contains_icase(captured.at(ns), key))
-          captured.at(ns).push_back(key);
-      }
-      else
-        throw cspec::cli::invalid_query(ns, key);
-    else
-      throw cspec::cli::invalid_namespace(ns);
-  }
-  return captured;
-}
-
 void cspec::cli::get(argparse::ArgumentParser args)
 {
   const auto format = args.get<cspec::cli::format_t>("format");
-  const auto captured = capture(args.get<vector<string>>("query"));
-  auto j = cspec::collect(captured);
+  const auto selected = cspec::cli::select(args.get<vector<string>>("query"));
+  auto j = cspec::collect(selected);
 
   if (args.get<bool>("human"))
     cspec::cli::human_friendly_json(j);

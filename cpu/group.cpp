@@ -25,7 +25,7 @@ cspec::cpu::group_t cspec::cpu::group()
   if (!std::regex_search(group_string, match, R"(Family (\d+) Model (\d+) Stepping (\d+))"_regex))
     return {};
 
-  auto iter = 0;
+  umax iter = 0;
   const auto family = std::stoul(match[++iter]);
   const auto model = std::stoul(match[++iter]);
   const auto stepping = std::stoul(match[++iter]);

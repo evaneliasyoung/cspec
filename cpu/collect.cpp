@@ -24,7 +24,7 @@ json cspec::cpu::collect()
   ret["group"] = cspec::cpu::group();
   {
     auto caches = array<cspec::cpu::cache_t, 4>{};
-    for (auto i = 0; i < 4; ++i)
+    for (umax i = 0; i < 4; ++i)
       caches[i] = cspec::cpu::cache(i);
     ret["cache"] = json(caches);
   }
@@ -57,7 +57,7 @@ json cspec::cpu::collect(const vector<string> &keys)
     else if (cspec::shared::icaseis(key, "cache"))
     {
       auto caches = array<cspec::cpu::cache_t, 4>{};
-      for (auto i = 0; i < 4; ++i)
+      for (umax i = 0; i < 4; ++i)
         caches[i] = cspec::cpu::cache(i);
       ret["cache"] = json(caches);
     }

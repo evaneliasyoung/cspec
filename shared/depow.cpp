@@ -13,7 +13,7 @@
 umax cspec::shared::depow2(const umax &bi)
 {
   double mod = 1;
-  for (umax i = 0; i < (umax)std::floor(std::log(bi) / std::log(1024)); ++i)
+  for (umax i = 0; i < static_cast<umax>(std::floor(std::log(bi) / std::log(1024))); ++i)
     mod *= 1000.00 / 1024.00;
-  return (umax)std::round(mod * bi);
+  return static_cast<umax>(std::round(mod * bi));
 }

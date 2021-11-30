@@ -56,7 +56,7 @@ void cspec::cli::stream(const cspec::cli::format_t &format, const vector<string>
       std::cout << ns << '\n';
 }
 
-void stream(const cspec::cli::format_t &format, const std::map<string, std::map<string, string>> &queries)
+void cspec::cli::stream(const cspec::cli::format_t &format, const std::map<string, std::map<string, string>> &queries)
 {
   if (format == cspec::cli::format_t::json)
     std::cout << json(queries).dump(2) << '\n';

@@ -20,7 +20,7 @@ u64 cspec::cpu::clock() noexcept
   {
     LARGE_INTEGER clock;
     QueryPerformanceFrequency(&clock);
-    return clock.QuadPart * 1000;
+    return static_cast<u64>(clock.QuadPart) * 1000;
   }
 
   DWORD clock_mhz;

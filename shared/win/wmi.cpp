@@ -121,8 +121,8 @@ bool cspec::shared::WMI::locate()
   if (!this->_inits.com)
     return false;
 
-  this->status =
-    CoCreateInstance(CLSID_WbemLocator, 0, CLSCTX_INPROC_SERVER, IID_IWbemLocator, (LPVOID *)&this->_res.locator);
+  this->status = CoCreateInstance(CLSID_WbemLocator, 0, CLSCTX_INPROC_SERVER, IID_IWbemLocator,
+                                  reinterpret_cast<LPVOID *>(&this->_res.locator));
   this->_inits.locator = true;
 
   if (this->Failed())
@@ -135,14 +135,15 @@ bool cspec::shared::WMI::connect()
   if (!this->_inits.locator)
     return false;
 
-  this->status = this->_res.locator->ConnectServer(BSTR(L"ROOT\\CIMV2"), // Object path of WMI namespace
-                                                   NULL,                 // User name. NULL = current user
-                                                   NULL,                 // User password. NULL = current
-                                                   0,                    // Locale. NULL indicates current
-                                                   0,                    // Security flags.
-                                                   0,                    // Authority (for example, Kerberos)
-                                                   0,                    // Context object
-                                                   &this->_res.service   // pointer to IWbemServices proxy
+  this->status = this->_res.locator->ConnectServer(
+    static_cast<BSTR>(const_cast<wchar_t *>(L"ROOT\\CIMV2")), // Object path of WMI namespace
+    NULL,                                                     // User name. NULL = current user
+    NULL,                                                     // User password. NULL = current
+    0,                                                        // Locale. NULL indicates current
+    0,                                                        // Security flags.
+    0,                                                        // Authority (for example, Kerberos)
+    0,                                                        // Context object
+    &this->_res.service                                       // pointer to IWbemServices proxy
   );
   this->_inits.service = true;
 
@@ -196,7 +197,7 @@ bool cspec::shared::WMI::enumerate()
     return false;
 
   ULONG ret = 0;
-  this->_res.enumerator->Next(WBEM_INFINITE, 1, &this->_res.klass, &ret);
+  this->_res.enumerator->Next(-1, 1, &this->_res.klass, &ret);
   this->failed = ret == 0;
   this->_inits.klass = !this->failed;
 

@@ -43,7 +43,7 @@ vector<cspec::memory::memory_t> cspec::memory::devices()
     memory.speed = std::stoul(raw_speed) * 1000 * 1000;
     memory.voltage.configured =
       !chip.at("ConfiguredVoltage").empty() ? std::stod(chip.at("ConfiguredVoltage")) / 1000 : 0;
-    memory.form_factor = form_factors[!chip.at("FormFactor").empty() ? std::stoi(chip.at("FormFactor")) : 0];
+    memory.form_factor = form_factors[!chip.at("FormFactor").empty() ? std::stoull(chip.at("FormFactor")) : 0];
     memory.voltage.min = !chip.at("MinVoltage").empty() ? std::stod(chip.at("MinVoltage")) / 1000 : 0;
     memory.voltage.max = !chip.at("MaxVoltage").empty() ? std::stod(chip.at("MaxVoltage")) / 1000 : 0;
 

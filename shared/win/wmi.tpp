@@ -29,9 +29,9 @@ template<typename StringWidth> bool cspec::shared::WMI::query(const StringWidth 
 
   // Construct SQL-esce request from keys
   wstring request = this->build_request(klass, keys);
-  this->status =
-    this->_res.service->ExecQuery(BSTR(L"WQL"), (BSTR)request.c_str(),
-                                  WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, NULL, &this->_res.enumerator);
+  this->status = this->_res.service->ExecQuery(
+    static_cast<BSTR>(const_cast<wchar_t *>(L"WQL")), static_cast<BSTR>(const_cast<wchar_t *>(request.c_str())),
+    WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, NULL, &this->_res.enumerator);
   this->_inits.enumerator = true;
 
   if (this->Failed())

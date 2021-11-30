@@ -35,6 +35,9 @@ cspec::cpu::cache_t cspec::cpu::cache(u8 level)
           case CacheTrace:
             type = cspec::cpu::cache_type_t::trace;
             break;
+          default:
+            type = cspec::cpu::cache_type_t::unknown;
+            break;
         }
         return {cspec::shared::depow2(info.Cache.Size), info.Cache.LineSize, info.Cache.Associativity, type};
       }

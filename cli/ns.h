@@ -89,6 +89,7 @@ namespace cspec
     void stream(const format_t &format, const std::map<string, std::map<string, string>> &queries);
 
     argparse::ArgumentParser parse_args(int argc, char const *argv[]);
+    std::map<string, vector<string>> select(const vector<string> &query);
     void list(argparse::ArgumentParser args);
     void get(argparse::ArgumentParser args);
     void run(argparse::ArgumentParser args);

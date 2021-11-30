@@ -28,7 +28,7 @@ cspec::shared::version_t cspec::shared::stover(const string &ver)
   if (!std::regex_search(ver, match, R"(^([0-9]+)\.([0-9]+)\.([0-9]+)(?:[+-])(?:build\.([0-9]+)))"_regex))
     return {};
 
-  auto iter = 0;
+  umax iter = 0;
   const u64 major = std::stoull(match[++iter]);
   const u64 minor = std::stoull(match[++iter]);
   const u64 patch = std::stoull(match[++iter]);
