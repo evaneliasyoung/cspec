@@ -157,7 +157,7 @@ vector<cspec::memory::memory_t> cspec::memory::devices()
           if (manuf.find(chip_line.substr(chip_line.find(':') + 2)) != manuf.end())
             chip.manufacturer = manuf.at(chip_line.substr(chip_line.find(':') + 2));
           else
-            chip.manufacturer = "unknown";
+            chip.manufacturer = "Unknown";
         else if (chip_line.find("Serial") != string::npos)
           chip.serial = chip_line.substr(chip_line.find(':') + 2);
         else if (chip_line.find("Part Number") != string::npos)
