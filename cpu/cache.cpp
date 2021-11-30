@@ -68,7 +68,7 @@ cspec::cpu::cache_t cspec::cpu::cache(u8 level)
             type = cspec::cpu::cache_type_t::trace;
             break;
         }
-        return {info.Cache.Size, info.Cache.LineSize, info.Cache.Associativity, type};
+        return {cspec::shared::depow2(info.Cache.Size), info.Cache.LineSize, info.Cache.Associativity, type};
       }
     }
   }
