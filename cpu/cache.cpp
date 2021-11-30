@@ -11,38 +11,6 @@
 #include "../shared/ns.h"
 #include "ns.h"
 
-cspec::cpu::cache_type_t cspec::cpu::stocch(const string &cache_type)
-{
-  if (cspec::shared::icaseis(cache_type, "Unified"))
-    return cspec::cpu::cache_type_t::instruction;
-  if (cspec::shared::icaseis(cache_type, "Instruction"))
-    return cspec::cpu::cache_type_t::instruction;
-  if (cspec::shared::icaseis(cache_type, "Data"))
-    return cspec::cpu::cache_type_t::data;
-  if (cspec::shared::icaseis(cache_type, "Trace"))
-    return cspec::cpu::cache_type_t::trace;
-  return cspec::cpu::cache_type_t::unknown;
-}
-
-string cspec::cpu::cchtos(const cspec::cpu::cache_type_t &cache_type)
-{
-  switch (cache_type)
-  {
-    case cspec::cpu::cache_type_t::unified:
-      return "unified";
-    case cspec::cpu::cache_type_t::instruction:
-      return "instruction";
-    case cspec::cpu::cache_type_t::data:
-      return "data";
-    case cspec::cpu::cache_type_t::trace:
-      return "trace";
-    case cspec::cpu::cache_type_t::unknown:
-      [[fallthrough]];
-    default:
-      return "unknown";
-  }
-}
-
 #if defined(WIN)
 cspec::cpu::cache_t cspec::cpu::cache(u8 level)
 {

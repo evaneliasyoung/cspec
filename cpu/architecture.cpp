@@ -8,39 +8,7 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../shared/ns.h"
 #include "ns.h"
-
-cspec::cpu::architecture_t cspec::cpu::stoarch(const string &architecture)
-{
-  if (cspec::shared::icaseis(architecture, "x86_64"))
-    return cspec::cpu::architecture_t::x64;
-  else if (cspec::shared::icaseis(architecture, "i686"))
-    return cspec::cpu::architecture_t::x86;
-  else if (strstr(architecture.c_str(), "arm") == architecture.c_str())
-    return cspec::cpu::architecture_t::arm;
-  else if (cspec::shared::icaseis(architecture, "ia64"))
-    return cspec::cpu::architecture_t::itanium;
-  else
-    return cspec::cpu::architecture_t::unknown;
-}
-
-string cspec::cpu::archtos(const cspec::cpu::architecture_t &architecture)
-{
-  switch (architecture)
-  {
-    case cspec::cpu::architecture_t::x64:
-      return "x64";
-    case cspec::cpu::architecture_t::x86:
-      return "x86";
-    case cspec::cpu::architecture_t::arm:
-      return "ARM";
-    case cspec::cpu::architecture_t::itanium:
-      return "Itanium";
-    default:
-      return "Unknown";
-  }
-}
 
 #ifdef WIN
 #include <windows.h>
