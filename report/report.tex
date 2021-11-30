@@ -178,20 +178,7 @@
 % The latest version can be found at:
 % http://www.ctan.org/pkg/dblfloatfix
 
-% *** PDF, URL AND HYPERLINK PACKAGES ***
-%
-%\usepackage{url}
-% url.sty was written by Donald Arseneau. It provides better support for
-% handling and breaking URLs. url.sty is already installed on most LaTeX
-% systems. The latest version and documentation can be obtained at:
-% http://www.ctan.org/pkg/url
-% Basically, \url{my_url_here}.
-
-% *** Do not adjust lengths that control margins, column widths, etc. ***
-% *** Do not use packages that alter fonts (such as pslatex).         ***
-% There should be no need to do such things with IEEEtran.cls V1.6 and later.
-% (Unless specifically asked to do so by the journal or conference you plan
-% to submit to, of course. )
+\usepackage{url}
 
 % correct bad hyphenation here
 \hyphenation{op-tical net-works semi-conduc-tor}
@@ -217,6 +204,17 @@ Working together many different system libraries, formats, data types, and parsi
 Namespace, WMI (Windows Management Instrumentation), JSON (JavaScript Object Notation)
 \end{IEEEkeywords}
 
+\section{Background}
+CSpec is a hardware and system specification command-line-interface tool, where a user can query
+the system for different information regarding hardware and software.
+A user will either 'list' the available queries or namespaces, or 'get' a data member or entire namespace of data members.
+The output will be delivered in one of several ways: list, compact, value (only), or json, all supporting human-readable numerical values.
+
+With the operating system determined at compile time, the compiler will know which header, source, and template files to include.
+This is powerful as it reduces the amount of compiled and included code to only what is necessary.
+This also ensures that the code will not fail to build, since each operating system is required to implement the same methods,
+where shims can be implemented on a per-system basis.
+
 \section{Implementation}
 Both the makefile and the primary header determine which operating system the host is running,
 either to link different libraries or to define override functions.
@@ -224,6 +222,17 @@ Windows requires several libraries to be built into the distributable, and sever
 be linked to provide access to WMI and the registry.
 
 \subsection{Windows}
+Windows includes a very archaic method of dealing with strings, oftentimes requiring a separate string macro (BSTR)
+which will use wide characters or whichever legacy character your build of Windows supports.
+As such, conversion from standard characters to wide characters was included, and static casting was a necessity.
+
+WMI was used for a vast majority of the system information,
+and \cite{whims:wmi} was used to wrap the functionality into a class (ensuring safe destruction).
+WMI requires a significant amount of setup, and at any point in the process could fail, which is why
+wrapping this in a class provided an intuitive endpoint of failure checking and resource freeing on failure.
+
+The registry was another point of data access, and \cite{dicanio:winreg} was used as a guide to set up
+access and conversion methods.
 
 \subsection{macOS}
 
@@ -237,6 +246,19 @@ Within each namespace, there are different queries a user can make;
 Separating these queries into folders identified by the namespace was a logical conclusion.
 Each namespace folder contains a single header for function headers, namespace types, header inclusions, etc.,
 a source file for collecting queries, and a source file for JSON conversion.
+
+A shared namespace is used for general project utilities, such that the amount of header-source files are reduced and
+incremental patching of source files. Of importance is that this also allow for operating system specific
+headers and functionality to be included at compile time, with further scoped namespaces.
+
+\subsection{Templates}
+In standard C++, convention is to include templated methods and classes in either a header file (.h) or header-source file (.hpp).
+As these two file extensions are based on the notion of being a header, it can obfuscate whether or not the file is compiled, or built into a source file.
+Header files are neither compiled nor built-in, whereas header-source files are not compiled but built-in to a source file.
+This removes the ability for make and cmake to determine whether or not the source file has been updated, which is where a template file (.tpp) applies.
+
+Template files will be included at the end of a header (.h) file, and will therefore always mark a source file as updated.
+Since the source file includes the header file prior to compilation, it will notice a change and rebuild accordingly.
 
 \section{Libraries}
 
@@ -252,9 +274,9 @@ In addition to modern features, the structuring and destructing is simple to imp
     \label{fig-json}
 \end{figure}
 
-\subsection{argparse}
+\subsection{Argument Parser for Modern C++}
 For a command-line interface, argument parsing was necessary to differentiate queries, listings, and selection.
-\textit{argparse} was chosen as a single-header option, written for C++17 it includes very modern features and encourages the use of these quite well.
+\textit{Argument Parser for Modern C++} was chosen as a single-header option, written for C++17 it includes very modern features and encourages the use of these quite well.
 In addition to modern features, the implementation and usage is very similar to python and is quite efficient too.
 
 \begin{figure}[!t]
@@ -378,13 +400,18 @@ and Pranav et. al. for their contributions to \textit{argparse}.
 
 \begin{thebibliography}{2}
 
-\bibitem{wmi:whims}
+\bibitem{whims:wmi}
 S.~Whims, V.~Kents, et. al., \emph{Example: Getting WMI Data from the Local Computer}.\hskip 1em plus
 0.5em minus 0.4em\relax Seattle, Washington: Microsoft, 2021.
 
-\bibitem{winreg:dicanio}
-G.~Dicanio, \emph{Use Modern C++ to Access the Windows Registry}, vol. 32 no. 5.\hskip 1em plus
-0.5em minus 0.4em\relax Seattle, Washington: Microsoft, 2017.
+\bibitem{dicanio:winreg}
+G.~Dicanio, "Use Modern C++ to Access the Windows Registry" \textit{MSDN}, vol. 32, no. 5, May. 2017. Accessed: Nov. 30, 2021. [Online]. Available: \url{https://docs.microsoft.com/en-us/archive/msdn-magazine/2017/may/c-use-modern-c-to-access-the-windows-registry}.
+
+\bibitem{anon:argparse}
+Anon., \textit{Argument Parser for Modern C++ README}. (2021). Accessed: Nov. 30, 2021. [Online]. Available: \url{https://github.com/p-ranav/argparse/blob/master/README.md}.
+
+\bibitem{lohmann:json}
+N.~Lohmann, \textit{JSON for Modern C++ README}. (2021). Accessed: Nov. 30, 2021. [Online]. Available: \url{https://github.com/nlohmann/json/blob/master/README.md}.
 
 \end{thebibliography}
 
