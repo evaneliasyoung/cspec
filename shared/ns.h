@@ -32,8 +32,17 @@ namespace cspec
 
     string exec(const char *cmd);
     umax depow2(const umax &bi);
+
     string rtrim(string s, const char *t = " \t\n\r\f\v");
     string ltrim(string s, const char *t = " \t\n\r\f\v");
     string trim(string s, const char *t = " \t\n\r\f\v");
+
+    string to_lower(const string &s);
+    string to_lower(string &s);
+    bool icaseis(const char *&a, const char *&b);
+    bool icaseis(const string &a, const string &b);
+    bool icaseis(const string &a, const char *&b);
+    bool icaseis(const char *&a, const string &b);
+    bool contains_icase(const vector<string> &v, const string &s);
   } // namespace shared
 } // namespace cspec

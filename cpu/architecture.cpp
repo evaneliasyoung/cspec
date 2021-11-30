@@ -4,22 +4,22 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-11
- *  @date      2021-11-25
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../utils/strcmp.hpp"
+#include "../shared/ns.h"
 #include "ns.h"
 
 cspec::cpu::architecture_t cspec::cpu::stoarch(const string &architecture)
 {
-  if (icaseis(architecture, "x86_64"))
+  if (cspec::shared::icaseis(architecture, "x86_64"))
     return cspec::cpu::architecture_t::x64;
-  else if (icaseis(architecture, "i686"))
+  else if (cspec::shared::icaseis(architecture, "i686"))
     return cspec::cpu::architecture_t::x86;
   else if (strstr(architecture.c_str(), "arm") == architecture.c_str())
     return cspec::cpu::architecture_t::arm;
-  else if (icaseis(architecture, "ia64"))
+  else if (cspec::shared::icaseis(architecture, "ia64"))
     return cspec::cpu::architecture_t::itanium;
   else
     return cspec::cpu::architecture_t::unknown;

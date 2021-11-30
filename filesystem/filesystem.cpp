@@ -8,26 +8,27 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../utils/strcmp.hpp"
+#include "../shared/ns.h"
+
 #include "ns.h"
 
 cspec::filesystem::filesystem_type_t cspec::filesystem::stofs(const string &filesystem)
 {
-  if (icaseis(filesystem, "NTFS"))
+  if (cspec::shared::icaseis(filesystem, "NTFS"))
     return cspec::filesystem::filesystem_type_t::ntfs;
-  else if (icaseis(filesystem, "FAT"))
+  else if (cspec::shared::icaseis(filesystem, "FAT"))
     return cspec::filesystem::filesystem_type_t::fat;
-  else if (icaseis(filesystem, "exFAT"))
+  else if (cspec::shared::icaseis(filesystem, "exFAT"))
     return cspec::filesystem::filesystem_type_t::exfat;
-  else if (icaseis(filesystem, "HFS"))
+  else if (cspec::shared::icaseis(filesystem, "HFS"))
     return cspec::filesystem::filesystem_type_t::hfs;
-  else if (icaseis(filesystem, "EXT"))
+  else if (cspec::shared::icaseis(filesystem, "EXT"))
     return cspec::filesystem::filesystem_type_t::ext;
-  else if (icaseis(filesystem, "EXT4"))
+  else if (cspec::shared::icaseis(filesystem, "EXT4"))
     return cspec::filesystem::filesystem_type_t::ext4;
-  else if (icaseis(filesystem, "APFS"))
+  else if (cspec::shared::icaseis(filesystem, "APFS"))
     return cspec::filesystem::filesystem_type_t::apfs;
-  else if (icaseis(filesystem, "DevFS"))
+  else if (cspec::shared::icaseis(filesystem, "DevFS"))
     return cspec::filesystem::filesystem_type_t::devfs;
   else
     return cspec::filesystem::filesystem_type_t::unknown;

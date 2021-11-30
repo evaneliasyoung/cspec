@@ -4,20 +4,21 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-17
- *  @date      2021-11-25
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../utils/strcmp.hpp"
+#include "../shared/ns.h"
+
 #include "ns.h"
 
 cspec::system::kernel_t cspec::system::stokrn(const string &kernel)
 {
-  if (icaseis(kernel, "Windows NT"))
+  if (cspec::shared::icaseis(kernel, "Windows NT"))
     return cspec::system::kernel_t::nt;
-  else if (icaseis(kernel, "Linux"))
+  else if (cspec::shared::icaseis(kernel, "Linux"))
     return cspec::system::kernel_t::linux;
-  else if (icaseis(kernel, "Darwin"))
+  else if (cspec::shared::icaseis(kernel, "Darwin"))
     return cspec::system::kernel_t::darwin;
   else
     return cspec::system::kernel_t::unknown;

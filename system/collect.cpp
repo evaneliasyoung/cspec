@@ -4,11 +4,12 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-24
- *  @date      2021-11-25
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../utils/strcmp.hpp"
+#include "../shared/ns.h"
+
 #include "ns.h"
 
 json cspec::system::collect()
@@ -24,17 +25,17 @@ json cspec::system::collect()
 
 json cspec::system::collect(const vector<string> &keys)
 {
-  if (keys.size() == 1 && (icaseis(keys[0], "all") || keys[0] == "*"))
+  if (keys.size() == 1 && (cspec::shared::icaseis(keys[0], "all") || keys[0] == "*"))
     return cspec::system::collect();
 
   auto ret = R"({})"_json;
   for (const auto &key: keys)
   {
-    if (icaseis(key, "os"))
+    if (cspec::shared::icaseis(key, "os"))
       ret["os"] = cspec::system::os();
-    else if (icaseis(key, "kernel"))
+    else if (cspec::shared::icaseis(key, "kernel"))
       ret["kernel"] = cspec::system::kernel();
-    else if (icaseis(key, "times"))
+    else if (cspec::shared::icaseis(key, "times"))
       ret["times"] = cspec::system::times();
   }
   return ret;

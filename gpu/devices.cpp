@@ -8,23 +8,24 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../utils/strcmp.hpp"
+#include "../shared/ns.h"
+
 #include "../shared/ns.h"
 #include "ns.h"
 
 cspec::gpu::vendor_t cspec::gpu::stovnd(const string &vendor)
 {
-  if (icaseis(vendor, "NVIDIA"))
+  if (cspec::shared::icaseis(vendor, "NVIDIA"))
     return cspec::gpu::vendor_t::nvidia;
-  else if (icaseis(vendor, "AMD") || icaseis(vendor, "ATi") || icaseis(vendor, "Advanced Micro Devices"))
+  else if (cspec::shared::icaseis(vendor, "AMD") || cspec::shared::icaseis(vendor, "ATi") || cspec::shared::icaseis(vendor, "Advanced Micro Devices"))
     return cspec::gpu::vendor_t::amd;
-  else if (icaseis(vendor, "Intel"))
+  else if (cspec::shared::icaseis(vendor, "Intel"))
     return cspec::gpu::vendor_t::intel;
-  else if (icaseis(vendor, "Microsoft"))
+  else if (cspec::shared::icaseis(vendor, "Microsoft"))
     return cspec::gpu::vendor_t::microsoft;
-  else if (icaseis(vendor, "Qualcomm"))
+  else if (cspec::shared::icaseis(vendor, "Qualcomm"))
     return cspec::gpu::vendor_t::qualcomm;
-  else if (icaseis(vendor, "VMware"))
+  else if (cspec::shared::icaseis(vendor, "VMware"))
     return cspec::gpu::vendor_t::vmware;
   else
     return cspec::gpu::vendor_t::unknown;

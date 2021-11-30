@@ -1,21 +1,19 @@
 /**
- *  @file      strcmp.hpp
+ *  @file      strcase.hpp
  *  @brief     String comparison and searching methods.
  *
  *  @author    Evan Elias Young
- *  @date      2021-11-25
- *  @date      2021-11-25
+ *  @date      2021-11-29
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#pragma once
-
-#include "../core.h"
+#include "ns.h"
 
 #include <algorithm>
 #include <iostream>
 
-inline string to_lower(const string &s)
+string cspec::shared::to_lower(const string &s)
 {
   string ret{};
   std::transform(s.begin(), s.end(), ret.begin(),
@@ -26,7 +24,7 @@ inline string to_lower(const string &s)
   return ret;
 }
 
-inline string to_lower(string &s)
+string cspec::shared::to_lower(string &s)
 {
   std::transform(s.begin(), s.end(), s.begin(),
                  [](auto c)
@@ -36,27 +34,27 @@ inline string to_lower(string &s)
   return s;
 }
 
-inline bool icaseis(const char *&a, const char *&b)
+bool cspec::shared::icaseis(const char *&a, const char *&b)
 {
   return strcasecmp(a, b) == 0;
 }
 
-inline bool icaseis(const string &a, const string &b)
+bool cspec::shared::icaseis(const string &a, const string &b)
 {
   return strcasecmp(a.c_str(), b.c_str()) == 0;
 }
 
-inline bool icaseis(const string &a, const char *&b)
+bool cspec::shared::icaseis(const string &a, const char *&b)
 {
   return strcasecmp(a.c_str(), b) == 0;
 }
 
-inline bool icaseis(const char *&a, const string &b)
+bool cspec::shared::icaseis(const char *&a, const string &b)
 {
   return strcasecmp(a, b.c_str()) == 0;
 }
 
-inline bool contains_icase(const vector<string> &v, const string &s)
+bool cspec::shared::contains_icase(const vector<string> &v, const string &s)
 {
   return std::find_if(v.cbegin(), v.cend(),
                       [&s](const string &x) -> bool

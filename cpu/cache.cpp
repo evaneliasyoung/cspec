@@ -8,19 +8,18 @@
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../utils/strcmp.hpp"
 #include "ns.h"
 #include "../shared/ns.h"
 
 cspec::cpu::cache_type_t cspec::cpu::stocch(const string &cache_type)
 {
-  if (icaseis(cache_type, "Unified"))
+  if (cspec::shared::icaseis(cache_type, "Unified"))
     return cspec::cpu::cache_type_t::instruction;
-  if (icaseis(cache_type, "Instruction"))
+  if (cspec::shared::icaseis(cache_type, "Instruction"))
     return cspec::cpu::cache_type_t::instruction;
-  if (icaseis(cache_type, "Data"))
+  if (cspec::shared::icaseis(cache_type, "Data"))
     return cspec::cpu::cache_type_t::data;
-  if (icaseis(cache_type, "Trace"))
+  if (cspec::shared::icaseis(cache_type, "Trace"))
     return cspec::cpu::cache_type_t::trace;
   return cspec::cpu::cache_type_t::unknown;
 }

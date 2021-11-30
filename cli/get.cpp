@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-25
- *  @date      2021-11-25
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -13,7 +13,7 @@
 
 std::map<string, vector<string>> capture(const vector<string> &query)
 {
-  if (contains_icase(query, "all.all") || contains_icase(query, "all"))
+  if (cspec::shared::contains_icase(query, "all.all") || cspec::shared::contains_icase(query, "all"))
     return cspec::cli::queries;
 
   std::map<string, vector<string>> captured = {};
@@ -23,14 +23,14 @@ std::map<string, vector<string>> capture(const vector<string> &query)
     const auto ns = per_idx == string::npos ? coll : coll.substr(0, per_idx);
     const auto key = per_idx == string::npos ? "all" : coll.substr(per_idx + 1);
 
-    if (contains_icase(cspec::cli::namespaces, ns))
-      if (icaseis(key, "all") || contains_icase(cspec::cli::queries.at(ns), key))
+    if (cspec::shared::contains_icase(cspec::cli::namespaces, ns))
+      if (cspec::shared::icaseis(key, "all") || cspec::shared::contains_icase(cspec::cli::queries.at(ns), key))
       {
         if (captured.find(ns) == captured.end())
           captured.insert({ns, {}});
-        if (icaseis(key, "all"))
+        if (cspec::shared::icaseis(key, "all"))
           captured.at(ns) = cspec::cli::queries.at(ns);
-        else if (!contains_icase(captured.at(ns), key))
+        else if (!cspec::shared::contains_icase(captured.at(ns), key))
           captured.at(ns).push_back(key);
       }
       else

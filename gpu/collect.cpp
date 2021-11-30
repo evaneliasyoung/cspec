@@ -4,11 +4,12 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-24
- *  @date      2021-11-25
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../utils/strcmp.hpp"
+#include "../shared/ns.h"
+
 #include "ns.h"
 
 json cspec::gpu::collect()
@@ -24,7 +25,7 @@ json cspec::gpu::collect()
 
 json cspec::gpu::collect(const vector<string> &keys)
 {
-  if (keys.size() == 1 && (icaseis(keys[0], "all") || keys[0] == "*"))
+  if (keys.size() == 1 && (cspec::shared::icaseis(keys[0], "all") || keys[0] == "*"))
     return cspec::gpu::collect();
 
   auto ret = R"([])"_json;
@@ -34,15 +35,15 @@ json cspec::gpu::collect(const vector<string> &keys)
     auto gpuj = R"({})"_json;
     for (const auto &key: keys)
     {
-      if (icaseis(key, "name"))
+      if (cspec::shared::icaseis(key, "name"))
         gpuj["name"] = gpu.name;
-      else if (icaseis(key, "memory"))
+      else if (cspec::shared::icaseis(key, "memory"))
         gpuj["memory"] = gpu.memory;
-      else if (icaseis(key, "bus"))
+      else if (cspec::shared::icaseis(key, "bus"))
         gpuj["bus"] = gpu.bus;
-      else if (icaseis(key, "dynamic"))
+      else if (cspec::shared::icaseis(key, "dynamic"))
         gpuj["dynamic"] = gpu.dynamic;
-      else if (icaseis(key, "vendor"))
+      else if (cspec::shared::icaseis(key, "vendor"))
         gpuj["vendor"] = cspec::gpu::vndtos(gpu.vendor);
     }
     ret.push_back(gpuj);

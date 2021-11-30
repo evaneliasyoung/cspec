@@ -10,17 +10,17 @@
 
 #include "ns.h"
 
-string cspec::shared::rtrim(string s, const char *t = " \t\n\r\f\v")
+string cspec::shared::rtrim(string s, const char *t)
 {
   return s.erase(s.find_last_not_of(t) + 1);
 }
 
-string cspec::shared::ltrim(string s, const char *t = " \t\n\r\f\v")
+string cspec::shared::ltrim(string s, const char *t)
 {
   return s.erase(0, s.find_first_not_of(t));
 }
 
-string cspec::shared::trim(string s, const char *t = " \t\n\r\f\v")
+string cspec::shared::trim(string s, const char *t)
 {
   return ltrim(rtrim(s, t), t);
 }
