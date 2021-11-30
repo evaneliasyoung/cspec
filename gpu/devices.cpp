@@ -10,6 +10,7 @@
 
 #include "../utils/bitpow.hpp"
 #include "../utils/strcmp.hpp"
+#include "../shared/ns.h"
 #include "ns.h"
 
 cspec::gpu::vendor_t cspec::gpu::stovnd(const string &vendor)
@@ -81,12 +82,10 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
   return ret;
 }
 #elif defined(MAC)
-#include "../utils/shell.hpp"
-
 vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 {
   vector<cspec::gpu::gpu_info_t> ret{};
-  std::stringstream ss(exec("system_profiler SPDisplaysDataType | grep -A5 'Chipset Model:'"));
+  std::stringstream ss(cspec::shared::exec("system_profiler SPDisplaysDataType | grep -A5 'Chipset Model:'"));
 
   cspec::gpu::gpu_info_t gpu;
   for (string line; std::getline(ss, line, '\n');)
@@ -122,8 +121,6 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
   return ret;
 }
 #else
-#include "../utils/shell.hpp"
-
 #include <iostream>
 #include <sstream>
 
@@ -131,7 +128,7 @@ vector<cspec::gpu::gpu_info_t> cspec::gpu::devices()
 {
   vector<cspec::gpu::gpu_info_t> ret{};
 
-  auto lspci_out = std::stringstream(exec("lspci -vnn"));
+  auto lspci_out = std::stringstream(cspec::shared::exec("lspci -vnn"));
   for (string line; std::getline(lspci_out, line, '\n');)
   {
     if (line.find(" VGA ") != string::npos)

@@ -9,6 +9,7 @@
  */
 
 #include "ns.h"
+#include "../shared/ns.h"
 
 void cspec::memory::to_json(json &j, const cspec::memory::voltages_t &vlt)
 {
@@ -91,8 +92,6 @@ vector<cspec::memory::memory_t> cspec::memory::devices()
   return ret;
 }
 #elif defined(MAC)
-#include "../utils/shell.hpp"
-
 vector<cspec::memory::memory_t> cspec::memory::devices()
 {
   vector<cspec::memory::memory_t> ret{};
@@ -108,7 +107,7 @@ vector<cspec::memory::memory_t> cspec::memory::devices()
                                     {"0x8551", "Qimonda AG"},
                                     {"0x859B", "Crucial"}};
 
-  std::stringstream ss(exec("system_profiler SPMemoryDataType"));
+  std::stringstream ss(cspec::shared::exec("system_profiler SPMemoryDataType"));
 
   for (string line; std::getline(ss, line, '\n');)
   {

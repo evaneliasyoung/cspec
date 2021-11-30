@@ -9,6 +9,7 @@
  */
 
 #include "ns.h"
+#include "../shared/ns.h"
 
 string tmtos(const std::chrono::system_clock::time_point &time)
 {
@@ -58,7 +59,6 @@ cspec::system::times_t cspec::system::times()
 }
 #elif defined(MAC)
 #include "../utils/mac/sysctl.hpp"
-#include "../utils/shell.hpp"
 
 cspec::system::times_t cspec::system::times()
 {
@@ -70,7 +70,7 @@ cspec::system::times_t cspec::system::times()
   const auto uptime = std::chrono::seconds(tv.tv_sec);
   const auto boot_time = std::chrono::system_clock::time_point(uptime);
 
-  const auto raw_update = exec(
+  const auto raw_update = cspec::shared::exec(
     R"(system_profiler SPInstallHistoryDataType | grep -A4 -E '^\s{4}(macOS|OS X)' | tail -n1 | awk '{ print $3 $4; }')");
   std::tm uptv = {};
   std::stringstream ss(raw_update);

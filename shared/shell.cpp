@@ -1,19 +1,19 @@
 /**
- *  @file      shell.hpp
+ *  @file      shell.cpp
  *  @brief     Shell command utilities.
  *
  *  @author    Evan Elias Young
- *  @date      2021-11-20
- *  @date      2021-11-20
+ *  @date      2021-11-29
+ *  @date      2021-11-29
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
-#include "../core.h"
+#include "ns.h"
 
 #include <fstream>
 #include <memory>
 
-static string exec(const char *cmd)
+string cspec::shared::exec(const char *cmd)
 {
   array<char, 128> buf;
   string ret;

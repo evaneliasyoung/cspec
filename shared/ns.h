@@ -29,5 +29,7 @@ namespace cspec
     version_t stover(const string &ver);
     void to_json(json &j, const version_t &ver);
     void from_json(const json &j, version_t &ver);
+
+    string exec(const char *cmd);
   } // namespace shared
 } // namespace cspec
