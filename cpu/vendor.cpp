@@ -12,7 +12,6 @@
 
 #if defined(WIN)
 #include "../shared/ns.h"
-#include "../utils/trim.hpp"
 #include "../utils/win/registry.hpp"
 
 string cspec::cpu::vendor()

@@ -1,5 +1,5 @@
 /**
- *  @file      strcase.hpp
+ *  @file      strcase.cpp
  *  @brief     String comparison and searching methods.
  *
  *  @author    Evan Elias Young
