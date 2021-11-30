@@ -32,5 +32,8 @@ namespace cspec
 
     string exec(const char *cmd);
     umax depow2(const umax &bi);
+    string rtrim(string s, const char *t = " \t\n\r\f\v");
+    string ltrim(string s, const char *t = " \t\n\r\f\v");
+    string trim(string s, const char *t = " \t\n\r\f\v");
   } // namespace shared
 } // namespace cspec

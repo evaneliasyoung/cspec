@@ -11,19 +11,20 @@
 #include "ns.h"
 
 #if defined(WIN)
+#include "../shared/ns.h"
 #include "../utils/trim.hpp"
 #include "../utils/win/registry.hpp"
 
 string cspec::cpu::vendor()
 {
-  return rtrim(
+  return cspec::shared::rtrim(
     read_registry_sz<13>(HKEY_LOCAL_MACHINE, R"(HARDWARE\DESCRIPTION\System\CentralProcessor\0)", "VendorIdentifier"));
 }
 
 string cspec::cpu::name()
 {
-  return rtrim(read_registry_sz<65>(HKEY_LOCAL_MACHINE, R"(HARDWARE\DESCRIPTION\System\CentralProcessor\0)",
-                                    "ProcessorNameString"));
+  return cspec::shared::rtrim(read_registry_sz<65>(
+    HKEY_LOCAL_MACHINE, R"(HARDWARE\DESCRIPTION\System\CentralProcessor\0)", "ProcessorNameString"));
 }
 #elif defined(MAC)
 #include "../utils/mac/sysctl.hpp"
