@@ -78,6 +78,13 @@ In addition to system profiler's innate slowness (I am ignorant as to why),
 running a shell command and streaming into a buffer increases the runtime.
 
 \subsection{Linux}
+Linux was fairly simple to impelement, everything except memory information was able to be retrieved directly from C++.
+Linux memory information requires a shell command elevated to super-user to retrieve, which is a limitation due to the
+direct access of the memory on the system bus in order to determine the physical bank location of the memory.
+
+Linux offers a variety of files at the root level which contain a breadth of information regarding os info,
+kernel info, gpu info, cpu info, and filesystem info. These files can be read by any user, while only offering
+write permissions to root; this, however, is sufficient to determine the hardware and software in the system.
 
 \section{Semantics}
 Semantics describe the methodology behind design choices which do not effect the functionality of the project.
@@ -141,7 +148,7 @@ In addition to modern features, the implementation and usage is very similar to 
         \hline
         macOS 12.1 $\beta$1 & 10 & 24.10 & 1.2134 \\
         \hline
-        Ubuntu 21.10 & 3 & 92.46 & 1.3135 \\
+        Ubuntu 21.10 & 6 & 76.24 & 0.8210 \\
         \hline
     \end{tabular}
 \end{table}
@@ -158,17 +165,13 @@ In addition to modern features, the implementation and usage is very similar to 
         \hline
         filesystem & \multicolumn{3}{c|}{\faCheck} \\
         \hline
-        gpu & \multicolumn{2}{c|}{\faCheck} & \faPlus \\
+        gpu & \multicolumn{3}{c|}{\faCheck} \\
         \hline
-        gpu.bus & \multicolumn{2}{c|}{\faCheck} & \faMinus \\
-        \hline
-        gpu.dynamic & \multicolumn{2}{c|}{\faCheck} & \faMinus \\
-        \hline
-        memory & \multicolumn{2}{c|}{\faCheck} & \faMinus \\
+        memory & \multicolumn{2}{c|}{\faPlus} & \faPlus~\faMinus \\
         \hline
         memory.manufacturer & \faTimes & \faCheck & \faMinus \\
         \hline
-        memory.voltage & \faCheck & \faTimes & \faMinus \\
+        memory.voltage & \faCheck & \multicolumn{2}{c|}{\faTimes} \\
         \hline
         system & \multicolumn{3}{c|}{\faCheck} \\
         \hline
@@ -193,13 +196,12 @@ In addition to modern features, the implementation and usage is very similar to 
 
 \subsection{Product}
 Most queries are supported on every operating system, Table \ref{table_support} details which queries are
-supported (\faCheck), not supported (\faTimes), partially supported (\faPlus), and pending implementation (\faMinus)
+supported (\faCheck), not supported (\faTimes), partially supported (\faPlus), and requires sudo (\faMinus)
 on each operating system.
+System constraints restriced my ability to fully implement the Windows, macOS, and Linux namespaces.
 
-Time constraints restriced my ability to fully implement Linux support regarding the gpu and memory namespaces,
-while system contraints restricted my ability to fully implement the Windows and macOS namespace.
-
-All different styles of formatting output were implemented successfully, Table
+All different styles of formatting output were implemented successfully, Table \ref{table_format} provides
+views of different types of output, all accessible by the user when making queries or listings.
 
 \subsection{Knowledge}
 During the course of the project, I learned how to use git submodules, how to use external user-level libraries (see \cite{lohmann:json} and \cite{pranav:argparse}),
@@ -207,6 +209,11 @@ and how to interface with lower level system libraries (see \cite{whims:wmi} and
 
 Segmentation of large amounts of operating system-dependent source code was an additional topic with which I was unfamiliar;
 this required different syntax in my makefile which supported recursing through directories of source code.
+
+\subsection{Moving Forward}
+In the future, I would like to expand on the CLI help and provide examples of queries and listings.
+Overall, I am satisfied with what I was able to accomplish regarding a cross-platform CLI tool
+which implements system-level libraries and functionality.
 
 \section*{Acknowledgment}
 
