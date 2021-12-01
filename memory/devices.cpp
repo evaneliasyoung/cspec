@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-23
- *  @date      2021-11-29
+ *  @date      2021-11-30
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -135,4 +135,87 @@ vector<cspec::memory::memory_t> cspec::memory::devices()
   return ret;
 }
 #else
+
+#include <iostream>
+
+vector<cspec::memory::memory_t> cspec::memory::devices()
+{
+  vector<cspec::memory::memory_t> ret{};
+  if (!cspec::shared::hassudo())
+    return ret;
+  std::stringstream ss(cspec::shared::exec(
+    R"(export LC_ALL=C; sudo dmidecode -t memory 2>/dev/null | grep -iE "Size:|Type|Speed|Manufacturer|Form Factor|Locator|Memory Device|Serial Number|Voltage|Part Number"; unset LC_ALL)"));
+
+  for (string line; std::getline(ss, line, '\n');)
+  {
+    if (line.find("Memory Device") != string::npos)
+    {
+      bool broken = false;
+      cspec::memory::memory_t chip{};
+      for (string chip_line; std::getline(ss, chip_line, '\n');)
+      {
+        if (chip_line.find("No Module Installed") != string::npos)
+        {
+          broken = true;
+          break;
+        }
+        if (chip_line.find("Not Installed") != string::npos)
+        {
+          broken = true;
+          break;
+        }
+        if (chip_line.find("Handle") != string::npos)
+          break;
+
+        std::smatch mt;
+        if (std::regex_search(chip_line, mt, R"(Size: (\d+) ([GMK]))"_regex))
+        {
+          chip.size = std::stoul(mt[1]);
+          switch (mt[2].str()[0])
+          {
+            case 'G':
+              chip.size *= 1000;
+              [[fallthrough]];
+            case 'M':
+              chip.size *= 1000;
+              [[fallthrough]];
+            case 'K':
+              chip.size *= 1000;
+          }
+        }
+        else if (std::regex_search(chip_line, mt, R"(Speed: (\d+) ([GMK]))"_regex))
+        {
+          chip.speed = std::stoul(mt[1]);
+          switch (mt[2].str()[0])
+          {
+            case 'G':
+              chip.speed *= 1000;
+              [[fallthrough]];
+            case 'M':
+              chip.speed *= 1000;
+              [[fallthrough]];
+            case 'K':
+              chip.speed *= 1000;
+          }
+        }
+        else if (chip_line.find("Locator:") != string::npos)
+          chip.bank = chip_line.substr(chip_line.find(':') + 2);
+        else if (chip_line.find("Form Factor:") != string::npos)
+          chip.form_factor = chip_line.substr(chip_line.find(':') + 2);
+        else if (chip_line.find("Manufacturer:") != string::npos)
+          chip.manufacturer = chip_line.substr(chip_line.find(':') + 2);
+        else if (chip_line.find("Part Number:") != string::npos)
+          chip.model = chip_line.substr(chip_line.find(':') + 2);
+        else if (chip_line.find("Serial Number:") != string::npos)
+          chip.serial = chip_line.substr(chip_line.find(':') + 2);
+        else
+          std::cout << chip_line << '\n';
+      }
+      if (!broken)
+        ret.push_back(chip);
+    }
+  }
+
+  return ret;
+}
 #endif
