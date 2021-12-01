@@ -3,6 +3,7 @@
 \usepackage{cite}
 \usepackage{url}
 \usepackage{fontawesome5}
+\usepackage{multirow}
 
 \ifCLASSINFOpdf
   \usepackage[pdftex]{graphicx}
@@ -165,15 +166,38 @@ In addition to modern features, the implementation and usage is very similar to 
         \hline
     \end{tabular}
 \end{table}
+\begin{table}
+    \caption{Output Style Examples}
+    \label{table_format}
+    \centering
+    \begin{tabular}{|c||c|c|c|c|}
+        \hline
+        Format & List & Compact & Value & JSON \\
+        \hline
+        \multirow{2}{*}{Default}& ... & \multirow{2}{*}{...=2000} & \multirow{2}{*}{2000} & \multirow{2}{*}{\{"...": 2000\}} \\
+        &2000&&&\\
+        \hline
+        \multirow{2}{*}{Human}& ... & \multirow{2}{*}{...=2 KB} & \multirow{2}{*}{2 KB} & \multirow{2}{*}{\{"...": "2 KB"\}} \\
+        &2 KB&&&\\
+        \hline
+    \end{tabular}
+\end{table}
 
 \subsection{Product}
 Most queries are supported on every operating system, Table \ref{table_support} details which queries are
 supported (\faCheck), not supported (\faTimes), partially supported (\faPlus), and pending implementation (\faMinus)
 on each operating system.
+
 Time constraints restriced my ability to fully implement Linux support regarding the gpu and memory namespaces,
 while system contraints restricted my ability to fully implement the Windows and macOS namespace.
 
+All different styles of formatting output were implemented successfully, Table
+
 \subsection{Knowledge}
+During the course of the project, I learned how to use git submodules, how to use external user-level libraries (see \cite{lohmann:json} and \cite{pranav:argparse}),
+and how to interface with lower level system libraries (see \cite{whims:wmi} and \cite{dicanio:winreg}).
+
+Segmentation of large amounts of operating system-dependent source code was an additional topic with which I was unfamiliar.
 
 \section*{Acknowledgment}
 
