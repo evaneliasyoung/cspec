@@ -18,7 +18,7 @@
 
 
 \begin{document}
-\title{Hardware and System Specification Command-Line-Interface Tool}
+\title{Hardware and System Specification Command-Line~Interface Tool}
 \author{\IEEEauthorblockN{Evan Elias Young}
 \IEEEauthorblockA{College of Engineering and Computing\\
 Missouri University of Science and Technology\\
@@ -28,7 +28,7 @@ Email: eeymrr@umsystem.edu}}
 
 \begin{abstract}
 There are many tools available to retrieve system specifications, however many of these lack cross-platform support and machine-readable output.
-Many different operating systems include a command-line-interface to retrieve some part of the information, however this is often not human-readable.
+Many different operating systems include a command-line interface to retrieve some part of the information, however this is often not human-readable.
 A single tool which works on every operating system, includes human-readable output, and implements native libraries to quickly retrieve accurate information is necessary.
 Working together many different system libraries, formats, data types, and parsing revealed which operating systems include the most legacy code, which operating systems are the most streamlined, and the way in which libraries come together to form a cohesive application.
 \end{abstract}
@@ -38,7 +38,7 @@ Namespace, WMI (Windows Management Instrumentation), JSON (JavaScript Object Not
 \end{IEEEkeywords}
 
 \section{Background}
-CSpec is a hardware and system specification command-line-interface tool, where a user can query
+CSpec is a hardware and system specification command-line interface tool, where a user can query
 the system for different information regarding hardware and software.
 A user will either 'list' the available queries or namespaces, or 'get' a data member or entire namespace of data members.
 The output will be delivered in one of several ways: list, compact, value (only), or json, all supporting human-readable numerical values.
@@ -68,6 +68,14 @@ The registry was another point of data access, and \cite{dicanio:winreg} was use
 access and conversion methods.
 
 \subsection{macOS}
+macOS relied on the use of two system specific libraries; sysctl and system profiler.
+\cite{aapl:sysctl} was used to configure and research the sysctl utilization within C++ and macOS.
+While fairly intuitive, retrieving strings with sysctl required a temporary buffer and trimming on null characters.
+
+System profiler unfortunately has no public-facing C++ headers, and therefore cannot be invoked directly in C++.
+As a workaround, running system profiler in bash and capturing the output into a buffer was used.
+In addition to system profiler's innate slowness (I am ignorant as to why),
+running a shell command and streaming into a buffer increases the runtime.
 
 \subsection{Linux}
 
@@ -197,7 +205,8 @@ All different styles of formatting output were implemented successfully, Table
 During the course of the project, I learned how to use git submodules, how to use external user-level libraries (see \cite{lohmann:json} and \cite{pranav:argparse}),
 and how to interface with lower level system libraries (see \cite{whims:wmi} and \cite{dicanio:winreg}).
 
-Segmentation of large amounts of operating system-dependent source code was an additional topic with which I was unfamiliar.
+Segmentation of large amounts of operating system-dependent source code was an additional topic with which I was unfamiliar;
+this required different syntax in my makefile which supported recursing through directories of source code.
 
 \section*{Acknowledgment}
 
@@ -222,6 +231,9 @@ N.~Lohmann, \textit{JSON for Modern C++ README}. (2021). Accessed: Nov. 30, 2021
 
 \bibitem{ieee:ref}
 \textit{IEEE Reference Guide}, IEEE, Piscataway, New Jersey, November 12, 2018. [Online]. Available: \url{https://ieeeauthorcenter.ieee.org/wp-content/uploads/IEEE-Reference-Guide.pdf}.
+
+\bibitem{aapl:sysctl}
+\textit{Mac OS X SYSCTL Manual}, Apple, Cupertino, California, January 23, 2001. [Online]. Available: \url{https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/sysctl.3.html}.
 
 \end{thebibliography}
 
