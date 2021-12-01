@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-29
- *  @date      2021-11-29
+ *  @date      2021-11-30
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -12,6 +12,7 @@
 
 #include "../../core.h"
 
+#ifdef WIN
 #include <Wbemidl.h>
 #include <algorithm>
 #include <codecvt>
@@ -102,3 +103,4 @@ namespace cspec
 
 #include "registry.tpp"
 #include "wmi.tpp"
+#endif
