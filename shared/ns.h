@@ -4,7 +4,7 @@
  *
  *  @author    Evan Elias Young
  *  @date      2021-11-24
- *  @date      2021-11-29
+ *  @date      2021-11-30
  *  @copyright Copyright 2021 Evan Elias Young. All rights reserved.
  */
 
@@ -55,5 +55,10 @@ namespace cspec
     bool icaseis(const string &a, const char *&b);
     bool icaseis(const char *&a, const string &b);
     bool contains_icase(const vector<string> &v, const string &s);
+
+    #ifndef WIN
+    bool issudo();
+    bool hassudo();
+    #endif
   } // namespace shared
 } // namespace cspec
